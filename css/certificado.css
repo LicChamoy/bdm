@@ -1,0 +1,82 @@
+/* certificado.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.certificate-container {
+    width: 80%;
+    max-width: 800px;
+    background: #fff;
+    border: 2px solid #000;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.certificate-preview {
+    border: 1px solid #000;
+    border-radius: 10px;
+    padding: 30px;
+    margin: 20px 0;
+    background: #f9f9f9;
+}
+
+.certificate-preview h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.certificate-preview p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.certificate-preview p strong {
+    font-size: 20px;
+    display: block;
+    margin: 5px 0;
+}
+
+.certificate-preview p#course-name {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.certificate-preview p#issuer {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.certificate-preview p#issue-date {
+    font-size: 18px;
+}
+
+.download-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.download-button:hover {
+    background-color: #0056b3;
+}
