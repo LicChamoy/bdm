@@ -1,0 +1,71 @@
+/* cursos.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.courses-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.courses-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.courses-table th, .courses-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.courses-table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+.courses-table td img {
+    width: 100px;
+    height: 75px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.courses-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.courses-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.progress-bar {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+    height: 20px;
+}
+
+.progress {
+    background-color: #4CAF50;
+    height: 100%;
+    border-radius: 5px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}

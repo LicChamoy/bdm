@@ -1,76 +1,75 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Progreso de Cursos</title>
-    <link rel="stylesheet" href="./css/kardex.css">
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Progreso de Cursos</title>
+        <link rel="stylesheet" href="./css/kardex.css">
+    </head>
+    <body>
 
-    <!-- Aquí se importará dinámicamente la navbar -->
-    <div id="navbar-container"></div>
+        <div id="navbar-container"></div>
 
-    <div class="course-container">
-        <h1>Mis Cursos</h1>
-        <table class="course-table">
-            <thead>
-                <tr>
-                    <th>Imagen</th>
-                    <th>Curso</th>
-                    <th>Progreso</th>
-                    <th>Certificado</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><img src="curso1.jpg" alt="Curso 1" class="course-image"></td>
-                    <td>Curso de HTML y CSS</td>
-                    <td>
-                        <div class="progress-bar">
-                            <div class="progress" style="width: 50%;">50%</div>
-                        </div>
-                    </td>
-                    <td>
-                        <button class="cert-button" disabled>Obtener Certificado</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><img src="curso2.jpg" alt="Curso 2" class="course-image"></td>
-                    <td>Curso de JavaScript Avanzado</td>
-                    <td>
-                        <div class="progress-bar">
-                            <div class="progress" style="width: 100%;">100%</div>
-                        </div>
-                    </td>
-                    <td>
-                        <a href="certificado.html?curso=Curso%20de%20JavaScript%20Avanzado" class="cert-button">Obtener Certificado</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td><img src="curso3.jpg" alt="Curso 3" class="course-image"></td>
-                    <td>Curso de Python para Principiantes</td>
-                    <td>
-                        <div class="progress-bar">
-                            <div class="progress" style="width: 80%;">80%</div>
-                        </div>
-                    </td>
-                    <td>
-                        <button class="cert-button" disabled>Obtener Certificado</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+        <div class="course-container">
+            <h1>Mis Cursos</h1>
+            <table class="course-table">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Curso</th>
+                        <th>Progreso</th>
+                        <th>Certificado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img src="curso1.jpg" alt="Curso 1" class="course-image"></td>
+                        <td>Curso de HTML y CSS</td>
+                        <td>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 50%;">50%</div>
+                            </div>
+                        </td>
+                        <td>
+                            <button class="cert-button" disabled>Obtener Certificado</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><img src="curso2.jpg" alt="Curso 2" class="course-image"></td>
+                        <td>Curso de JavaScript Avanzado</td>
+                        <td>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 100%;">100%</div>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="certificado.html?curso=Curso%20de%20JavaScript%20Avanzado" class="cert-button">Obtener Certificado</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><img src="curso3.jpg" alt="Curso 3" class="course-image"></td>
+                        <td>Curso de Python para Principiantes</td>
+                        <td>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 80%;">80%</div>
+                            </div>
+                        </td>
+                        <td>
+                            <button class="cert-button" disabled>Obtener Certificado</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <script>
-        fetch('navbar.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navbar-container').innerHTML = data;
-            })
-            .catch(error => console.error('Error al cargar la navbar:', error));
-    </script>
+        <script>
+            fetch('navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('navbar-container').innerHTML = data;
+                })
+                .catch(error => console.error('Error al cargar la navbar:', error));
+        </script>
 
-</body>
+    </body>
 </html>

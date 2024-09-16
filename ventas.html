@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Listado de Cursos Vendidos</title>
+        <link rel="stylesheet" href="./css/ventas.css">
+    </head>
+    <body>
+        
+        <div id="navbar-container"></div>
+
+        <div class="courses-container">
+            <h1>Cursos Vendidos</h1>
+            <table class="courses-table">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Nombre del Curso</th>
+                        <th>Promedio de Completación</th>
+                        <th>Cantidad de Alumnos</th>
+                        <th>Ingresos Generados</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img src="curso1.jpg" alt="Curso de JavaScript"></td>
+                        <td>Curso de JavaScript</td>
+                        <td>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 85%;"></div>
+                            </div>
+                            85%
+                        </td>
+                        <td>150</td>
+                        <td>$1,200</td>
+                    </tr>
+                    <tr>
+                        <td><img src="curso2.jpg" alt="Curso de Python"></td>
+                        <td>Curso de Python</td>
+                        <td>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 90%;"></div>
+                            </div>
+                            90%
+                        </td>
+                        <td>200</td>
+                        <td>$1,500</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <script>
+            fetch('navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('navbar-container').innerHTML = data;
+                })
+                .catch(error => console.error('Error al cargar la navbar:', error));
+        </script>
+
+    </body>
+</html>
