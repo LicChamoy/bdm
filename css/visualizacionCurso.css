@@ -1,0 +1,126 @@
+/* General */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff8e1;
+}
+
+.course-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffcc99;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Video del curso */
+.course-video {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.course-video video {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Información del curso */
+.course-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.course-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* Lista de niveles */
+.levels, .sections {
+    flex: 1;
+    margin: 0 10px;
+    background-color: #ff9933;
+    padding: 10px;
+    border-radius: 8px;
+    color: white;
+}
+
+.levels h2, .sections h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #4d2600;
+}
+
+.levels ul, .sections ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.levels li, .sections li {
+    margin-bottom: 10px;
+}
+
+.levels a, .sections a {
+    text-decoration: none;
+    color: #ffe6cc;
+    font-weight: bold;
+}
+
+.levels a:hover, .sections a:hover {
+    text-decoration: underline;
+}
+
+/* Comentarios */
+.comments {
+    margin-top: 20px;
+    background-color: #ff9933;
+    padding: 20px;
+    border-radius: 8px;
+    color: white;
+}
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.comment-form textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #ffcc99;
+    border-radius: 4px;
+    resize: none;
+}
+
+.comment-form button {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #cc5200;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.comment-form button:hover {
+    background-color: #993d00;
+}
+
+#comment-list {
+    border-top: 1px solid #ffe6cc;
+    padding-top: 10px;
+}
+
+#comment-list p {
+    color: #ffe6cc;
+}
