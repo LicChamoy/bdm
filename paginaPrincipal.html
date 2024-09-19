@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pagina principal</title>
+        <link rel="stylesheet" href="./css/paginaPrincipal.css">
+        <link rel="stylesheet" href="./css/navbar.css">
+        <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&display=swap" rel="stylesheet">
+    </head>
+    
+
+<div id="navbar-container"></div>
+
+<body>
+
+    <div class="header">
+
+        <h1>PolySun </h1>
+        
+    </div>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul>
+                <li><a href="./paginaPrincipal.html">Home</a></li>
+                <li><a href="./kardex.html">Kardex</a></li>
+                <li><a href="./ventas.html">Ventas</a></li>
+                <li><a href="./navbar.html">Navbar</a></li>
+                <li><a href="./certificado.html">certificado</a></li>
+                <li><a href="./login.html">Login</a></li>
+                <li><a href="./registro.html">Registro</a></li>
+                <li><a href="./vistaAdmin.html">Admin</a></li>
+                <li><a href="./chat.html">Chat</a></li>
+                <li><a href="./perfil.html">Perfil</a></li>
+                <li><a href="./registroCurso.html">Registrar Curso</a></li>
+                <li><a href="./admin/registroCategorias.html">Categorias</a></li>
+                <li><a href="./visualizacionCurso.html">Ver Curso</a></li>
+
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <h2>Cursos para tu futuro</h2>
+            <p>Contamos con una buena cantidad de cursos hechos a tu medida</p>
+            
+            <!-- Image Boxes -->
+            <div class="image-box-container">
+                <div class="image-box">
+                    <p>Curso Cocina</p>
+                </div>
+                <div class="image-box">
+                    <p>Curso HTML</p>
+                </div>
+                <div class="image-box">
+                    <p>Curso CSS</p>
+                </div>
+                
+            </div>
+
+            <!-- Text Content -->
+            <div class="text-content">
+                <p>Contamos con la maravillosa cantidad de 0 Usuarios</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script>
+    fetch('navbar.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('navbar-container').innerHTML = data;
+        })
+        .catch(error => console.error('Error al cargar la navbar:', error));
+</script>
+
+</html>

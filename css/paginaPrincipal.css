@@ -1,0 +1,103 @@
+body {
+    font-family: 'Bowlby One', cursive;
+    margin: 0;
+    background-color: #ffcc99;
+    color: #4d2600;
+}
+
+
+
+.container {
+    display: flex;
+}
+
+/* Sidebar (barra lateral) */
+.sidebar {
+    background-color: #ff9933;
+    width: 250px;
+    padding: 20px;
+    color: white;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+}
+
+.sidebar li:hover {
+    background-color: #e68a00;
+    cursor: pointer;
+}
+
+.sidebar li a:hover {
+    text-decoration: underline;
+}
+
+.sidebar li {
+    padding: 10px;
+    text-align: center;
+}
+
+.main-content {
+    flex-grow: 1;
+    background: linear-gradient(to bottom, #fff8e1, #ffcc99);
+    padding: 20px;
+}
+
+.header {
+    
+    background-color: #ff9933;
+    color: white;
+    padding: 5px 20px;
+    border-radius: 0 0 50px 0;
+    box-shadow: 0 4px 2px -2px #663300;
+    position: relative; /* Asegúrate de que el contenedor tenga posición relativa */
+}
+
+.header h1 {
+    position: relative;
+
+    font-size: 2em; /* Ajusta el tamaño de la fuente según sea necesario */
+    color: white; /* Color del texto */
+    text-shadow: 
+        1px 1px 0 #802d00,  
+        -1px -1px 0 #802d00,  
+        1px -1px 0 #802d00,  
+        -1px 1px 0 #802d00; /* Ajusta el color del contorno */
+}
+
+
+
+.image-box-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.image-box {
+    background-color: #ff6600;
+    padding: 10px;
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    color: white;
+}
+
+.image-box:hover {
+    background-color: #cc5200;
+}
+
+.text-content {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff8e1;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}

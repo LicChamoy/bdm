@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Perfil</title>
+    <link rel="stylesheet" href="./css/perfil.css">
+</head>
+<body>
+    <div class="container">
+        <form action="perfil_actualizado.html" method="post" enctype="multipart/form-data" class="profile-edit-container">
+            <section class="Menu">
+                <p>Editar Información del Usuario</p>
+                
+                <div class="txt">
+                    <label for="tipo_usuario">Tipo de Usuario</label>
+                    <select name="tipo_usuario" id="tipo_usuario" required>
+                        <option value="Estudiante">Estudiante</option>
+                        <option value="Instructor">Instructor</option>
+                    </select>
+                </div>
+
+                <div class="txt">
+                    <label for="nombre">Nombre(s)</label>
+                    <input type="text" name="nombre" id="nombre" value="Juan" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+" title="No se permiten símbolos">
+                </div>
+
+                <div class="txt">
+                    <label for="apellidos">Apellido(s)</label>
+                    <input type="text" name="apellidos" id="apellidos" value="Pérez" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+" title="No se permiten símbolos">
+                </div>
+
+                <div class="txt">
+                    <label for="correo">Correo Electrónico</label>
+                    <input type="email" name="correo" id="correo" value="juanperez@example.com" required>
+                </div>
+
+                <div class="txt">
+                    <label for="usuario">Nombre de Usuario</label>
+                    <input type="text" name="usuario" id="usuario" value="JuanPerez123" required pattern="[a-zA-Z]+" title="No se permiten caracteres especiales">
+                </div>
+
+                <div class="txt">
+                    <label for="sexo">Sexo</label>
+                    <select name="sexo" id="sexo" required>
+                        <option value="masculino" selected>Masculino</option>
+                        <option value="femenino">Femenino</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+
+                <div class="txt">
+                    <label for="password">Nueva Contraseña</label>
+                    <input type="password" name="password" id="password" placeholder="Nueva contraseña">
+                </div>
+
+                <div class="txt">
+                    <label for="confirmarContra">Confirmar Contraseña</label>
+                    <input type="password" name="confirmarContra" id="confirmarContra" placeholder="Confirmar contraseña">
+                </div>
+
+                <div>
+                    <input type="button" value="Mostrar/ocultar contraseñas" onclick="togglePassword()">
+                </div>
+
+                <div class="misc">
+                    <p>Fecha de Nacimiento</p>
+                    <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" value="1990-01-01" required>
+                </div>
+
+                <div class="misc">
+                    <p>Elija una foto de perfil</p>
+                    <input type="file" name="fotoPerfil" id="fotoPerfil" accept="image/*">
+                </div>
+                <br>
+                <input type="submit" value="Guardar Cambios">
+            </section>
+        </form>
+    </div>
+
+    <script>
+        function togglePassword() {
+            const passwordField = document.getElementById('password');
+            const confirmPasswordField = document.getElementById('confirmarContra');
+            const type = passwordField.type === 'password' ? 'text' : 'password';
+            passwordField.type = type;
+            confirmPasswordField.type = type;
+        }
+    </script>
+</body>
+</html>
