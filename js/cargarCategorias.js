@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Esta función debe ser adaptada para cargar categorías desde una fuente real, como una base de datos.
     const categories = [
         'Programación',
         'Diseño',
