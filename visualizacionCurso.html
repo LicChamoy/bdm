@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualización del Curso</title>
+    <link rel="stylesheet" href="./css/visualizacionCurso.css">
+</head>
+<body>
+    <div class="course-container">
+        <!-- Video del curso -->
+        <div class="course-video">
+            <video controls>
+                <source src="ruta-del-video.mp4" type="video/mp4">
+                Tu navegador no soporta la etiqueta de video.
+            </video>
+        </div>
+
+        <!-- Información del curso -->
+        <div class="course-info">
+            <h1>Título del Curso</h1>
+            <div class="course-content">
+                <!-- Lista de niveles -->
+                <div class="levels">
+                    <h2>Niveles</h2>
+                    <ul>
+                        <li><a href="#nivel1">Nivel 1: Introducción</a></li>
+                        <li><a href="#nivel2">Nivel 2: Intermedio</a></li>
+                        <li><a href="#nivel3">Nivel 3: Avanzado</a></li>
+                    </ul>
+                </div>
+
+                <!-- Lista de secciones -->
+                <div class="sections">
+                    <h2>Secciones</h2>
+                    <ul>
+                        <li><a href="#seccion1">Sección 1: Conceptos Básicos</a></li>
+                        <li><a href="#seccion2">Sección 2: Técnicas Avanzadas</a></li>
+                        <li><a href="#seccion3">Sección 3: Aplicaciones Prácticas</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comentarios -->
+        <div class="comments">
+            <h2>Comentarios</h2>
+            <div class="comment-form">
+                <textarea id="comment-input" placeholder="Escribe tu comentario..."></textarea>
+                <button id="submit-comment">Enviar</button>
+            </div>
+            <div id="comment-list">
+                <!-- Los comentarios se agregarán aquí -->
+                <p>No hay comentarios aún.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
