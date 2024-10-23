@@ -1,0 +1,81 @@
+body {
+    height: 100%; /* Asegura que el body ocupe el 100% de la altura de la ventana */
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ebebee;
+}
+header {
+    background-color: #0f091b;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+.container {
+    min-height: calc(100vh - 100px); /* Ajusta esta altura según la altura del header y footer */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centra el contenido verticalmente */
+}
+
+.course-details {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Centrar texto */
+}
+
+.feedback-section {
+    margin-top: 40px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+}
+
+button[type="submit"] {
+    margin-top: 20px;
+}
+
+
+.finish-button {
+    display: inline-block; /* Asegurar que el botón esté en su propia línea */
+    margin-top: 20px; /* Margen superior */
+    padding: 10px 20px; /* Espaciado interno */
+    background-color: #482286; /* Color de fondo del botón */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    text-decoration: none; /* Sin subrayado en el enlace */
+    cursor: pointer; /* Cambia el cursor a puntero */
+}
+
+.finish-button:hover {
+    background-color: #371868; /* Color de fondo al pasar el mouse */
+}
+footer {
+    text-align: center;
+    background-color: #0f091b;
+    color: white;
+    padding: 10px 0;
+    position: relative;
+    width: 100%;
+}

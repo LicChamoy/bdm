@@ -1,0 +1,63 @@
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #0f091b;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+header {
+    background-color: #0f091b;
+    font-size: 130%;
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+}
+
+
+/* Cuadro de fondo de los datos */
+main {
+    font-family:  'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #d3d9dd;
+    border-radius: 10px;
+    box-shadow: 0 7px 40px rgba(255, 255, 255, 0.459);
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    margin-bottom: 10px;
+}
+
+
+
+form button {
+    background-color: #482286;
+    color: rgb(255, 255, 255);
+    border: none;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #371868;
+}
+
+/* Estilos del pie de página 
+footer {
+    text-align: center;
+    background-color: #0f091b;
+    color: white;
+    padding: 5px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}*/

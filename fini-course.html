@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso Finalizado</title>
+    <link rel="stylesheet" href="css/fini-course.css">
+</head>
+<body>
+    <header>
+        <h1>Judav Academy</h1>
+        <h2>Curso Finalizado</h2>
+    </header>
+
+    <main class="container">
+        <div class="course-details">
+            <h3>¡Felicidades!</h3>
+            <p>Has completado el curso. Esperamos que hayas aprendido mucho y te invitamos a continuar con más cursos en el futuro.</p>
+            <a href="certificado.html" class="finish-button">Generar Certificado</a>
+        </div>
+
+        <div class="feedback-section">
+            <h4>Comentarios y Calificaciones</h4>
+            <form id="feedback-form">
+                <label for="comment">Deja tu comentario:</label>
+                <textarea id="comment" rows="4" required></textarea>
+
+                <label for="rating">Calificación:</label>
+                <select id="rating" required>
+                    <option value="">Selecciona una calificación</option>
+                    <option value="5">5 - Excelente</option>
+                    <option value="4">4 - Muy Bueno</option>
+                    <option value="3">3 - Bueno</option>
+                    <option value="2">2 - Regular</option>
+                    <option value="1">1 - Malo</option>
+                </select>
+
+                <button type="submit" class="finish-button">Enviar Comentario</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>Judav Academy - 2024</p>
+    </footer>
+</body>
+</html>

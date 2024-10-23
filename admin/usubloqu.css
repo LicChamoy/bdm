@@ -1,0 +1,164 @@
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #0f091b;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+header {
+    background-color: #0f091b;
+    font-size: 130%;
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+}
+
+.blocked-users-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.back-button {
+    padding: 10px 15px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #4b00d7;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.back-button:hover {
+    background-color: #652fc9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.blocked-users-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.blocked-users-table th, .blocked-users-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.blocked-users-table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+.blocked-users-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.blocked-users-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.unblock-button {
+    background-color: #4b00d7;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.unblock-button:hover {
+    background-color: #652fc9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Cuadro de fondo de los datos */
+main {
+    font-family:  'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #d3d9dd;
+    border-radius: 10px;
+    box-shadow: 0 7px 40px rgba(255, 255, 255, 0.459);
+}
+
+/* Estilos del mensaje */
+.message {
+    background-color: #dce3e7;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+.message p {
+    font-size: 1.2em;
+    color: #333;
+}
+
+.message strong {
+    color: #412075;
+}
+
+small {
+    color: #057c58; /* Color del texto */
+    display: block; /* Asegura que ocupe toda la línea */
+    margin-bottom: 20px; /* Espacio superior para separar del campo de entrada */
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    margin-bottom: 10px;
+}
+
+form input, form select, form button {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #c0c0c0;
+}
+
+form button {
+    background-color: #482286;
+    color: rgb(255, 255, 255);
+    border: none;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #371868;
+}
+
+/* Estilos del pie de página 
+footer {
+    text-align: center;
+    background-color: #0f091b;
+    color: white;
+    padding: 5px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}*/

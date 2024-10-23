@@ -1,0 +1,209 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ebebee;
+}
+
+header {
+    background-color: #0f091b;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    position: relative; /* Necesario para la posición absoluta del ícono */
+}
+
+/* Contenedor para la barra de búsqueda e íconos */
+.search-bar-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px; /* Espacio entre el campo de búsqueda y los íconos */
+    position: relative;
+    top: 10px;
+}
+
+/* Ajustes del campo de búsqueda */
+.search-bar input {
+    width: 50%;
+    padding: 10px;
+}
+
+.profile-icon, .chat-icon, .kardex-icon, .coursei-icon {
+    cursor: pointer;
+    font-size: 23px; /* Tamaño de los íconos */
+    color: white;
+}
+
+.profile-img, .chat-img, .kardex-img, .coursei-img {
+    width: 40px; /* Ajuste del tamaño de las imágenes */
+}
+
+h2 {
+    margin-top: 1rem;
+    color: #e5daf3;
+}
+
+h3 {
+    color: #090029;
+    margin-top: 1.5rem;
+}
+
+/* Botones */
+.btn-primary {
+    background-color: #482286;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #371868;
+}
+
+.btn-secondary2 {
+    background-color: #482286;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.btn-secondary2:hover {
+    background-color: #371868;
+}
+
+/* Contenedor de la lista de cursos */
+.course-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Espacio entre los cursos */
+    justify-content: center; /* Asegura que los cursos estén centrados */
+}
+
+/* Estilos de los cursos individuales */
+.course {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    flex: 1 1 calc(30% - 40px); /* Ajuste para compensar el espacio del gap */
+    max-width: 300px; /* Máximo ancho del curso */
+    margin-bottom: 20px;
+}
+
+.course img {
+    width: 100%;
+    border-radius: 10px;
+    height: auto;
+}
+
+/* Categoría del curso */
+.course .category {
+    font-size: 14px;
+    color: #7700ff;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Calificación del curso */
+.course .rating {
+    font-size: 14px;
+    color: #dfb303;
+    margin-bottom: 10px;
+}
+
+/* Descripciones y precios del curso */
+.course p {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 14px;
+    color: #666;
+}
+
+.course p:last-of-type {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Botón de información */
+.btn-info {
+    background-color: #482286;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-info:hover {
+    background-color: #371868;
+}
+
+/* Ajustes para pantallas grandes */
+@media (min-width: 1200px) {
+    .course {
+        flex: 1 1 calc(25% - 40px); /* 25% del ancho con ajuste por el gap */
+    }
+}
+
+/* Ajustes para pantallas medianas */
+@media (max-width: 768px) {
+    .course {
+        flex: 1 1 calc(50% - 40px); /* 50% del ancho con ajuste por el gap */
+    }
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 480px) {
+    .course {
+        flex: 1 1 calc(100% - 40px); /* 100% del ancho con ajuste por el gap */
+    }
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    width: 30%;
+    text-align: center;
+}
+
+.close {
+    color: red;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    cursor: pointer;
+}
+
+footer {
+    text-align: center;
+    background-color: #0f091b;
+    color: white;
+    padding: 10px 0;
+    position: relative;
+    width: 100%;
+}

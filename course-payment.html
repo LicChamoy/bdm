@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compra</title>
+    <link rel="stylesheet" href="css/course-payment.css">
+</head>
+<body>
+    <header>
+        <h1>Judav Academy</h1>
+        <h2>Detalles del Curso a Comprar</h2>
+    </header>
+
+    <main class="container">
+        <div class="course-details">
+            <h3 id="courseName">Curso de Desarrollo Web</h3>
+            <p class="category">Categoría: Desarrollo Web</p>
+            <img src="imagenes/c10.png" alt="Curso de Desarrollo Web" class="course-image">
+
+            <div class="description">
+                <h4>Descripción</h4>
+                <p>Aprende a crear sitios web desde cero, dominando HTML, CSS y JavaScript. Este curso incluye múltiples niveles y recursos complementarios.</p>
+            </div>
+
+            <div class="levels">
+                <h4>Niveles del Curso</h4>
+                <div class="level">
+                    <h4>Nivel 1: Introducción a HTML</h4>
+                    <p>Costo: $50.00</p>
+                    <p>Descripción: Aprende los fundamentos de HTML y cómo estructurar una página web.</p>
+                    <video controls>
+                        <source src="video/level1.mp4" type="video/mp4">
+                        Tu navegador no soporta la etiqueta de video.
+                    </video>
+                    <button class="buy-level" data-level="1" data-price="50">Comprar Nivel 1</button>
+                </div>
+                <div class="level">
+                    <h4>Nivel 2: Estilizando con CSS</h4>
+                    <p>Costo: $50.00</p>
+                    <p>Descripción: Aprende a aplicar estilos y diseño a tus páginas web.</p>
+                    <video controls>
+                        <source src="video/level2.mp4" type="video/mp4">
+                        Tu navegador no soporta la etiqueta de video.
+                    </video>
+                    <button class="buy-level" data-level="2" data-price="50">Comprar Nivel 2</button>
+                </div>
+            </div>
+
+            <div class="cost">
+                <h4>Costo Total</h4>
+                <p>$100.00</p>
+                <button id="buy-full-course" class="buy-level">Comprar Curso Completo</button>
+            </div>
+
+            <div class="comments">
+                <h4>Comentarios</h4>
+                <div class="comment">
+                    <p><strong>María García:</strong> Este curso es increíble. Aprendí mucho.</p>
+                    <p class="comment-time">10 de septiembre de 2024, 10:30 AM</p>
+                </div>
+                <div class="comment">
+                    <p><strong>Mario Casas:</strong> Los videos son muy claros y fáciles de seguir.</p>
+                    <p class="comment-time">10 de agosto de 2024, 05:30 PM</p>
+                </div>
+                <h4>Calificación Promedio: ★★★★☆ (4.5)</h4>
+            </div>
+        </div>
+    </main>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="modal-text"></p>
+            <button id="confirm-purchase">Aceptar</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>Judav Academy - 2024</p>
+    </footer>
+
+    <script src="js/course-payment.js"></script>
+</body>
+</html>

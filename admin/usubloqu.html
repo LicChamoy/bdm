@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios Bloqueados</title>
+    <link rel="stylesheet" href="usubloqu.css">
+</head>
+<body>
+    <header>
+        <h1>Usuarios Bloqueados</h1>
+    </header>
+
+    <main>
+        
+
+        <form id="panelForm">
+            <div class="blocked-users-container">
+                <div class="header-container">
+                    <a href="vistaAdmin.html" class="back-button">Volver al Panel de Administración</a>
+                </div>
+                <table class="blocked-users-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre de Usuario</th>
+                            <th>Razón del Bloqueo</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Juan Martinez</td>
+                            <td>Comentarios ofensivos</td>
+                            <td><button class="unblock-button" onclick="unblockUser()">Desbloquear</button></td>
+                        </tr>
+                        <tr>
+                            <td>Diego Espinosa</td>
+                            <td>Contraseña incorrecta</td>
+                            <td><button class="unblock-button" onclick="unblockUser()">Desbloquear</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>      
+        
+        </form>
+    </main>
+
+    <script src="usubloqu.js"></script>
+</body>
+</html>

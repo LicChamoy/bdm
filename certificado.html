@@ -4,51 +4,35 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Vista Previa del Certificado</title>
-        <link rel="stylesheet" href="./css/certificado.css">
+        <link rel="stylesheet" href="/css/certificado.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     </head>
     <body>
 
         <div class="certificate-container">
             <h1>Vista Previa del Certificado</h1>
-
-            <div class="certificate-preview" id="certificate-preview">
-                <h2>Certificado de Finalización</h2>
-                <p>Otorgado a: <strong>Diego Ismael Espinosa Ramos</strong></p>
-                <p>Por completar satisfactoriamente el curso:</p>
-                <p id="course-name">Curso de JavaScript Avanzado</p>
-                <p>Otorgado por: <strong id="issuer">Impartido por David Guerrero</strong></p>
-                <p>Fecha de emisión: <span id="issue-date">17/09/2024</span></p>
-            </div>
-
-            <button class="download-button" onclick="downloadCertificate()">Descargar Certificado (PDF)</button>
-        </div>
-
-        <!--<script>
-            const urlParams = new URLSearchParams(window.location.search);
-            const courseName = urlParams.get('curso');
             
-            document.getElementById('course-name').textContent = courseName;
+        
+            <div class="certificate-preview" id="certificate-preview">
+                <p id="academy-name"><strong>Judav Academy</strong></p> 
+                <h2>Certificado de Finalización</h2>
+                <p>Otorgado a: <strong>Alejandro Ismael Casas Ramos</strong></p>
+                <p>Por completar satisfactoriamente el curso:</p>
+                <p id="course-name">Curso de Desarrollo Web</p>
+                <p>Otorgado por: <strong id="issuer">Impartido por David Guerrero</strong></p>
+                <p>Fecha de emisión: <span id="issue-date">21/09/2024</span></p>
+            </div>
+            
+            
+        
+            <button class="download-button" onclick="downloadCertificate()">Descargar Certificado (PDF)</button>
+            <button class="finish-button" onclick="window.location.href='dashboard.html';">Ir a página principal</button>
 
-            const today = new Date();
-            const dateFormatted = today.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-            document.getElementById('issue-date').textContent = dateFormatted;
+        </div>
+        
 
-            function downloadCertificate() {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-
-                const certificateContent = document.getElementById('certificate-preview').innerHTML;
-
-                doc.html(document.getElementById('certificate-preview'), {
-                    callback: function (doc) {
-                        doc.save('certificado.pdf');
-                    },
-                    x: 10,
-                    y: 10
-                });
-            }
-        </script>-->
-
+        <script>
+ 
+        </script>
     </body>
 </html>

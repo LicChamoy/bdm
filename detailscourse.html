@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Curso</title>
+    <link rel="stylesheet" href="css/detailscourse.css">
+</head>
+<body>
+
+    <header>
+        <h1>Judav Academy</h1>
+        <h1>Detalles del Curso</h1>
+    </header>
+
+    <main class="container mt-4">
+        <h2 id="courseTitle">Título del Curso</h2>
+
+        <form id="courseForm">
+            <div class="form-group">
+                <label for="description">Descripción:</label>
+                <textarea id="description" class="form-control" rows="4">Descripción del curso...</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="price">Precio:</label>
+                <input type="text" id="price" class="form-control" value="$XXX.XX">
+            </div>
+
+            <div class="form-group">
+                <label for="imageUpload">Agregar Imágenes:</label>
+                <input type="file" id="imageUpload" class="form-control" multiple>
+            </div>
+
+            <div class="form-group">
+                <label for="videoUpload">Agregar Videos:</label>
+                <input type="file" id="videoUpload" class="form-control">
+            </div>
+
+            <div class="form-group"></div>
+                <label for="docuUpload">Agregar Documentos:</label>
+                <input type="file" id="docuUpload" class="form-control">
+            </div>
+            <button type="button" class="btn btn-success" onclick="guardarCambios()">Guardar Cambios</button>
+        </form>
+
+        <!-- Botón para dar de baja el curso -->
+        <button class="btn btn-danger" onclick="darDeBajaCurso()">Dar de baja</button>
+
+        <!-- Botón para seleccionar forma de pago -->
+        <button class="btn btn-warning" onclick="seleccionarFormaDePago()">Seleccionar forma de pago</button>
+        
+        <div class="button-container">
+            <a href="dashboardInstr.html" class="btn btn-back">Volver</a>
+        </div>
+    </main>
+
+    <script src="js/detailscourse.js"></script>
+
+    <!-- Footer -->
+    <footer class="mt-5">
+        <p>Judav Academy - 2024</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,153 @@
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; /* Asegura que el body ocupe toda la altura de la ventana */
+    display: flex;
+    flex-direction: column; /* Hace que el contenido y el footer se apilen verticalmente */
+}
+
+/* Encabezado */
+header {
+    background-color: #2b0347;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+h1, h2 {
+    color: #ffffff;
+}
+
+/* Contenedor principal */
+main {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1; /* Hace que el contenido principal crezca y ocupe el espacio restante */
+}
+
+
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+
+.table th {
+    background-color: #2b0347; /* Color de fondo del encabezado */
+    color: white; /* Color del texto del encabezado */
+    font-weight: bold; /* Negrita para el encabezado */
+}
+
+.table tr:nth-child(even) {
+    background-color: #f2f2f2; /* Color de fondo para filas pares */
+}
+
+.table tr:hover {
+    background-color: #e6e6e6; /* Color de fondo al pasar el mouse */
+}
+
+.table td {
+    color: #333; /* Color del texto en las celdas */
+}
+
+/* Estilos para el total de ingresos */
+#totalIncome {
+    font-size: 1.5rem; /* Tamaño de fuente mayor */
+    color: #2b0347; /* Color del total */
+    margin-top: 20px; /* Espaciado superior */
+    font-weight: bold; /* Negrita para resaltar */
+}
+/* Estilos generales para la barra de porcentaje */
+td div {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+td div div {
+    height: 10px; /* Altura de la barra */
+    background-color: #4caf50; /* Color de la barra */
+}
+
+
+.button-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn-back {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #2b0347;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-back:hover {
+    background-color: #4a116d;
+}
+
+
+
+/* Footer */
+footer {
+    text-align: center;
+    background-color: #0f091b;
+    color: white;
+    padding: 10px 0;
+    width: 100%;
+    position: relative;
+    bottom: 0;
+}
+
+/* Media Queries para dispositivos móviles */
+@media (max-width: 768px) {
+    .course-details {
+        flex-direction: column;
+    }
+    
+    .course-image, .course-info {
+        flex: 1 1 100%;
+    }
+
+    footer {
+        position: static; /* Para asegurar que el footer no se desplace */
+    }
+}

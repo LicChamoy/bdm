@@ -1,0 +1,99 @@
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #0f091b;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+header {
+    background-color: #0f091b;
+    font-size: 130%;
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+}
+
+
+/* Cuadro de fondo de los datos */
+main {
+    font-family:  'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #d3d9dd;
+    border-radius: 10px;
+    box-shadow: 0 7px 40px rgba(255, 255, 255, 0.459);
+}
+
+
+.form-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+    margin-bottom: 20px;
+}
+
+.form-section label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-section input[type="text"] {
+    width: calc(100% - 120px);
+    padding: 10px;
+    border: 1px solid #0f00e6;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+button {
+    background-color: #4c00ff;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #3d00cc;
+}
+
+.categories-list {
+    margin-top: 20px;
+}
+
+.categories-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.categories-list li {
+    background-color: #fff8e1;
+    padding: 10px;
+    border: 1px solid #2300e6;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+/* Estilos del pie de página 
+footer {
+    text-align: center;
+    background-color: #0f091b;
+    color: white;
+    padding: 5px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}*/

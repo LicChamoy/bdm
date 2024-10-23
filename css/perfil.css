@@ -1,94 +1,92 @@
-/* General */
+/* Estilos generales */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #fff8e1;
+    font-family: 'Arial', sans-serif;
+    background-color: #0f091b;
+    color: #333;
     margin: 0;
     padding: 0;
 }
 
-.container {
-    max-width: 500px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #ffcc99;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    color: #4d2600;
+/* Header */
+header {
+    background-color: #0f091b;
+    font-size: 130%;
+    color: white;
+    padding: 15px 0;
     text-align: center;
 }
 
-.profile-edit-container {
-    display: flex;
-    flex-direction: column;
+
+/* Cuadro de fondo de los datos */
+main {
+    font-family:  'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #d3d9dd;
+    border-radius: 10px;
+    box-shadow: 0 7px 40px rgba(255, 255, 255, 0.459);
 }
 
-.Menu {
-    padding: 10px;
-    color: #4d2600;
-    font-size: 1.2em;
-}
-
-.txt {
+/* Estilos del mensaje */
+.message {
+    background-color: #dce3e7;
+    padding: 15px;
+    text-align: center;
     margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+.message p {
+    font-size: 1.2em;
+    color: #333;
+}
+
+.message strong {
+    color: #412075;
+}
+
+small {
+    color: #057c58; /* Color del texto */
+    display: block; /* Asegura que ocupe toda la línea */
+    margin-bottom: 20px; /* Espacio superior para separar del campo de entrada */
+}
+
+
+form {
     display: flex;
     flex-direction: column;
 }
 
-label {
-    margin-bottom: 5px;
-    font-weight: bold;
+form label {
+    margin-bottom: 10px;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="date"],
-select {
+form input, form select, form button {
     padding: 10px;
-    border: 1px solid #ffcc99;
-    border-radius: 4px;
-    font-size: 1em;
-    background-color: #ffe6cc;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #c0c0c0;
 }
 
-input[type="file"] {
-    background-color: #ff9933;
-    color: white;
-    padding: 5px;
+form button {
+    background-color: #482286;
+    color: rgb(255, 255, 255);
     border: none;
-    border-radius: 4px;
     cursor: pointer;
 }
 
-input[type="file"]:hover {
-    background-color: #cc5200;
+form button:hover {
+    background-color: #371868;
 }
 
-input[type="button"],
-input[type="submit"] {
-    background-color: #ff9933;
+/* Estilos del pie de página 
+footer {
+    text-align: center;
+    background-color: #0f091b;
     color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1em;
-    margin-top: 20px;
-}
-
-input[type="button"]:hover,
-input[type="submit"]:hover {
-    background-color: #cc5200;
-}
-
-.misc {
-    margin-bottom: 15px;
-    text-align: left;
-}
-
-p {
-    margin: 0;
-}
+    padding: 5px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}*/

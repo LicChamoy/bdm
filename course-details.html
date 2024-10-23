@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Curso</title>
+    <link rel="stylesheet" href="css/course-details.css">
+</head>
+<body>
+    <header>
+        <h1>Judav Academy</h1>
+        <h2>Detalles del Curso</h2>
+    </header>
+
+    <main class="container">
+        <div class="course-details">
+            <h3 id="courseName">Curso de Desarrollo Web</h3>
+            <p class="category">Categoría: Desarrollo Web</p>
+            <img src="imagenes/c10.png" alt="Curso de Desarrollo Web" class="course-image">
+
+            <div class="description">
+                <h4>Descripción</h4>
+                <p>Aprende a crear sitios web desde cero, dominando HTML, CSS y JavaScript. Este curso incluye múltiples niveles y recursos complementarios.</p>
+            </div>
+
+            <div class="levels">
+                <h4>Niveles del Curso</h4>
+                
+                <div class="level">
+                    <h4>Nivel 1: Introducción a HTML</h4>
+                    <p>Descripción: Aprende los fundamentos de HTML y cómo estructurar una página web.</p>
+                    <video controls>
+                        <source src="video/level1.mp4" type="video/mp4">
+                        Tu navegador no soporta la etiqueta de video.
+                    </video>
+                    <button onclick="showNextContent('htmlNext')" class="next-button">Mostrar más</button>
+                    <div id="htmlNext" class="hidden">
+                        <p>Videos adicionales:</p>
+                        <video controls>
+                            <source src="video/level1_extra.mp4" type="video/mp4">
+                            Tu navegador no soporta la etiqueta de video.
+                        </video>
+                        <img src="https://via.placeholder.com/150" alt="Más imágenes de HTML" />
+                    </div>
+                    <h5>Recursos adicionales:</h5>
+                    <ul>
+                        <li><a href="docs/HTML_guide.pdf" download>Guía de HTML (PDF)</a></li>
+                        <li><a href="docs/HTML_resources.zip" download>Recursos de HTML (ZIP)</a></li>
+                        <li><a href="https://example.com/html-resources" target="_blank">Enlace a Recursos de HTML</a></li>
+                    </ul>
+                </div>
+
+                <div class="level">
+                    <h4>Nivel 2: Estilizando con CSS</h4>
+                    <p>Descripción: Aprende a aplicar estilos y diseño a tus páginas web.</p>
+                    <video controls>
+                        <source src="video/level2.mp4" type="video/mp4">
+                        Tu navegador no soporta la etiqueta de video.
+                    </video>
+                    <button onclick="showNextContent('cssNext')" class="next-button">Mostrar Más</button>
+                    <div id="cssNext" class="hidden">
+                        <p>Videos adicionales:</p>
+                        <video controls>
+                            <source src="video/level2_extra.mp4" type="video/mp4">
+                            Tu navegador no soporta la etiqueta de video.
+                        </video>
+                        <img src="https://via.placeholder.com/150" alt="Más imágenes de CSS" />
+                    </div>
+                    <h5>Recursos adicionales:</h5>
+                    <ul>
+                        <li><a href="docs/CSS_guide.pdf" download>Guía de CSS (PDF)</a></li>
+                        <li><a href="docs/CSS_resources.zip" download>Recursos de CSS (ZIP)</a></li>
+                        <li><a href="https://example.com/css-resources" target="_blank">Enlace a Recursos de CSS</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="comments">
+                <h4>Comentarios</h4>
+                <div class="comment">
+                    <p><strong>María García:</strong> Este curso es increíble. Aprendí mucho.</p>
+                    <p class="comment-time">10 de septiembre de 2024, 10:30 AM</p>
+                </div>
+                <div class="comment">
+                    <p><strong>Mario Casas:</strong> Los videos son muy claros y fáciles de seguir.</p>
+                    <p class="comment-time">10 de agosto de 2024, 05:30 PM</p>
+                </div>
+                <h4>Calificación Promedio: ★★★★☆ (4.5)</h4>
+            </div>
+            <button id="finish-course" class="finish-button">Finalizar Curso</button>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>Judav Academy - 2024</p>
+    </footer>
+
+    <script src="js/course-details.js"></script>
+</body>
+</html>

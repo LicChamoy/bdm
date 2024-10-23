@@ -1,0 +1,57 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ebebee;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Asegura que el body ocupe al menos la altura de la ventana */
+}
+
+header {
+    background-color: #0f091b;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+h2 {
+    margin-top: 1rem;
+    color: #e5daf3;
+}
+
+h3 {
+    color: #090029;
+    margin-top: 1.5rem;
+}
+
+.container {
+    margin-top: 20px;
+    flex: 1; /* Permite que el contenedor ocupe el espacio disponible */
+}
+
+/* Estilo del formulario */
+form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Botón de pago */
+.btn-success {
+    background-color: #3f28a7;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #2e1979;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    background-color: #0f091b;
+    color: white;
+    padding: 10px 0;
+}

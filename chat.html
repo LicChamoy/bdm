@@ -4,41 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página de Chats</title>
-    <link rel="stylesheet" href="./css/chat.css">
-    <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/chat.css">
 </head>
 <body>
     <div class="header">
-        <h1>Chat Central</h1>
+        <h1>Judav Academy</h1>
+        <h2>Chat Central</h2>
+
     </div>
 
     <div class="chat-container">
         <div class="chat-sidebar">
             <h2>Usuarios</h2>
             <ul>
-                <li>Juan</li>
-                <li>Ana</li>
-                <li>Pedro</li>
-                <li>Laura</li>
+                <li>Juan (Instructor)</li>
+                <li>Ana (Instructor)</li>
+                <li>Pedro (Instructor)</li>
+                <li>Laura (Instructor)</li>
             </ul>
         </div>
 
         <div class="chat-main">
-            <div class="messages">
+            <div class="messages" id="messageContainer">
                 <div class="message">
-                    <strong>Juan:</strong> ¡Hola! ¿Cómo estás?
+                    <strong>Juan:</strong> ¡Hola! ¿Cómo estás? <span class="timestamp">[12:05 PM]</span>
                 </div>
                 <div class="message">
-                    <strong>Ana:</strong> ¡Hola Juan! Estoy bien, ¿y tú?
+                    <strong>Alex:</strong> ¡Hola Juan! Estoy bien, ¿y tú? <span class="timestamp">[12:06 PM]</span>
                 </div>
-                <!-- Más mensajes aquí -->
             </div>
 
             <div class="message-input">
-                <input type="text" placeholder="Escribe un mensaje...">
-                <button type="button">Enviar</button>
+                <input type="text" placeholder="Escribe un mensaje..." id="messageInput">
+                <button type="button" onclick="sendMessage()">Enviar</button>
+                <button class="back-button" onclick="logout()">Regresar</button>
+
             </div>
         </div>
     </div>
+
+    <script src="js/chat.js"></script>
+    <!-- Footer -->
+    <footer class="mt-5">
+        <p>Judav Academy - 2024</p>
+    </footer>
 </body>
 </html>

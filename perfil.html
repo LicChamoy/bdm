@@ -2,91 +2,63 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Perfil</title>
-    <link rel="stylesheet" href="./css/perfil.css">
+    <link rel="stylesheet" href="css/perfil.css">
 </head>
 <body>
-    <div class="container">
-        <form action="perfil_actualizado.html" method="post" enctype="multipart/form-data" class="profile-edit-container">
-            <section class="Menu">
-                <p>Editar Información del Usuario</p>
-                
-                <div class="txt">
-                    <label for="tipo_usuario">Tipo de Usuario</label>
-                    <select name="tipo_usuario" id="tipo_usuario" required>
-                        <option value="Estudiante">Estudiante</option>
-                        <option value="Instructor">Instructor</option>
-                    </select>
-                </div>
+    <header>
+        <h1>Editar Perfil</h1>
+    </header>
 
-                <div class="txt">
-                    <label for="nombre">Nombre(s)</label>
-                    <input type="text" name="nombre" id="nombre" value="Juan" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+" title="No se permiten símbolos">
-                </div>
+    <main>
+        <div class="message">
+            <p>Edita tu información y mantén tu perfil actualizado en <strong>Judav Academy</strong>.</p>
+        </div>
 
-                <div class="txt">
-                    <label for="apellidos">Apellido(s)</label>
-                    <input type="text" name="apellidos" id="apellidos" value="Pérez" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+" title="No se permiten símbolos">
-                </div>
+        <form id="editProfileForm">
+            <label for="name">Nombre Completo:</label>
+            <input type="text" id="name" name="name" required>
 
-                <div class="txt">
-                    <label for="correo">Correo Electrónico</label>
-                    <input type="email" name="correo" id="correo" value="juanperez@example.com" required>
-                </div>
+            <label for="email">Correo Electrónico:</label>
+            <input type="email" id="email" name="email" required>
 
-                <div class="txt">
-                    <label for="usuario">Nombre de Usuario</label>
-                    <input type="text" name="usuario" id="usuario" value="JuanPerez123" required pattern="[a-zA-Z]+" title="No se permiten caracteres especiales">
-                </div>
+            <label for="password">Nueva Contraseña:</label>
+            <input type="password" id="password" name="password">
+            <small>Deja el campo vacío si no deseas cambiar la contraseña.</small>
 
-                <div class="txt">
-                    <label for="sexo">Sexo</label>
-                    <select name="sexo" id="sexo" required>
-                        <option value="masculino" selected>Masculino</option>
-                        <option value="femenino">Femenino</option>
-                        <option value="otro">Otro</option>
-                    </select>
-                </div>
+            <div>
+                <button type="button" onclick="togglePassword()">Mostrar/ocultar contraseñas</button>
+            </div>
 
-                <div class="txt">
-                    <label for="password">Nueva Contraseña</label>
-                    <input type="password" name="password" id="password" placeholder="Nueva contraseña">
-                </div>
+            <label for="dob">Fecha de Nacimiento:</label>
+            <input type="date" id="dob" name="dob" required>
 
-                <div class="txt">
-                    <label for="confirmarContra">Confirmar Contraseña</label>
-                    <input type="password" name="confirmarContra" id="confirmarContra" placeholder="Confirmar contraseña">
-                </div>
+            <label for="gender">Género:</label>
+            <select id="gender" name="gender" required>
+                <option value="">Selecciona tu género</option>
+                <option value="male">Masculino</option>
+                <option value="female">Femenino</option>
+                <option value="other">Otro</option>
+            </select>
 
-                <div>
-                    <input type="button" value="Mostrar/ocultar contraseñas" onclick="togglePassword()">
-                </div>
+            <label for="avatar">Subir Foto:</label>
+            <input type="file" id="avatar" name="avatar" accept="image/*">
 
-                <div class="misc">
-                    <p>Fecha de Nacimiento</p>
-                    <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" value="1990-01-01" required>
-                </div>
+            <!-- Opción de selección de rol (prellenado) -->
+            <label for="role">Rol:</label>
+            <select id="role" name="role" required disabled>
+                <option value="student">Estudiante</option>
+                <option value="instructor">Instructor</option>
+                <option value="admin">Administrador</option>
+            </select>
 
-                <div class="misc">
-                    <p>Elija una foto de perfil</p>
-                    <input type="file" name="fotoPerfil" id="fotoPerfil" accept="image/*">
-                </div>
-                <br>
-                <input type="submit" value="Guardar Cambios">
-            </section>
+            <button type="submit">Guardar Cambios</button>
         </form>
-    </div>
 
-    <script>
-        function togglePassword() {
-            const passwordField = document.getElementById('password');
-            const confirmPasswordField = document.getElementById('confirmarContra');
-            const type = passwordField.type === 'password' ? 'text' : 'password';
-            passwordField.type = type;
-            confirmPasswordField.type = type;
-        }
-    </script>
+        <p><a href="dashboard.html">Volver al Dashboard</a></p>
+    </main>
+
+    <script src="js/perfil.js"></script>
 </body>
 </html>

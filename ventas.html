@@ -1,64 +1,76 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Listado de Cursos Vendidos</title>
-        <link rel="stylesheet" href="./css/ventas.css">
-    </head>
-    <body>
-        
-        <div id="navbar-container"></div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventas - Judav Academy</title>
+    <link rel="stylesheet" href="css/ventas.css">
+</head>
+<body>
 
-        <div class="courses-container">
-            <h1>Cursos Vendidos</h1>
-            <table class="courses-table">
-                <thead>
-                    <tr>
-                        <th>Imagen</th>
-                        <th>Nombre del Curso</th>
-                        <th>Promedio de Completación</th>
-                        <th>Cantidad de Alumnos</th>
-                        <th>Ingresos Generados</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><img src="curso1.jpg" alt="Curso de JavaScript"></td>
-                        <td>Curso de JavaScript</td>
-                        <td>
-                            <div class="progress-bar">
-                                <div class="progress" style="width: 85%;"></div>
-                            </div>
-                            85%
-                        </td>
-                        <td>150</td>
-                        <td>$1,200</td>
-                    </tr>
-                    <tr>
-                        <td><img src="curso2.jpg" alt="Curso de Python"></td>
-                        <td>Curso de Python</td>
-                        <td>
-                            <div class="progress-bar">
-                                <div class="progress" style="width: 90%;"></div>
-                            </div>
-                            90%
-                        </td>
-                        <td>200</td>
-                        <td>$1,500</td>
-                    </tr>
-                </tbody>
-            </table>
+    <header>
+        <h1>Judav Academy</h1>
+        <h2>Ventas de Cursos</h2>
+    </header>
+
+    <main class="container mt-4">
+        <form id="filterForm">
+            <div class="form-group">
+                <label for="dateRange">Rango de Fechas:</label>
+                <input type="text" id="dateRange" class="form-control" placeholder="DD MMM YYYY - DD MMM YYYY">
+            </div>
+            <div class="form-group">
+                <label for="categoryFilter">Categoría:</label>
+                <select id="categoryFilter" class="form-control">
+                    <option value="">Todas</option>
+                    <option value="Fotografía y Vídeo">Fotografía</option>
+                    <option value="Diseño Gráfico">Diseño Gráfico</option>
+                    <option value="Programación">Programación</option>
+                    <option value="Marketing Digital">Marketing Digital</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="activeCourses">Mostrar solo cursos activos:</label>
+                <input type="checkbox" id="activeCourses">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="applyFilters()">Aplicar Filtros</button>
+        </form>
+
+        <h3>Resumen de Ventas</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Imagen</th>
+                    <th>Curso</th>
+                    <th>Cantidad de Alumnos</th>
+                    <th>Promedio de Terminación</th>
+                    <th>Total Ingresos</th>
+                </tr>
+            </thead>
+            <tbody id="courseList">
+                <!-- Se llenará dinámicamente -->
+            </tbody>
+        </table>
+
+        <h4>Total de Ingresos</h4>
+        <div id="totalIncome">
+            <!-- Total de ingresos desglosado por forma de pago -->
         </div>
 
-        <script>
-            fetch('navbar.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('navbar-container').innerHTML = data;
-                })
-                .catch(error => console.error('Error al cargar la navbar:', error));
-        </script>
+        <h4>Promedio de Ingresos por Curso</h4>
+        <div id="averageIncome">
+            <!-- Promedio de ingresos por curso -->
+        </div>
 
-    </body>
+        <div class="button-container">
+            <a href="dashboardInstr.html" class="btn btn-back">Volver</a>
+        </div>
+    </main>
+
+    <script src="js/ventas.js"></script>
+
+    <footer>
+        <p>Judav Academy - 2024</p>
+    </footer>
+</body>
 </html>

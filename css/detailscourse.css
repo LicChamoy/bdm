@@ -1,0 +1,193 @@
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; /* Asegura que el body ocupe toda la altura de la ventana */
+    display: flex;
+    flex-direction: column; /* Hace que el contenido y el footer se apilen verticalmente */
+}
+
+/* Encabezado */
+header {
+    background-color: #2b0347;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    color: #ffffff;
+}
+
+/* Contenedor principal */
+main {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1; /* Hace que el contenido principal crezca y ocupe el espacio restante */
+}
+
+h2 {
+    color: #2b0347;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+}
+
+textarea, input[type="text"], input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+input[type="file"] {
+    padding: 3px;
+}
+
+/* Sección de detalles del curso */
+.course-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.course-image {
+    flex: 1 1 300px;
+}
+
+.course-image img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.course-info {
+    flex: 2 1 600px;
+}
+
+.course-info h3 {
+    margin-top: 0;
+    color: #2b0347;
+}
+
+.course-info p {
+    line-height: 1.6;
+}
+
+.course-info .price {
+    font-size: 1.5rem;
+    color: #4a116d;
+    margin-top: 10px;
+}
+
+.course-info .rating {
+    color: #f4c150;
+    margin-top: 5px;
+}
+
+.course-info .category {
+    font-weight: bold;
+    color: #2b0347;
+}
+
+/* Botones */
+button {
+    background-color: #2b0347;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #4a116d;
+}
+.button-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn-back {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #2b0347;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-back:hover {
+    background-color: #4a116d;
+}
+
+/* Comentarios y calificaciones */
+.comments-section {
+    margin-top: 40px;
+}
+
+.comments-section h3 {
+    color: #2b0347;
+    margin-bottom: 20px;
+}
+
+.comment {
+    background-color: #f8f8f8;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    border-left: 4px solid #4a116d;
+}
+
+.comment p {
+    margin: 0;
+}
+
+.comment .comment-author {
+    font-weight: bold;
+    color: #2b0347;
+}
+
+.comment .comment-date {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    background-color: #0f091b;
+    color: white;
+    padding: 10px 0;
+    width: 100%;
+    position: relative;
+    bottom: 0;
+}
+
+/* Media Queries para dispositivos móviles */
+@media (max-width: 768px) {
+    .course-details {
+        flex-direction: column;
+    }
+    
+    .course-image, .course-info {
+        flex: 1 1 100%;
+    }
+
+    footer {
+        position: static; /* Para asegurar que el footer no se desplace */
+    }
+}

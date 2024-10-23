@@ -1,60 +1,76 @@
-/*Contenedor principal*/
-.container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
+/* Estilos generales */
+html, body {
+    height: 100%; /* Asegura que el body cubra toda la ventana */
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-image: url('imagenes/fondo.jpg'); /* Ruta relativa a tu archivo CSS */
+    background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+    background-position: center; /* Centra la imagen en el fondo */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-attachment: fixed; /* Fija la imagen mientras se desplaza */
+    color: #333;
+}
+
+/* Header */
+header {
+    background-color: #0f091b;
+    font-size: 130%;
+    color: white;
+    padding: 15px 0;
     text-align: center;
 }
 
-/*Formulario*/
-.login-container {
+/* Cuadro de fondo de los datos */
+main {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: #ffffff;
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #0f091b85;
+    border-radius: 10px;
+    box-shadow: 0 6px 30px rgba(255, 252, 252, 0.637);
+}
+
+main h1 {
+    text-align: center; /* Centra el texto horizontalmente */
+}
+
+/* Estilos para el enlace de registro */
+main p a {
+    color: #c0a5e7;
+    text-decoration: none;
+}
+
+main p a:hover {
+    text-decoration: underline;
+}
+
+
+form {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
 }
 
-
-.login-container p {
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
+form label {
+    margin-bottom: 10px;
 }
 
-.login-container input[type="text"],
-.login-container input[type="password"] {
-    width: 100%;
+form input, form button {
     padding: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
 }
 
-.login-container input[type="submit"],
-.login-container a {
-    background-color: #FF9900;
-    color: #fff;
+form button {
+    background-color: #482286;
+    color: rgb(255, 255, 255);
     border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    font-size: 16px;
     cursor: pointer;
-    text-decoration: none;
-    text-align: center;
-    transition: background-color 0.3s ease;
 }
 
-.login-container input[type="submit"]:hover,
-.login-container a:hover {
-    background-color: #FF6600;
-}
-
-.login-container a {
-    margin-top: 10px;
+form button:hover {
+    background-color: #371868;
 }

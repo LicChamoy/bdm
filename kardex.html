@@ -1,75 +1,104 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Progreso de Cursos</title>
-        <link rel="stylesheet" href="./css/kardex.css">
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kardex - Perfil Alumno</title>
+    <link rel="stylesheet" href="css/kardex.css">
+</head>
+<body>
+    <header>
+        <h1>Judav Academy</h1>
+        <h1>Kardex - Mis Cursos</h1>
+    </header>
 
-        <div id="navbar-container"></div>
+    <main>
+        <!-- Filtros -->
+        <div class="filters">
+            <h2>Filtros</h2>
+            <form id="filterForm">
+                <div class="form-section">
+                    <label for="date-range">Rango de fechas de inscripción:</label>
+                    <input type="date" id="start-date" name="start-date" placeholder="Desde">
+                    <input type="date" id="end-date" name="end-date" placeholder="Hasta">
+                </div>
 
-        <div class="course-container">
-            <h1>Mis Cursos</h1>
-            <table class="course-table">
+                <div class="form-section">
+                    <label for="category">Categoría:</label>
+                    <select id="category" name="category">
+                        <option value="all">Todas</option>
+                        <!-- Las categorías se cargarán dinámicamente -->
+                    </select>
+                </div>
+
+                <div class="form-section">
+                    <label for="status">Estado del curso:</label>
+                    <select id="status" name="status">
+                        <option value="all">Todos</option>
+                        <option value="completed">Terminados</option>
+                        <option value="incomplete">Incompletos</option>
+                    </select>
+                </div>
+
+                <div class="form-section">
+                    <label for="active">Curso Activo:</label>
+                    <select id="active" name="active">
+                        <option value="all">Todos</option>
+                        <option value="active">Activos</option>
+                    </select>
+                </div>
+
+                <button type="submit">Aplicar Filtros</button>
+                <div class="back-to-dashboard">
+                    <a href="dashboard.html" class="dashboard-button">Volver al Dashboard</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tabla de cursos -->
+        <div class="kardex-container">
+            <h2>Mis Cursos</h2>
+            <table class="kardex-table">
                 <thead>
                     <tr>
-                        <th>Imagen</th>
                         <th>Curso</th>
+                        <th>Categoría</th>
+                        <th>Fecha de Inscripción</th>
+                        <th>Último Acceso</th>
                         <th>Progreso</th>
-                        <th>Certificado</th>
+                        <th>Fecha de Terminación</th>
+                        <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- Aquí se mostrarán los cursos del alumno -->
                     <tr>
-                        <td><img src="curso1.jpg" alt="Curso 1" class="course-image"></td>
-                        <td>Curso de HTML y CSS</td>
-                        <td>
-                            <div class="progress-bar">
-                                <div class="progress" style="width: 50%;">50%</div>
-                            </div>
-                        </td>
-                        <td>
-                            <button class="cert-button" disabled>Obtener Certificado</button>
-                        </td>
+                        <td>Curso de Diseño Web</td>
+                        <td>Diseño Gráfico</td>
+                        <td>01/05/2024</td>
+                        <td>15/06/2024</td>
+                        <td>80%</td>
+                        <td>En progreso</td>
+                        <td>Activo</td>
                     </tr>
                     <tr>
-                        <td><img src="curso2.jpg" alt="Curso 2" class="course-image"></td>
-                        <td>Curso de JavaScript Avanzado</td>
-                        <td>
-                            <div class="progress-bar">
-                                <div class="progress" style="width: 100%;">100%</div>
-                            </div>
-                        </td>
-                        <td>
-                            <a href="certificado.html?curso=Curso%20de%20JavaScript%20Avanzado" class="cert-button">Obtener Certificado</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><img src="curso3.jpg" alt="Curso 3" class="course-image"></td>
-                        <td>Curso de Python para Principiantes</td>
-                        <td>
-                            <div class="progress-bar">
-                                <div class="progress" style="width: 80%;">80%</div>
-                            </div>
-                        </td>
-                        <td>
-                            <button class="cert-button" disabled>Obtener Certificado</button>
-                        </td>
+                        <td>Curso de Marketing Digital</td>
+                        <td>Marketing Digital</td>
+                        <td>15/04/2024</td>
+                        <td>20/05/2024</td>
+                        <td>100%</td>
+                        <td>20/05/2024</td>
+                        <td>Completado</td>
                     </tr>
                 </tbody>
             </table>
         </div>
+    </main>
 
-        <script>
-            fetch('navbar.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('navbar-container').innerHTML = data;
-                })
-                .catch(error => console.error('Error al cargar la navbar:', error));
-        </script>
-
-    </body>
+    <script src="js/kardex.js"></script>
+     <!-- Footer -->
+     <footer class="mt-5">
+        <p>Judav Academy - 2024</p>
+    </footer>
+</body>
 </html>

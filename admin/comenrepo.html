@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comentarios Reportados</title>
+    <link rel="stylesheet" href="comenrepo.css">
+</head>
+<body>
+    <header>
+        <h1>Comentarios Reportados</h1>
+    </header>
+
+    <main>
+        <form id="panelForm">
+            <div class="reported-comments-container">
+                <div class="header-container">
+                    <a href="vistaAdmin.html" class="back-button">Volver al Panel de Administración</a>
+                </div>
+                <table class="reported-comments-table">
+                    <thead>
+                        <tr>
+                            <th>Comentario</th>
+                            <th>Usuario</th>
+                            <th>Reportes</th>
+                            <th>Acción</th>
+                            <th>Hora </th> 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="comentario1">
+                            <td>Visita GuiasRapidas.com para ver este curso de manera gratuita</td>
+                            <td>CuentaSpammer77</td>
+                            <td>12</td>
+                            <td>
+                                <button class="ignore-button" onclick="ignoreReport('comentario1')">Ignorar Reporte</button>
+                                <button class="delete-button" onclick="deleteComment('comentario1')">Eliminar Comentario</button>
+                            </td>
+                            <td>12:00 PM</td>
+                        </tr>
+                        <tr id="comentario2">
+                            <td>No me sirvio el curso, me parece una estafa</td>
+                            <td>Juanito</td>
+                            <td>2</td>
+                            <td>
+                                <button class="ignore-button" onclick="ignoreReport('comentario2')">Ignorar Reporte</button>
+                                <button class="delete-button" onclick="deleteComment('comentario2')">Eliminar Comentario</button>
+                            </td>
+                            <td>03:00 AM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>     
+        </form>
+    </main>
+
+    <script src="comenrepo.js"></script>
+</body>
+</html>

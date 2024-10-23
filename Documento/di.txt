@@ -1,0 +1,40 @@
+"estu@gmail.com": { password: "Contra123!", role: "student" },
+                "instr@gmail.com": { password: "Contra123!", role: "instructor" },
+                "admin@gmail.com": { password: "AContrad123!", role: "admin" }
+
+
+
+
+
+
+Estudiantes:
+
+dashboard.html                                                                     
+vistacategoria.html
+course-payment.html
+payment.html
+course-details
+fini-course.html
+certificado.html
+perfil.html
+chat.html
+kardex.html
+
+
+Instructor:
+
+dashboardinstr.html
+detailscourse.html
+perfil.html
+chat.html
+registercourse
+
+
+Administrador
+
+vistaAdmin.html
+perfil.html
+usubloqu.html
+comenrepo.html
+regicat.html
+reporte.html

@@ -1,79 +1,127 @@
-body {
-    font-family: Arial, sans-serif;
+/* Asegura que el html y body ocupen el 100% de la altura de la ventana */
+html, body {
+    height: 100%;
     margin: 0;
-    padding: 20px;
-    background-color: #f6f6f6;
+    padding: 0;
 }
 
-h1 {
-    text-align: center;
+/* El body usa flexbox para organizar los elementos verticalmente */
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
     color: #333;
 }
 
-.course-container {
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: #fff;
+/* El header se mantiene arriba */
+header {
+    background-color: #2b0347;
+    color: white;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
-.course-table {
+/* El main se expande para ocupar todo el espacio disponible */
+main {
+    flex: 1; /* Esto hace que el main ocupe el espacio disponible */
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #ffffff;
+}
+
+h2 {
+    color: #2b0347;
+}
+
+.filters {
+    margin-bottom: 30px;
+}
+
+.filters form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.form-section {
+    flex: 1 1 300px;
+}
+
+.kardex-container {
+    margin-top: 30px;
+}
+
+.kardex-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-.course-table th, .course-table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-.course-table th {
-    background-color: #333;
-    color: white;
-}
-
-.course-image {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-}
-
-.progress-bar {
-    width: 100%;
-    background-color: #f1f1f1;
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-.progress {
-    height: 20px;
-    background-color: #4CAF50;
+.kardex-table th, .kardex-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
     text-align: center;
-    color: white;
-    line-height: 20px;
-    border-radius: 5px;
 }
 
-.cert-button {
-    padding: 10px 15px;
-    background-color: #4CAF50;
+.kardex-table th {
+    background-color: #4a116d;
     color: white;
+}
+
+.kardex-table td {
+    background-color: #f8f8f8;
+}
+
+button{
+    background-color: #2b0347;
+    color: white;
+    padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s;
 }
 
-.cert-button[disabled] {
-    background-color: #ccc;
-    cursor: not-allowed;
+button:hover{
+    background-color: #4a116d;
 }
 
-.cert-button:not([disabled]):hover {
-    background-color: #45a049;
+.dashboard-button{
+    background-color: #2b0347;
+    color: white;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.dashboard-button:hover {
+
+    background-color: #4a116d;
+
+}
+
+@media (max-width: 768px) {
+    .filters form {
+        flex-direction: column;
+    }
+}
+
+/* El footer se mantiene pegado al final */
+footer {
+    background-color: #0f091b;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
