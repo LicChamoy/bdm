@@ -1,25 +1,3 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const registerForm = document.getElementById("registerForm");
-
-    if (registerForm) {
-        registerForm.addEventListener("submit", function(event) {
-            event.preventDefault(); // Evitar envío por defecto
-            
-            if (!validarFormulario()) {
-                return; // Si la validación falla, no enviar el formulario
-            }
-
-            // Simulación de registro exitoso
-            alert("Registro exitoso. Redirigiendo a la página de inicio de sesión...");
-
-            // Redirigir al login después de 2 segundos
-            setTimeout(function() {
-                window.location.href = "login.html";
-            }, 2000); 
-        });
-    }
-});
-
 function togglePassword() {
     const passwordInput = document.getElementById('password');
     const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';

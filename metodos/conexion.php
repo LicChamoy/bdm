@@ -3,7 +3,7 @@ class ConexionBD {
     private $host = 'localhost';
     private $usuario = 'root';
     private $password = 'root';
-    private $baseDatos = 'bdm';
+    private $baseDatos = 'judav';
     private $conexion;
 
     public function __construct() {
@@ -23,5 +23,3 @@ class ConexionBD {
 
 $conexionBD = new ConexionBD();
 $conexion = $conexionBD->obtenerConexion();
-
-?>
