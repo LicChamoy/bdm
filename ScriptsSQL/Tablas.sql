@@ -3,6 +3,8 @@ create database judav;
 use judav;
 
 select * from usuarios;
+SELECT idUsuario, LENGTH(avatar) AS avatar_size FROM usuarios WHERE nombre = 'Diego';
+delete from usuarios;
 
 CREATE TABLE usuarios (
     idUsuario INT AUTO_INCREMENT PRIMARY KEY,
@@ -12,7 +14,7 @@ CREATE TABLE usuarios (
     fechaNacimiento DATE NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     contraseña VARCHAR(255) NOT NULL,
-    avatar blob,
+    avatar mediumblob,
     fechaDeRegistro DATETIME DEFAULT CURRENT_TIMESTAMP,
     fechaDeUltimoCambio DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     rol ENUM('docente', 'alumno', 'admin') NOT NULL,

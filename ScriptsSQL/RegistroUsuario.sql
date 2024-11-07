@@ -8,7 +8,7 @@ CREATE PROCEDURE RegisterUserOrManageUser(
     IN p_fechaNacimiento DATE,
     IN p_email VARCHAR(100),
     IN p_contrasena VARCHAR(255),
-    IN p_avatar BLOB,
+    IN p_avatar MEDIUMBLOB,
     IN p_rol ENUM('docente', 'alumno', 'admin'),
     OUT p_resultado VARCHAR(255)
 )
@@ -69,8 +69,9 @@ BEGIN
             WHERE email = p_email AND contraseña = p_contrasena AND estado = 'activo';
 
             IF userExists = 1 THEN
-                SELECT 'Inicio de sesión exitoso.' AS resultado;
-            ELSE
+				SELECT 'Inicio de sesión exitoso.' AS resultado, idUsuario, nombre, apellidos, genero, fechaNacimiento, rol, avatar, email
+                FROM usuarios
+                WHERE email = p_email AND estado = 'activo';            ELSE
                 SET p_resultado = 'Error: credenciales incorrectas.';
             END IF;
         ELSE

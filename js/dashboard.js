@@ -46,10 +46,6 @@ function confirmEnrollment() {
     }
 }
 
-function viewProfile() {
-    window.location.href = 'perfil.html'; // Redirige a la página del perfil
-}
-
 function viewChat() {
     window.location.href = 'chat.html'; // Redirige a la página del perfil
 }

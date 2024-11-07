@@ -1,9 +1,6 @@
 <?php
 require 'conexion.php';
 
-$conexionBD = new ConexionBD();
-$conexion = $conexionBD->obtenerConexion();
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = $_POST['name'];
     $apellidos = $_POST['apellido'];
@@ -15,25 +12,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $accion = 'registrar';
     $resultado = '';
 
+    // Leer el contenido del archivo de avatar en formato binario
     $avatar = NULL;
-    if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == UPLOAD_ERR_OK) {
+    if ($_FILES['avatar']['tmp_name']) {
         $avatar = file_get_contents($_FILES['avatar']['tmp_name']);
     }
 
+    $conexionBD = new ConexionBD();
+    $conexion = $conexionBD->obtenerConexion();
+    
+    // Preparar la consulta y definir los parámetros
     $stmt = $conexion->prepare("CALL RegisterUserOrManageUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssssbss", $accion, $nombre, $apellidos, $genero, $fechaNacimiento, $email, $contrasena, $avatar, $rol, $resultado);
+    $stmt->bind_param("ssssssssss", $accion, $nombre, $apellidos, $genero, $fechaNacimiento, $email, $contrasena, $avatar, $rol, $resultado);
 
     if ($stmt->execute()) {
-        $stmt->bind_result($resultado);
-        $stmt->fetch();
+        $result = $stmt->get_result();
+        
+        if ($result) {
+            $row = $result->fetch_assoc();
+            $resultado = $row['resultado'] ?? '';
 
-        if ($resultado === 'Registro exitoso.') {
-            header("Location: ../login.html"); // Redirigir a la página de login
-        } else {
-            echo "<script>alert('$resultado'); window.history.back();</script>";
+            if ($resultado === 'Registro exitoso.') {
+                header("Location: ../login.html"); // Redirigir a la página de login
+            } else {
+                echo "<script>alert('$resultado'); window.history.back();</script>";
+            }
         }
-    } else {
-        echo "<script>alert('Error en la ejecución del procedimiento.'); window.history.back();</script>";
     }
 
     $stmt->close();
