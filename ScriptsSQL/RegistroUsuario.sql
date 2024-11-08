@@ -32,17 +32,21 @@ BEGIN
 
     ELSEIF p_accion = 'actualizar' THEN
         IF userExists = 1 THEN
-            -- Actualizar datos del usuario
-            UPDATE usuarios
-            SET nombre = p_nombre,
-                apellidos = p_apellidos,
-                genero = p_genero,
-                fechaNacimiento = p_fechaNacimiento,
-                avatar = p_avatar,
-                rol = p_rol,
-                fechaDeUltimoCambio = NOW()
-            WHERE email = p_email;
-
+        -- Actualizar datos del usuario
+        UPDATE usuarios
+        SET 
+            nombre = p_nombre,
+            apellidos = p_apellidos,
+            genero = p_genero,
+            fechaNacimiento = p_fechaNacimiento,
+            avatar = p_avatar,
+            fechaDeUltimoCambio = NOW(),
+            -- Solo actualizar la contraseña si no está vacía
+            contraseña = CASE 
+                        WHEN p_contrasena IS NOT NULL AND p_contrasena != '' THEN p_contrasena 
+                        ELSE contraseña 
+                       END
+        WHERE email = p_email;
             SET p_resultado = 'Actualización exitosa.';
         ELSE
             SET p_resultado = 'Error: el usuario no existe.';

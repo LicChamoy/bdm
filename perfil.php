@@ -41,7 +41,7 @@ if ($user_avatar) {
                 <p>Edita tu información y mantén tu perfil actualizado en <strong>Judav Academy</strong>.</p>
             </div>
 
-            <form id="editProfileForm" action="procesar_edicion.php" method="POST" enctype="multipart/form-data">
+            <form id="editProfileForm" action="metodos/updatePerfil.php" method="POST" enctype="multipart/form-data">
                 <label for="name">Nombre(s):</label>
                 <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($user_nombre); ?>" required>
 
@@ -60,9 +60,9 @@ if ($user_avatar) {
 
                 <label for="gender">Género:</label>
                 <select id="gender" name="gender" required>
-                    <option value="male" <?php echo ($user_genero == 'male') ? 'selected' : ''; ?>>Masculino</option>
-                    <option value="female" <?php echo ($user_genero == 'female') ? 'selected' : ''; ?>>Femenino</option>
-                    <option value="other" <?php echo ($user_genero == 'other') ? 'selected' : ''; ?>>Otro</option>
+                    <option value="hombre" <?php echo ($user_genero == 'hombre') ? 'selected' : ''; ?>>Masculino</option>
+                    <option value="mujer" <?php echo ($user_genero == 'mujer') ? 'selected' : ''; ?>>Femenino</option>
+                    <option value="otro" <?php echo ($user_genero == 'otro') ? 'selected' : ''; ?>>Otro</option>
                 </select>
 
                 <label for="avatar">Subir Foto:</label>
