@@ -7,12 +7,33 @@ $conexion = new ConexionBD();
 $mysqli = $conexion->obtenerConexion();
 
 // Consulta para obtener los cursos de la vista
-$query = "SELECT * FROM vista_cursos_usuario WHERE idUsuario = ?";
-$stmt = $mysqli->prepare($query);
-$stmt->bind_param('i', $userId);
-$stmt->execute();
-$result = $stmt->get_result();
+if (isset($userId)) {
+    // Llamar al procedimiento almacenado GetUserCourses
+    $stmt = $mysqli->prepare("CALL GetUserCourses(?)");
+    $stmt->bind_param('i', $userId);
 
+    if ($stmt->execute()) {
+        // Obtener los resultados
+        $result = $stmt->get_result();
+        if ($result && $result->num_rows > 0) {
+            $cursos = [];
+            while ($row = $result->fetch_assoc()) {
+                $cursos[] = $row;
+            }
+
+            // Puedes usar $cursos para procesar los datos o enviarlos como JSON
+            echo json_encode($cursos);
+        } else {
+            echo "<script>alert('No se encontraron cursos para el usuario.');</script>";
+        }
+    } else {
+        echo "<script>alert('Error al ejecutar el procedimiento.');</script>";
+    }
+
+    $stmt->close();
+} else {
+    echo "<script>alert('Usuario no autenticado.'); window.location.href = 'login.php';</script>";
+}
 ?>
 
 <!DOCTYPE html>

@@ -5,15 +5,15 @@ require_once 'metodos/conexion.php';
 
 // Obtener la conexión
 $conexionBD = new ConexionBD();
-$mysqli = $conexionBD->obtenerConexion();
+$conexion = $conexionBD->obtenerConexion();
 
 if (isset($_GET['curso_id'])) {
     $cursoId = $_GET['curso_id'];
+    $userId = $_SESSION['user_id'];
 
     // Consulta para obtener los detalles del curso y el certificado
-    $query = "SELECT * FROM vista_cursos_usuario WHERE idCurso = ? AND idUsuario = ?";
-    $stmt = $mysqli->prepare($query);
-    $stmt->bind_param('ii', $cursoId, $_SESSION['user_id']);
+    $stmt = $conexion->prepare("CALL GetCourseDetails(?, ?)");
+    $stmt->bind_param('ii', $cursoId, $userId);
     $stmt->execute();
     $result = $stmt->get_result();
 
