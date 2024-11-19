@@ -32,8 +32,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['user_avatar'] = $row['avatar'];
             $_SESSION['user_email'] = $email;
 
-            header("Location: ../dashboard.html");
-            exit;
+            if ($_SESSION['user_rol'] == 'admin') {
+                header("Location: /admin/vistaAdmin.html");  // Redirigir al administrador
+            } else {
+                header("Location: ../dashboard.html");  // Redirigir a otro lugar para usuarios no admins
+            }            exit;
         } else {
             echo "<script>alert('$resultado'); window.history.back();</script>";
         }
