@@ -41,16 +41,16 @@ CREATE TABLE categorias (
 );
 
 CREATE TABLE cursos (
-    idCurso INT AUTO_INCREMENT PRIMARY KEY,
-    titulo VARCHAR(255) NOT NULL,
-    descripcion TEXT,
-    imagen VARCHAR(255),
-    costoTotal DECIMAL(10, 2),
-    idInstructor INT NOT NULL,
-    calificacion DECIMAL(3, 2),
-    fechaCreacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-    estado ENUM('activo', 'inactivo') NOT NULL,
-    FOREIGN KEY (idInstructor) REFERENCES usuarios(idUsuario) ON DELETE CASCADE
+  idCurso int(11) NOT NULL,
+  titulo varchar(255) NOT NULL,
+  descripcion text DEFAULT NULL,
+  imagen varchar(255) DEFAULT NULL,
+  costoTotal decimal(10,2) DEFAULT NULL,
+  idInstructor int(11) NOT NULL,
+  calificacion decimal(3,2) DEFAULT NULL,
+  fechaCreacion datetime DEFAULT current_timestamp(),
+  estado enum('activo','inactivo') NOT NULL,
+  categoria int(11) DEFAULT NULL
 );
 
 CREATE TABLE cursoCategoria (
