@@ -10,7 +10,7 @@ select ReactivateUser('diego78041@gmail.com');
 ALTER TABLE usuarios ADD COLUMN intentos INT DEFAULT 0;
 update usuarios
 set rol = 'admin'
-where nombre = 'Diego';
+where rol = 'alumno';
 
 CREATE TABLE usuarios (
     idUsuario INT AUTO_INCREMENT PRIMARY KEY,
@@ -29,8 +29,6 @@ CREATE TABLE usuarios (
 
 select * from categorias;
 
-call registrar_categoria('hola','adios', '10');
-
 CREATE TABLE categorias (
     idCategoria INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -41,16 +39,16 @@ CREATE TABLE categorias (
 );
 
 CREATE TABLE cursos (
-  idCurso int(11) NOT NULL,
-  titulo varchar(255) NOT NULL,
-  descripcion text DEFAULT NULL,
-  imagen varchar(255) DEFAULT NULL,
-  costoTotal decimal(10,2) DEFAULT NULL,
-  idInstructor int(11) NOT NULL,
-  calificacion decimal(3,2) DEFAULT NULL,
-  fechaCreacion datetime DEFAULT current_timestamp(),
-  estado enum('activo','inactivo') NOT NULL,
-  categoria int(11) DEFAULT NULL
+    idCurso INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    descripcion TEXT,
+    imagen VARCHAR(255),
+    costoTotal DECIMAL(10, 2),
+    idInstructor INT NOT NULL,
+    calificacion DECIMAL(3, 2),
+    fechaCreacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    estado ENUM('activo', 'inactivo') NOT NULL,
+    FOREIGN KEY (idInstructor) REFERENCES usuarios(idUsuario) ON DELETE CASCADE
 );
 
 CREATE TABLE cursoCategoria (
