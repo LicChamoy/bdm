@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['user_avatar'] = $row['avatar'];
             $_SESSION['user_email'] = $email;
 
-            header("Location: ../dashboard.html");
+            header("Location: ../dashboard-cursos.php");
             exit;
         } else {
             echo "<script>alert('$resultado'); window.history.back();</script>";

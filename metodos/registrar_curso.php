@@ -9,8 +9,7 @@ ini_set('display_errors', 1);
 session_start(); 
 
 // Forzar sesión de prueba (SOLO PARA DESARROLLO)
-$_SESSION['user_id'] = 2;  // ID del docente que viste en tu dump
-$_SESSION['user_rol'] = 'docente';
+
 
 // Muestra el contenido de la sesión
 //echo "<pre>Sesión: ";
