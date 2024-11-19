@@ -14,10 +14,10 @@ DELIMITER ;
 DELIMITER $$
 
 CREATE TRIGGER validar_inscripcion_unica
-BEFORE INSERT ON inscripcionesCurso
+BEFORE INSERT ON interaccionesCurso
 FOR EACH ROW
 BEGIN
-    IF (EXISTS (SELECT 1 FROM inscripcionesCurso WHERE idUsuario = NEW.idUsuario AND idCurso = NEW.idCurso)) THEN
+    IF (EXISTS (SELECT 1 FROM interaccionesCurso WHERE idUsuario = NEW.idUsuario AND idCurso = NEW.idCurso)) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El usuario ya está inscrito en este curso.';
     END IF;
 END $$

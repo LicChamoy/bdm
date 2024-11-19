@@ -56,3 +56,24 @@ LEFT JOIN
 GROUP BY 
     c.idCategoria;
 
+CREATE VIEW vista_cursos_usuario AS
+SELECT 
+	ic.idUsuario,
+    ic.idCurso,
+    c.titulo AS cursoTitulo,
+    ic.fechaInscripcion,
+    ic.fechaUltimaActividad,
+    ic.progresoDelCurso,
+    ic.estadoAlumno,
+    ic.fechaTerminoCurso,
+    u.nombre AS instructorNombre,
+    u.apellidos AS instructorApellidos
+FROM 
+    interaccionesCurso ic
+JOIN 
+    cursos c ON ic.idCurso = c.idCurso
+JOIN 
+    usuarios u ON ic.idInstructor = u.idUsuario;
+
+
+select * from vista_cursos_usuario where idUsuario = 1;

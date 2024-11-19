@@ -8,6 +8,11 @@ session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['user_rol'] !== 'docente') {
     die("Acceso no autorizado");
 }
+// Convertir las categorías seleccionadas a JSON
+if (!isset($_POST['categorias']) || empty($_POST['categorias'])) {
+    throw new Exception("Debe seleccionar al menos una categoría");
+}
+$categoriasJson = json_encode($_POST['categorias']);
 
 require_once 'conexion.php';
 $conexion = new ConexionBD();
@@ -78,12 +83,12 @@ try {
     $accion = 'registrar';
     
     $stmt->bind_param(
-        'sssidssssss',
+        'sssids',
         $accion,
         $tituloCurso,
         $descripcionCurso,
         $idInstructor,
-        $categoria,
+        $categoriasJson, // Ahora pasa las categorías en JSON
         $costoTotal,
         $nivelTitulo,
         $nivelDescripcion,
@@ -91,8 +96,9 @@ try {
         $nivelVideosJson,
         $nivelDocumentosJson
     );
-
+    
     $stmt->execute();
+    
     
     // Obtener el resultado
     $resultQuery = $mysqli->query("SELECT @resultado as resultado");

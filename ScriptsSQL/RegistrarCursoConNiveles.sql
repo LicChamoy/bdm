@@ -1,9 +1,11 @@
+DELIMITER $$
+
 CREATE PROCEDURE RegistrarCursoConNiveles(
     IN accion ENUM('registrar', 'actualizar'),
     IN tituloCurso VARCHAR(255),
     IN descripcionCurso TEXT,
     IN idInstructor INT,
-    IN categoria INT,
+    IN categorias JSON, -- Cambiar a JSON para manejar múltiples categorías
     IN costoTotal DECIMAL(10,2),
     IN nivelTitulo JSON,
     IN nivelDescripcion JSON,
@@ -13,17 +15,30 @@ CREATE PROCEDURE RegistrarCursoConNiveles(
     OUT resultado VARCHAR(255)
 )
 BEGIN
+    -- Declaraciones deben ir inmediatamente después de BEGIN
     DECLARE idCurso INT;
+    DECLARE i INT DEFAULT 0;
+
     IF accion = 'registrar' THEN
         -- Insertar un nuevo curso
-        INSERT INTO cursos (titulo, descripcion, idInstructor, categoria, costoTotal, estado)
-        VALUES (tituloCurso, descripcionCurso, idInstructor, categoria, costoTotal, 'activo');
+        INSERT INTO cursos (titulo, descripcion, idInstructor, costoTotal, estado)
+        VALUES (tituloCurso, descripcionCurso, idInstructor, costoTotal, 'activo');
 
         -- Obtener el ID del curso insertado
         SET idCurso = LAST_INSERT_ID();
 
+        -- Insertar las categorías asociadas al curso
+        WHILE i < JSON_LENGTH(categorias) DO
+            INSERT INTO cursoCategoria (idCurso, idCategoria)
+            VALUES (
+                idCurso,
+                JSON_UNQUOTE(JSON_EXTRACT(categorias, CONCAT('$[', i, ']')))
+            );
+            SET i = i + 1;
+        END WHILE;
+
         -- Insertar niveles asociados al curso
-        DECLARE i INT DEFAULT 0;
+        SET i = 0; -- Reiniciar el índice para los niveles
         WHILE i < JSON_LENGTH(nivelTitulo) DO
             INSERT INTO niveles (idCurso, titulo, descripcion, costoNivel, video, documento)
             VALUES (
@@ -38,16 +53,30 @@ BEGIN
         END WHILE;
 
         SET resultado = 'Curso registrado y niveles insertados exitosamente.';
-        SELECT idCurso AS idCurso;
     ELSEIF accion = 'actualizar' THEN
         -- Actualizar un curso existente
         UPDATE cursos
-        SET titulo = tituloCurso, descripcion = descripcionCurso, categoria = categoria, costoTotal = costoTotal
+        SET titulo = tituloCurso, descripcion = descripcionCurso, costoTotal = costoTotal
         WHERE idCurso = idCurso;
+
+        -- Actualizar categorías (primero eliminar las existentes)
+        DELETE FROM cursoCategoria WHERE idCurso = idCurso;
+
+        -- Reinsertar categorías actualizadas
+        SET i = 0; -- Reiniciar el índice
+        WHILE i < JSON_LENGTH(categorias) DO
+            INSERT INTO cursoCategoria (idCurso, idCategoria)
+            VALUES (
+                idCurso,
+                JSON_UNQUOTE(JSON_EXTRACT(categorias, CONCAT('$[', i, ']')))
+            );
+            SET i = i + 1;
+        END WHILE;
 
         SET resultado = 'Curso actualizado exitosamente.';
     ELSE
         SET resultado = 'Acción no válida.';
     END IF;
 END $$
+
 DELIMITER ;

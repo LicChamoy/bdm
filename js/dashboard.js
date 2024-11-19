@@ -51,7 +51,7 @@ function viewChat() {
 }
 
 function viewKardex() {
-    window.location.href = 'kardex.html'; // Redirige a la página del perfil
+    window.location.href = 'kardex.php'; // Redirige a la página del perfil
 }
 // Función de búsqueda parcial por título del curso
 function searchCourses() {

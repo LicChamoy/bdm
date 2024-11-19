@@ -1,5 +1,3 @@
-drop database judav;
-create database judav;
 use judav;
 
 select * from usuarios;
@@ -9,8 +7,8 @@ delete from usuarios;
 select ReactivateUser('diego78041@gmail.com');
 ALTER TABLE usuarios ADD COLUMN intentos INT DEFAULT 0;
 update usuarios
-set rol = 'admin'
-where rol = 'alumno';
+set rol = 'alumno'
+where rol = 'admin';
 
 CREATE TABLE usuarios (
     idUsuario INT AUTO_INCREMENT PRIMARY KEY,
@@ -26,8 +24,6 @@ CREATE TABLE usuarios (
     rol ENUM('docente', 'alumno', 'admin') NOT NULL,
     estado ENUM('activo', 'baja') NOT NULL DEFAULT 'activo'
 );
-
-select * from categorias;
 
 CREATE TABLE categorias (
     idCategoria INT AUTO_INCREMENT PRIMARY KEY,
