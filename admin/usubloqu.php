@@ -31,7 +31,7 @@
                     $conexion = $conexionBD->obtenerConexion();
 
                     // Consulta para obtener usuarios bloqueados
-                    $query = "SELECT * FROM UsuariosBloqueados";
+                    $query = "SELECT nombre, apellidos, email FROM UsuariosBloqueados";
                     $result = $conexion->query($query);
 
                     if ($result->num_rows > 0) {
@@ -72,8 +72,7 @@
             })
             .then(response => response.text())
             .then(data => {
-                alert(data); // Muestra la respuesta (mensaje de éxito o error)
-                // Opcionalmente, actualizar la página o eliminar la fila del usuario reactivado
+                alert(data);
                 location.reload(); // Recarga la página para actualizar la lista
             })
             .catch(error => {

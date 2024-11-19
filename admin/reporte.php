@@ -6,8 +6,6 @@ $conexion = $conexionBD->obtenerConexion();
 
 // Obtener el rol desde la solicitud GET
 $role = isset($_GET['role']) ? $_GET['role'] : '';
-
-// Consulta para obtener los usuarios desde la vista, filtrando por rol si se proporciona
 $query = "SELECT * FROM vista_usuarios";
 if ($role) {
     $query .= " WHERE rol = '$role'";  // Filtrar por rol
@@ -62,7 +60,6 @@ $conexionBD->cerrarConexion();
                             <th>Total de Ganancias</th>
                         </thead>
                         <tbody id="users-tbody">
-                            <!-- Los usuarios se cargarán aquí dinámicamente -->
                             <?php foreach ($usuarios as $user): ?>
                                 <tr class="user-row" data-role="<?= $user['rol'] ?>">
                                     <td><?= $user['rol'] ?></td>
