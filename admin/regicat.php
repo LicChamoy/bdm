@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -5,7 +8,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Registrar Categorías</title>
         <link rel="stylesheet" href="regicat.css">
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </head>
     <body>
         <header>
@@ -26,43 +28,87 @@
                             <label for="category-description">Descripción de la Categoría:</label>
                             <input type="text" id="category-description" name="category-description" placeholder="Ingresa la descripción de la categoría" required>
 
-                            <button type="button" id="add-category">Agregar Categoría</button>
+                            <button  type="button" 
+                                onclick="regCat(
+                                    document.getElementById('category-name').value,
+                                    document.getElementById('category-description').value,
+                                    '<?php echo $_SESSION['user_id']; ?>'
+                                )">
+                                Agregar Categoría
+                            </button>
                         </div>
                     </form>
         
-                    <div class="categories-list">
-                        <h2>Categorías Registradas:</h2>
-                        <ul id="categories-list"></ul>
+                    <div class="categories-list-container">
+                        <h2>Categorías y Número de Cursos</h2>
+                        <table class="categories-table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre de la Categoría</th>
+                                    <th>Descripción</th>
+                                    <th>Creador</th>
+                                    <th>Total de Cursos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                require '../metodos/conexion.php';
+                                $conexionBD = new ConexionBD();
+                                $conexion = $conexionBD->obtenerConexion();
+
+                                // Consulta a la vista
+                                $query = "SELECT nombre_categoria, descripcion_categoria, nombre_creador, total_cursos FROM vista_categorias_cursos";
+                                $result = $conexion->query($query);
+
+                                if ($result && $result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo "<tr>
+                                                <td>{$row['nombre_categoria']}</td>
+                                                <td>{$row['descripcion_categoria']}</td>
+                                                <td>{$row['nombre_creador']}</td>
+                                                <td>{$row['total_cursos']}</td>
+                                            </tr>";
+                                    }
+                                } else {
+                                    echo "<tr>
+                                            <td colspan='4'>No hay categorías registradas.</td>
+                                        </tr>";
+                                }
+
+                                $conexionBD->cerrarConexion();
+                                ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>   
             </form>
         </main>
 
         <script>
-            $('#add-category').on('click', function() {
-                var nombreCategoria = $('#category-name').val();
-                var descripcionCategoria = $('#category-description').val();
-                var idCreador = '<?php echo $_SESSION['user_id']; ?>'; // Aquí puedes usar el ID del usuario autenticado (puedes obtenerlo de la sesión también)
-                
-                $.ajax({
-                    url: 'registrar_categoria.php',
-                    type: 'POST',
-                    data: {
-                        'category-name': nombreCategoria,
-                        'category-description': descripcionCategoria,
-                        'id-creator': idCreador
+            function regCat(nombre, descripcion, idCreador) {
+                alert("Registrando categoria con los siguientes valores:\n" +
+                "Nombre: " + nombre + "\n" +
+                "Descripción: " + descripcion + "\n";
+                fetch('../metodos/registrarCategoria.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    success: function(response) {
-                        alert(response);
-                        $('#category-name').val('');
-                        $('#category-description').val('');
-                        loadCategories();
-                    },
-                    error: function(xhr, status, error) {
-                        alert('Error al registrar la categoría: ' + error);
-                    }
+                    body: new URLSearchParams({
+                        'category-name': nombre,
+                        'category-description': descripcion,
+                        'user_id': idCreador
+                    })
+                })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error('Error al registrar la categoría:', error);
                 });
-            });
+            }
         </script>
     </body>
 </html>
