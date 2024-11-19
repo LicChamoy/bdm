@@ -10,6 +10,12 @@ $password = $_POST['password'];
 $accion = 'login'; // Acción para manejar inicio de sesión
 $resultado = '';
 
+// Verificar intentos previos en la cookie
+if (isset($_COOKIE['intentos']) && $_COOKIE['intentos'] >= 3) {
+    echo "<script>alert('Has alcanzado el límite de intentos.'); window.history.back();</script>";
+    exit();
+}
+
 // Intentar iniciar sesión
 $stmt = $conexion->prepare("CALL RegisterUserOrManageUser(?, NULL, NULL, NULL, NULL, ?, ?, NULL, NULL, ?)");
 $stmt->bind_param("sss", $accion, $email, $password, $resultado);
@@ -20,28 +26,27 @@ if ($stmt->execute()) {
 
     if ($resultado === 'Inicio de sesión exitoso.') {
         // Limpiar intentos tras inicio exitoso
-        $stmt_reset = $conexion->prepare("UPDATE usuarios SET intentos = 0 WHERE email = ?");
-        $stmt_reset->bind_param("s", $email);
-        $stmt_reset->execute();
-        $stmt_reset->close();
+        setcookie('intentos', 0, time() - 3600); // Eliminar la cookie de intentos
 
         // Iniciar sesión
         $_SESSION['user_email'] = $email;
         echo "<script>alert('Inicio de sesión exitoso.'); window.location.href = '../perfil.php';</script>";
     } else {
-        // Llamar a la función para manejar intentos fallidos
-        $stmt_block = $conexion->prepare("SELECT CheckAndBlockUser(?) AS result_message");
-        $stmt_block->bind_param("s", $email);
-
-        if ($stmt_block->execute()) {
-            $stmt_block->bind_result($block_message);
-            $stmt_block->fetch();
-            echo "<script>alert('$block_message'); window.history.back();</script>";
+        // Si el inicio de sesión falló, incrementamos los intentos
+        if (isset($_COOKIE['intentos'])) {
+            $intentos = $_COOKIE['intentos'] + 1;
         } else {
-            echo "<script>alert('Error al procesar el intento fallido.'); window.history.back();</script>";
+            $intentos = 1;
         }
 
-        $stmt_block->close();
+        // Guardamos la cantidad de intentos en la cookie
+        setcookie('intentos', $intentos, time() + 3600); // Válida durante 1 hora
+
+        if ($intentos >= 3) {
+            echo "<script>alert('Usuario bloqueado tras 3 intentos fallidos.'); window.history.back();</script>";
+        } else {
+            echo "<script>alert('Intento fallido $intentos de 3.'); window.history.back();</script>";
+        }
     }
 } else {
     echo "<script>alert('Error al procesar la solicitud.'); window.history.back();</script>";
@@ -49,4 +54,3 @@ if ($stmt->execute()) {
 
 $stmt->close();
 $conexionBD->cerrarConexion();
-?>
