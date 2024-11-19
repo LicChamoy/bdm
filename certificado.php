@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require_once 'metodos/conexion.php';
 
 // Obtener la conexión
