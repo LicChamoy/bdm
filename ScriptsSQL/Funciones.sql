@@ -38,3 +38,39 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+DELIMITER $$
+
+CREATE FUNCTION ReactivateUser(p_email VARCHAR(100)) 
+RETURNS VARCHAR(255)
+BEGIN
+    DECLARE user_status ENUM('activo', 'baja');
+    DECLARE result_message VARCHAR(255);
+
+    -- Verificar si el usuario existe y obtener su estado actual
+    SELECT estado INTO user_status 
+    FROM usuarios 
+    WHERE email = p_email;
+
+    -- Si el usuario no existe, retornar un mensaje de error
+    IF user_status IS NULL THEN
+        RETURN 'Error: Usuario no encontrado.';
+    END IF;
+
+    -- Si el usuario ya está activo, retornar mensaje
+    IF user_status = 'activo' THEN
+        RETURN 'El usuario ya está activo.';
+    END IF;
+
+    -- Reactivar al usuario si está en estado "baja"
+    IF user_status = 'baja' THEN
+        UPDATE usuarios 
+        SET estado = 'activo', intentos = 0, fechaDeUltimoCambio = NOW()
+        WHERE email = p_email;
+        SET result_message = 'Usuario reactivado exitosamente.';
+    END IF;
+
+    RETURN result_message;
+END$$
+
+DELIMITER ;

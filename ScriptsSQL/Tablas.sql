@@ -6,6 +6,12 @@ select * from usuarios;
 SELECT idUsuario, LENGTH(avatar) AS avatar_size FROM usuarios WHERE nombre = 'Diego';
 delete from usuarios;
 
+select ReactivateUser('diego78041@gmail.com');
+ALTER TABLE usuarios ADD COLUMN intentos INT DEFAULT 0;
+update usuarios
+set rol = 'admin'
+where nombre = 'Diego';
+
 CREATE TABLE usuarios (
     idUsuario INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
@@ -20,6 +26,10 @@ CREATE TABLE usuarios (
     rol ENUM('docente', 'alumno', 'admin') NOT NULL,
     estado ENUM('activo', 'baja') NOT NULL DEFAULT 'activo'
 );
+
+select * from categorias;
+
+call registrar_categoria('hola','adios', '10');
 
 CREATE TABLE categorias (
     idCategoria INT AUTO_INCREMENT PRIMARY KEY,
