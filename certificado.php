@@ -1,6 +1,10 @@
 <?php
 require_once 'metodos/conexion.php';
 
+// Obtener la conexión
+$conexionBD = new ConexionBD();
+$mysqli = $conexionBD->obtenerConexion();
+
 if (isset($_GET['curso_id'])) {
     $cursoId = $_GET['curso_id'];
 
@@ -63,5 +67,5 @@ if (isset($_GET['curso_id'])) {
 
 <?php
 $stmt->close();
-$mysqli->close();
+$conexionBD->cerrarConexion(); // Cierra la conexión
 ?>
