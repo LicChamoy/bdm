@@ -1,22 +1,6 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// Muestra información de depuración
-//echo "Archivo actual: " . __FILE__ . "<br>";
-//echo "Ruta de inclusión de conexion.php: " . realpath('conexion.php') . "<br>";
-
-session_start(); 
-
-// Forzar sesión de prueba (SOLO PARA DESARROLLO)
-
-
-// Muestra el contenido de la sesión
-//echo "<pre>Sesión: ";
-//print_r($_SESSION);
-//echo "</pre>";
-
-require_once 'conexion.php'; // Tu clase de conexión
+session_start();
+require_once 'conexion.php';
 
 // Verificar si el usuario está logueado y es docente
 if (!isset($_SESSION['user_id']) || $_SESSION['user_rol'] !== 'docente') {
@@ -24,88 +8,194 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_rol'] !== 'docente') {
     exit;
 }
 
-// Conexión a la base de datos para obtener categorías
+// Conexión a la base de datos
 $conexion = new ConexionBD();
 $mysqli = $conexion->obtenerConexion();
 
-// Verificar conexión
-if (!$mysqli) {
-    die("Error de conexión: " . mysqli_connect_error());
-}
-
-// Obtener categorías para el SELECT
-$consultaCategorias = "SELECT idCategoria, nombre FROM categorias";
-$resultadoCategorias = $mysqli->query($consultaCategorias);
-
-// Verificar si hay categorías
-if (!$resultadoCategorias) {
-    echo "Error en la consulta: " . $mysqli->error;
-    exit;
-}
-
-if ($resultadoCategorias->num_rows === 0) {
-    echo "No hay categorías registradas";
+// Obtener categorías existentes
+$queryCategorias = "SELECT nombre FROM categorias";
+$resultCategorias = $mysqli->query($queryCategorias);
+$categoriasExistentes = [];
+while ($categoria = $resultCategorias->fetch_assoc()) {
+    $categoriasExistentes[] = $categoria['nombre'];
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <title>Registrar Curso</title>
-        <script>
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Nuevo Curso</title>
+    <style>
+        /* ... (estilos anteriores) ... */
+        .categoria-grupo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .categoria-grupo input, .categoria-grupo select {
+            margin-right: 10px;
+        }
+    </style>
+    <script>
+    let nivelCounter = 1;
+    let categoriaCounter = 1;
+
     function agregarNivel() {
-        const contenedorNiveles = document.getElementById('niveles');
-        const numeroNivel = contenedorNiveles.children.length + 1;
+        nivelCounter++;
+        const nivelContainer = document.getElementById('niveles-container');
         const nuevoNivel = document.createElement('div');
-        nuevoNivel.classList.add('nivel-container');
+        nuevoNivel.className = 'nivel-grupo';
         nuevoNivel.innerHTML = `
-            <h4>Nivel ${numeroNivel}</h4>
-            <div class="campo-nivel">
-                <input type="text" name="nivelTitulo[]" placeholder="Título del nivel" required>
+            <h3>Nivel ${nivelCounter}</h3>
+            <div class="form-group">
+                <label>Título del Nivel</label>
+                <input type="text" name="niveles[${nivelCounter}][titulo]" required>
             </div>
-            <div class="campo-nivel">
-                <textarea name="nivelDescripcion[]" placeholder="Descripción del nivel" required></textarea>
+            <div class="form-group">
+                <label>Descripción del Nivel</label>
+                <textarea name="niveles[${nivelCounter}][descripcion]" required></textarea>
             </div>
-            <div class="campo-nivel">
-                <input type="number" name="nivelCosto[]" step="0.01" placeholder="Costo del nivel" required>
+            <div class="form-group">
+                <label>Costo del Nivel ($)</label>
+                <input type="number" name="niveles[${nivelCounter}][costoNivel]" step="0.01" min="0" required>
             </div>
-            <div class="campo-nivel">
-                <label>Video del nivel:</label>
-                <input type="file" name="nivelVideo[]" accept="video/*">
+            <div class="form-group">
+                <label>Documento del Nivel (opcional)</label>
+                <input type="file" name="niveles[${nivelCounter}][documento]">
             </div>
-            <div class="campo-nivel">
-                <label>Documento del nivel:</label>
-                <input type="file" name="nivelDocumento[]">
+            <div class="form-group">
+                <label>Video del Nivel (opcional)</label>
+                <input type="file" name="niveles[${nivelCounter}][video]" accept="video/*">
             </div>
         `;
-        contenedorNiveles.appendChild(nuevoNivel);
+        nivelContainer.appendChild(nuevoNivel);
     }
-        </script>
-    </head>
-    <body>
-        <h2>Registrar Nuevo Curso</h2>
-        <form action="procesar_curso.php" method="POST" enctype="multipart/form-data">
-        <input type="text" name="tituloCurso" placeholder="Título del Curso" required>
-        <textarea name="descripcionCurso" placeholder="Descripción del Curso" required></textarea>
 
-        <!-- Selección múltiple de categorías -->
-        <select name="categorias[]" multiple required>
-            <option value="">Selecciona una o más categorías</option>
-            <?php 
-            while($categoria = $resultadoCategorias->fetch_assoc()) {
-                echo "<option value='{$categoria['idCategoria']}'>{$categoria['nombre']}</option>";
+    function agregarCategoria() {
+        categoriaCounter++;
+        const categoriaContainer = document.getElementById('categorias-container');
+        const nuevaCategoria = document.createElement('div');
+        nuevaCategoria.className = 'categoria-grupo';
+        nuevaCategoria.innerHTML = `
+            <select name="categorias[]" required>
+                <?php 
+                foreach ($categoriasExistentes as $categoria) {
+                    echo "<option value='".htmlspecialchars($categoria)."'>".htmlspecialchars($categoria)."</option>";
+                }
+                ?>
+                <option value="nueva">+ Nueva Categoría</option>
+            </select>
+            <input type="text" name="nueva_categoria[]" placeholder="Nombre nueva categoría" style="display:none;">
+            <button type="button" onclick="eliminarCategoria(this)">Eliminar</button>
+        `;
+        categoriaContainer.appendChild(nuevaCategoria);
+
+        // Configurar evento para mostrar/ocultar campo de nueva categoría
+        const select = nuevaCategoria.querySelector('select');
+        const inputNueva = nuevaCategoria.querySelector('input[type="text"]');
+        select.addEventListener('change', function() {
+            inputNueva.style.display = this.value === 'nueva' ? 'block' : 'none';
+            inputNueva.required = this.value === 'nueva';
+        });
+    }
+
+    function eliminarCategoria(btn) {
+        btn.closest('.categoria-grupo').remove();
+    }
+
+    function validarFormulario() {
+        const niveles = document.querySelectorAll('.nivel-grupo');
+        if (niveles.length === 0) {
+            alert('Debe agregar al menos un nivel.');
+            return false;
+        }
+
+        // Validar categorías
+        const categorias = document.querySelectorAll('select[name="categorias[]"]');
+        const categoriasNuevas = document.querySelectorAll('input[name="nueva_categoria[]"]');
+        
+        let categoriasValidas = true;
+        categorias.forEach((select, index) => {
+            if (select.value === 'nueva' && categoriasNuevas[index].value.trim() === '') {
+                categoriasValidas = false;
             }
-            ?>
-        </select>
+        });
 
-        <input type="number" name="costoTotal" step="0.01" placeholder="Costo Total del Curso" required>
+        if (!categoriasValidas) {
+            alert('Por favor, complete el nombre de las nuevas categorías.');
+            return false;
+        }
 
-        <!-- Contenedor de niveles -->
-        <div id="niveles"></div>
+        return true;
+    }
 
-        <button type="button" onclick="agregarNivel()">Agregar Nivel</button>
-        <button type="submit">Registrar Curso</button>
+    // Añadir primera categoría al cargar
+    window.onload = function() {
+        agregarCategoria();
+    };
+    </script>
+</head>
+<body>
+    <h1>Registrar Nuevo Curso</h1>
+    
+    <form action="procesar_curso.php" method="POST" enctype="multipart/form-data" onsubmit="return validarFormulario()">
+        <div class="form-group">
+            <label>Título del Curso</label>
+            <input type="text" name="titulo" required>
+        </div>
+
+        <div class="form-group">
+            <label>Descripción del Curso</label>
+            <textarea name="descripcion" required></textarea>
+        </div>
+
+        <h2>Categorías del Curso</h2>
+        <div id="categorias-container"></div>
+        <div class="form-group">
+            <button type="button" class="btn btn-success" onclick="agregarCategoria()">+ Agregar Categoría</button>
+        </div>
+
+        <div class="form-group">
+            <label>Imagen del Curso (opcional)</label>
+            <input type="file" name="imagen" accept="image/*">
+        </div>
+
+        <h2>Niveles del Curso</h2>
+        <div id="niveles-container">
+            <div class="nivel-grupo">
+                <h3>Nivel 1</h3>
+                <div class="form-group">
+                    <label>Título del Nivel</label>
+                    <input type="text" name="niveles[1][titulo]" required>
+                </div>
+                <div class="form-group">
+                    <label>Descripción del Nivel</label>
+                    <textarea name="niveles[1][descripcion]" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Costo del Nivel ($)</label>
+                    <input type="number" name="niveles[1][costoNivel]" step="0.01" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label>Documento del Nivel (opcional)</label>
+                    <input type="file" name="niveles[1][documento]">
+                </div>
+                <div class="form-group">
+                    <label>Video del Nivel (opcional)</label>
+                    <input type="file" name="niveles[1][video]" accept="video/*">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button type="button" class="btn btn-success" onclick="agregarNivel()">+ Agregar Nivel</button>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Registrar Curso</button>
+            <a href="dashboard-docente.php" class="btn btn-secondary">Cancelar</a>
+        </div>
     </form>
-    </body>
+</body>
 </html>

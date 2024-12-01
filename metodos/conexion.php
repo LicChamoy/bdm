@@ -2,7 +2,7 @@
 class ConexionBD {
     private $host = 'localhost';
     private $usuario = 'root';
-    private $password = 'root';
+    private $password = "";
     private $baseDatos = 'judav';
     private $conexion;
 

@@ -85,10 +85,10 @@ session_start();
         </main>
 
         <script>
-            function regCat(nombre, descripcion, idCreador) {
+  function regCat(nombre, descripcion, idCreador) {
                 alert("Registrando categoria con los siguientes valores:\n" +
                 "Nombre: " + nombre + "\n" +
-                "Descripción: " + descripcion + "\n";
+                "Descripción: " + descripcion + "\n");
                 fetch('../metodos/registrarCategoria.php', {
                     method: 'POST',
                     headers: {

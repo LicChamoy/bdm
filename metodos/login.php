@@ -32,11 +32,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt = $conexion->prepare("CALL RegisterUserOrManageUser(?, NULL, NULL, NULL, NULL, ?, ?, NULL, NULL, ?)");
     $stmt->bind_param("ssss", $accion, $email, $password, $resultado);
 
-    if ($stmt->execute()) {
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
+        if ($stmt->execute()) {
+            // Check if we have a result set
+            $result = $stmt->get_result();
+            
+            if ($result === false) {
+                // No result set returned
+                throw new Exception("No result set returned from procedure");
+            }
 
-        $resultado = $row['resultado'];
+            // Check if we have rows
+            if ($result->num_rows === 0) {
+                throw new Exception("No rows returned from procedure");
+            }
+
+            $row = $result->fetch_assoc();
+
+            if ($row === null) {
+                throw new Exception("Failed to fetch result");
+            }
+
+            $resultado = $row['resultado'] ?? '';
 
         if ($resultado === 'Inicio de sesión exitoso.') {
             // Limpiar intentos tras inicio exitoso
@@ -59,7 +75,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Verificar si el rol es de administrador
             if ($_SESSION['user_rol'] == 'admin') {
                 // Redirigir a la página de administrador
-                header("Location: /admin/vistaAdmin.html");
+                header("Location: ../admin/vistaAdmin.html");
+                exit;
+            } else if($_SESSION['user_rol']=='docente'){
+                // Redirigir a la página de administrador
+                header("Location: ../metodos/dashboard-docente.php");
                 exit;
             } else {
                 // Si no es admin, redirigir a la página principal del usuario

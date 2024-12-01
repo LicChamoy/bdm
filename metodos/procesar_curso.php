@@ -1,124 +1,133 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 session_start();
+require_once 'conexion.php';
 
 // Verificar si el usuario está logueado y es docente
 if (!isset($_SESSION['user_id']) || $_SESSION['user_rol'] !== 'docente') {
-    die("Acceso no autorizado");
+    header("Location: login.php");
+    exit;
 }
-// Convertir las categorías seleccionadas a JSON
-if (!isset($_POST['categorias']) || empty($_POST['categorias'])) {
-    throw new Exception("Debe seleccionar al menos una categoría");
-}
-$categoriasJson = json_encode($_POST['categorias']);
 
-require_once 'conexion.php';
+// Conexión a la base de datos
 $conexion = new ConexionBD();
 $mysqli = $conexion->obtenerConexion();
 
+// Validar datos del formulario
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header("Location: registrar_curso.php");
+    exit;
+}
+
 try {
-    // Validar que se hayan enviado todos los datos necesarios
-    if (!isset($_POST['tituloCurso'], $_POST['descripcionCurso'], $_POST['categoria'], $_POST['costoTotal'])) {
-        throw new Exception("Faltan datos obligatorios del curso");
+    // Procesar imagen del curso (opcional)
+    $imagen = null;
+    if (!empty($_FILES['imagen']['name'])) {
+        $imagenNombre = 'curso_' . uniqid() . '_' . $_FILES['imagen']['name'];
+        $imagenRuta = 'uploads/cursos/' . $imagenNombre;
+        
+        // Crear directorio si no existe
+        if (!is_dir('uploads/cursos')) {
+            mkdir('uploads/cursos', 0755, true);
+        }
+
+        if (!move_uploaded_file($_FILES['imagen']['tmp_name'], $imagenRuta)) {
+            throw new Exception("Error al subir la imagen del curso");
+        }
+        $imagen = $imagenRuta;
     }
 
-    // Validar que haya al menos un nivel
-    if (!isset($_POST['nivelTitulo']) || empty($_POST['nivelTitulo'])) {
-        throw new Exception("Debe agregar al menos un nivel al curso");
+    // Calcular costo total de todos los niveles
+    $costoTotal = 0;
+    foreach ($_POST['niveles'] as $nivel) {
+        $costoTotal += floatval($nivel['costoNivel']);
     }
 
-    // Iniciar transacción
-    $mysqli->begin_transaction();
+    // Preparar categorías
+    $categorias = [];
+    foreach ($_POST['categorias'] as $index => $categoria) {
+        if ($categoria === 'nueva') {
+            // Usar categoría nueva si se especificó
+            $categorias[] = $_POST['nueva_categoria'][$index];
+        } else {
+            $categorias[] = $categoria;
+        }
+    }
+
+    // Preparar niveles con archivos
+    $niveles = [];
+    foreach ($_POST['niveles'] as $index => $nivel) {
+        $nivelData = [
+            'titulo' => $nivel['titulo'],
+            'descripcion' => $nivel['descripcion'],
+            'costoNivel' => $nivel['costoNivel'],
+            'documento' => null,
+            'video' => null
+        ];
+
+        // Procesar documento del nivel
+        if (!empty($_FILES['niveles']['name'][$index]['documento'])) {
+            $documentoNombre = 'doc_nivel_' . uniqid() . '_' . $_FILES['niveles']['name'][$index]['documento'];
+            $documentoRuta = 'uploads/documentos/' . $documentoNombre;
+
+            // Crear directorio si no existe
+            if (!is_dir('uploads/documentos')) {
+                mkdir('uploads/documentos', 0755, true);
+            }
+
+            if (move_uploaded_file($_FILES['niveles']['tmp_name'][$index]['documento'], $documentoRuta)) {
+                $nivelData['documento'] = $documentoRuta;
+            }
+        }
+
+        // Procesar video del nivel
+        if (!empty($_FILES['niveles']['name'][$index]['video'])) {
+            $videoNombre = 'video_nivel_' . uniqid() . '_' . $_FILES['niveles']['name'][$index]['video'];
+            $videoRuta = 'uploads/videos/' . $videoNombre;
+
+            // Crear directorio si no existe
+            if (!is_dir('uploads/videos')) {
+                mkdir('uploads/videos', 0755, true);
+            }
+
+            if (move_uploaded_file($_FILES['niveles']['tmp_name'][$index]['video'], $videoRuta)) {
+                $nivelData['video'] = $videoRuta;
+            }
+        }
+
+        $niveles[] = $nivelData;
+    }
 
     // Preparar datos para el procedimiento almacenado
-    $tituloCurso = $_POST['tituloCurso'];
-    $descripcionCurso = $_POST['descripcionCurso'];
-    $idInstructor = $_SESSION['user_id'];
-    $categoria = $_POST['categoria'];
-    $costoTotal = $_POST['costoTotal'];
-
-    // Convertir arrays de niveles a JSON
-    $nivelTitulo = json_encode($_POST['nivelTitulo']);
-    $nivelDescripcion = json_encode($_POST['nivelDescripcion']);
-    $nivelCosto = json_encode($_POST['nivelCosto']);
-    
-    // Arrays para almacenar información de archivos
-    $nivelVideos = [];
-    $nivelDocumentos = [];
-
-    // Procesar archivos de video y documentos
-    for ($i = 0; $i < count($_POST['nivelTitulo']); $i++) {
-        // Procesar video
-        if (isset($_FILES['nivelVideo']['tmp_name'][$i]) && !empty($_FILES['nivelVideo']['tmp_name'][$i])) {
-            $videoContent = file_get_contents($_FILES['nivelVideo']['tmp_name'][$i]);
-            $nivelVideos[] = base64_encode($videoContent);
-        } else {
-            $nivelVideos[] = null;
-        }
-
-        // Procesar documento
-        if (isset($_FILES['nivelDocumento']['tmp_name'][$i]) && !empty($_FILES['nivelDocumento']['tmp_name'][$i])) {
-        // Modificar esta línea en procesar_curso.php
-        $documentoNombre = time() . '_' . $_FILES['nivelDocumento']['name'][$i];
-        // Cambiar la ruta para que sea absoluta
-        move_uploaded_file(
-        $_FILES['nivelDocumento']['tmp_name'][$i],
-        '../documentos/' . $documentoNombre  // Nota el '../' para subir un nivel
-        );
-            $nivelDocumentos[] = $documentoNombre;
-        } else {
-            $nivelDocumentos[] = null;
-        }
-    }
-
-    // Convertir arrays de archivos a JSON
-    $nivelVideosJson = json_encode($nivelVideos);
-    $nivelDocumentosJson = json_encode($nivelDocumentos);
+    $categoriasJson = json_encode($categorias);
+    $nivelesJson = json_encode($niveles);
 
     // Llamar al procedimiento almacenado
-    $query = "CALL RegistrarCursoConNiveles(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado)";
-    $stmt = $mysqli->prepare($query);
-    $accion = 'registrar';
-    
+    $stmt = $mysqli->prepare("CALL InsertarCursoCompleto(?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param(
-        'sssids',
-        $accion,
-        $tituloCurso,
-        $descripcionCurso,
-        $idInstructor,
-        $categoriasJson, // Ahora pasa las categorías en JSON
-        $costoTotal,
-        $nivelTitulo,
-        $nivelDescripcion,
-        $nivelCosto,
-        $nivelVideosJson,
-        $nivelDocumentosJson
+        "sssdiss", 
+        $_POST['titulo'], 
+        $_POST['descripcion'], 
+        $imagen, 
+        $costoTotal, 
+        $_SESSION['user_id'], 
+        $categoriasJson,
+        $nivelesJson
     );
-    
     $stmt->execute();
-    
-    
-    // Obtener el resultado
-    $resultQuery = $mysqli->query("SELECT @resultado as resultado");
-    $resultado = $resultQuery->fetch_assoc();
 
-    // Confirmar la transacción
-    $mysqli->commit();
+    // Verificar si hubo errores
+    if ($stmt->error) {
+        throw new Exception("Error al insertar el curso: " . $stmt->error);
+    }
 
     // Redirigir con mensaje de éxito
     $_SESSION['mensaje'] = "Curso registrado exitosamente";
-    header("Location: mis_cursos.php");
+    header("Location: dashboard-docente.php");
     exit;
 
 } catch (Exception $e) {
-    // Revertir la transacción en caso de error
-    $mysqli->rollback();
+    // Mostrar mensaje de error
     $_SESSION['error'] = "Error al registrar el curso: " . $e->getMessage();
     header("Location: registrar_curso.php");
     exit;
-} finally {
-    $conexion->cerrarConexion();
 }
-?>
