@@ -16,11 +16,13 @@ $mysqli = $conexion->obtenerConexion();
 $queryCategorias = "SELECT DISTINCT nombre AS categoria FROM categorias"; // Cambiado para obtener nombres de categorías
 $categorias = $mysqli->query($queryCategorias);
 
+// Inicializar la cláusula WHERE
+$where = ' WHERE 1=1';
 
 // Filtrar por categoría
 if (isset($_GET['categoria']) && !empty($_GET['categoria'])) {
     $categoria = $mysqli->real_escape_string($_GET['categoria']);
-    $where .= " AND cat.nombre = '$categoria'"; // Cambiado para referirse al nombre de categoría
+    $where .= " AND c.categoria = '$categoria'"; // Cambiado para referirse al nombre de categoría
 }
 
 // Filtrar por búsqueda
@@ -29,7 +31,7 @@ if (isset($_GET['buscar']) && !empty($_GET['buscar'])) {
     $where .= " AND (c.titulo LIKE '%$buscar%' OR c.descripcion LIKE '%$buscar%')";
 }
 
-// Obtener cursos
+// Obtener cursos con filtros
 $query = "
 SELECT 
     c.idCurso,
@@ -46,6 +48,7 @@ FROM
     VistaCursosDisponibles c
 JOIN 
     usuarios u ON c.idInstructor = u.idUsuario
+$where
 ORDER BY 
     c.fechaCreacion DESC";
 
@@ -162,7 +165,7 @@ if (!$cursos) {
                 padding: 20px;
                 color: #718096;
             }
-            </style>
+        </style>
     </head>
     <body>
         <h1>Dashboard - Docente</h1>
