@@ -199,10 +199,10 @@ if (!$cursos) {
                     <h3><?php echo htmlspecialchars($curso['titulo']); ?></h3>
                     <p><?php echo htmlspecialchars(substr($curso['descripcion'], 0, 150)) . '...'; ?></p>
                     <div class="categoria-badge">
-                        <?php echo htmlspecialchars($curso['categorias']); ?> <!-- Asegúrate de que se muestre aquí -->
+                        <?php echo htmlspecialchars($curso['categoria']); ?>
                     </div>
                     <p class="curso-instructor">
-                        Por: <?php echo htmlspecialchars($curso['instructor'] . ' ' . $curso['instructor_apellidos']); ?>
+                        Por: <?php echo htmlspecialchars($curso['instructor']); ?>
                     </p>
                     <div class="calificacion">
                         <?php
