@@ -217,6 +217,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comprar'])) {
                 <?php else: ?>
                     <p>Ya estás inscrito en este curso</p>
                 <?php endif; ?>
+                    <!-- Botón para contactar con el instructor -->
+                <div style="margin-top: 20px;">
+                    <button class="btn-comprar" 
+                            onclick="location.href='chat.php?idInstructor=<?php echo $curso['idInstructor']; ?>&idCurso=<?php echo $idCurso; ?>'">
+                        Contactar al instructor
+                    </button>
+                </div>
             </div>
         </div>
 
