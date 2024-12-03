@@ -57,16 +57,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comprar'])) {
     $stmt->bind_param("iiis", $userId, $idCurso, $idNivel, $formaPago);
     
     if ($stmt->execute()) {
-        $mysqli->query("SELECT @mensaje INTO mensaje");
-        $result = $mysqli->query("SELECT @mensaje as mensaje");
-        $row = $result->fetch_assoc();
-        $mensaje = $row['mensaje'];
+        // Recuperar el mensaje de la variable de sesión @mensaje
+        $result = $mysqli->query("SELECT @mensaje AS mensaje");
+        if ($result) {
+            $row = $result->fetch_assoc();
+            $mensaje = $row['mensaje'];
+        } else {
+            $mensaje = "Error al recuperar el mensaje.";
+        }
         
         if ($mensaje === 'Compra realizada con éxito') {
             header("Location: ver-curso.php?idCurso=$idCurso&success=1");
             exit;
         }
     }
+    
 }
 ?>
 

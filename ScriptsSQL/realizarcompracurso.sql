@@ -53,4 +53,6 @@ BEGIN
 
         SET p_mensaje = 'Compra realizada con éxito';
     END IF;
+    
+    SET @mensaje = p_mensaje;
 END $$

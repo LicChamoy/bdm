@@ -25,7 +25,6 @@ while ($categoria = $resultCategorias->fetch_assoc()) {
 
 // Procesar formulario al enviar
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    echo "<script>alert('Entrando al POST');</script>";
     $titulo = trim($_POST['titulo']);
     $descripcion = trim($_POST['descripcion']);
     $categorias = $_POST['categorias'] ?? []; // Lista de IDs de categorías seleccionadas
@@ -33,8 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $imagenCurso = null;
 
     // Validar que al menos una categoría esté seleccionada
+    $categorias = array_filter($categorias, function ($categoria) {
+        return !empty($categoria) && is_numeric($categoria);
+    });
+    
     if (empty($categorias)) {
-        echo "<script>alert('Debe seleccionar al menos una categoría.');</script>";
+        echo "<script>alert('Debe seleccionar al menos una categoría válida.');</script>";
         exit;
     }
 
@@ -42,20 +45,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
         $uploadDir = 'uploads/cursos/';
         if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true); // Crear la carpeta si no existe
+            mkdir($uploadDir, 0777, true);
         }
-    
+
         $imageName = uniqid('curso_') . '_' . basename($_FILES['imagen']['name']);
         $imagePath = $uploadDir . $imageName;
-    
+
         if (move_uploaded_file($_FILES['imagen']['tmp_name'], $imagePath)) {
             $imagenCurso = $imagePath; // Guardar la ruta de la imagen
         } else {
             echo "<script>alert('Error al subir la imagen.');</script>";
             exit;
         }
-    }
-    
+    }    
 
     // Validar y procesar niveles
     $nivelTitulos = [];
@@ -63,41 +65,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nivelCostos = [];
     $nivelVideos = [];
     $nivelDocumentos = [];
+    $nivelCounter = 0;
 
     foreach ($niveles as $nivel) {
+        $nivelCounter++;
         $nivelTitulos[] = $nivel['titulo'] ?? '';
         $nivelDescripciones[] = $nivel['descripcion'] ?? '';
         $nivelCostos[] = floatval($nivel['costoNivel'] ?? 0);
         
-        // Manejar subida de video
-        $videoPath = null;
-        if (isset($_FILES['niveles'][$nivelCounter]['video']) && $_FILES['niveles'][$nivelCounter]['video']['error'] === UPLOAD_ERR_OK) {
-            $videoName = uniqid('video_') . '_' . basename($_FILES['niveles'][$nivelCounter]['video']['name']);
-            $videoPath = $uploadDir . $videoName;
-    
-            if (move_uploaded_file($_FILES['niveles'][$nivelCounter]['video']['tmp_name'], $videoPath)) {
-                $nivelVideos[] = $videoPath; // Guardar la ruta del video
-            } else {
-                $nivelVideos[] = null; // Si no se pudo subir, se guarda como NULL
+        // Procesar documento del nivel
+        if (!empty($_FILES['niveles']['name'][$index]['documento'])) {
+            $documentoNombre = 'doc_nivel_' . uniqid() . '_' . $_FILES['niveles']['name'][$index]['documento'];
+            $documentoRuta = 'uploads/documentos/' . $documentoNombre;
+
+            // Crear directorio si no existe
+            if (!is_dir('uploads/documentos')) {
+                mkdir('uploads/documentos', 0755, true);
             }
-        } else {
-            $nivelVideos[] = null; // Si no se subió video, se guarda como NULL
-        }
-    
-        // Manejar subida de documento
-        $documentoPath = null;
-        if (isset($_FILES['niveles'][$nivelCounter]['documento']) && $_FILES['niveles'][$nivelCounter]['documento']['error'] === UPLOAD_ERR_OK) {
-            $documentoName = uniqid('documento_') . '_' . basename($_FILES['niveles'][$nivelCounter]['documento']['name']);
-            $documentoPath = $uploadDir . $documentoName;
-    
-            if (move_uploaded_file($_FILES['niveles'][$nivelCounter]['documento']['tmp_name'], $documentoPath)) {
-                $nivelDocumentos[] = $documentoPath; // Guardar la ruta del documento
-            } else {
-                $nivelDocumentos[] = null; // Si no se pudo subir, se guarda como NULL
+
+            if (move_uploaded_file($_FILES['niveles']['tmp_name'][$index]['documento'], $documentoRuta)) {
+                $nivelData['documento'] = $documentoRuta;
             }
-        } else {
-            $nivelDocumentos[] = null; // Si no se subió documento, se guarda como NULL
         }
+
+        // Procesar video del nivel
+        if (!empty($_FILES['niveles']['name'][$index]['video'])) {
+            $videoNombre = 'video_nivel_' . uniqid() . '_' . $_FILES['niveles']['name'][$index]['video'];
+            $videoRuta = 'uploads/videos/' . $videoNombre;
+
+            // Crear directorio si no existe
+            if (!is_dir('uploads/videos')) {
+                mkdir('uploads/videos', 0755, true);
+            }
+
+            if (move_uploaded_file($_FILES['niveles']['tmp_name'][$index]['video'], $videoRuta)) {
+                $nivelData['video'] = $videoRuta;
+            }
+        }
+
     }
 
     // Calcular costo total
@@ -117,14 +122,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Llamar al procedimiento almacenado
-    $stmt = $mysqli->prepare("CALL RegistrarCursoConNiveles(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $mysqli->prepare("CALL RegistrarCursoConNiveles(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
     $accion = 'registrar';
     $resultado = '';
 
     // Actualizar bind_param para incluir videos y documentos
     $stmt->bind_param(
-        'sssisdssssss',
+        'sssisdsssssss',
         $accion,
         $titulo,
         $descripcion,
@@ -136,18 +141,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $nivelCostosJson,
         $nivelVideosJson,
         $nivelDocumentosJson,
+        $imagenCurso,
         $resultado
     );
 
 
-    if ($stmt->execute()) {
-        echo "<script>alert('Curso registrado con éxito.');</script>";
-        header("Location: dashboard-docente.php");
-        exit;
-    } else {
-        echo "<script>alert('Error al ejecutar el procedimiento: ');</script>" . $stmt->error;
+    try {
+        if ($stmt->execute()) {
+            echo "<script>alert('Curso registrado con éxito.');</script>";
+            header("Location: dashboard-docente.php");
+            exit;
+        } else {
+            throw new Exception($stmt->error);
+        }
+    } catch (Exception $e) {
+        echo "<script>alert('Error al registrar el curso, contacta con tu administrador, error: {$e->getMessage()}');</script>";
         exit;
     }
+    
 }
 ?>
 
@@ -344,6 +355,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="form-group">
+                <button type="button" onclick="agregarNivel()">Agregar Nivel</button>
                 <button type="submit" class="btn btn-primary">Registrar Curso</button>
                 <a href="dashboard-docente.php" class="btn btn-secondary">Cancelar</a>
             </div>

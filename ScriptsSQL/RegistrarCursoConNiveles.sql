@@ -12,6 +12,7 @@ CREATE PROCEDURE RegistrarCursoConNiveles(
     IN nivelCosto JSON,
     IN nivelVideo JSON,
     IN nivelDocumento JSON,
+    IN imagenCurso VARCHAR(255),
     OUT resultado VARCHAR(255)
 )
 BEGIN
@@ -21,8 +22,8 @@ BEGIN
 
     IF accion = 'registrar' THEN
         -- Insertar un nuevo curso
-        INSERT INTO cursos (titulo, descripcion, idInstructor, costoTotal, estado)
-        VALUES (tituloCurso, descripcionCurso, idInstructor, costoTotal, 'activo');
+        INSERT INTO cursos (titulo, descripcion, idInstructor, costoTotal, estado, imagen)
+        VALUES (tituloCurso, descripcionCurso, idInstructor, costoTotal, 'activo', imagenCurso);
 
         -- Obtener el ID del curso insertado
         SET idCurso = LAST_INSERT_ID();
