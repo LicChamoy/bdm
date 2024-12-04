@@ -15,6 +15,14 @@ call ObtenerProgresoCurso(5,11);
 
 call GetCoursesByUser(5);
 
+
+ALTER TABLE interaccionesCurso
+ADD CONSTRAINT UNIQUE (idUsuario, idCurso);
+
+
+CALL ObtenerComentariosCurso(11);
+
+
 SELECT 
     ic.idUsuario,
     ic.idCurso,
