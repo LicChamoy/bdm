@@ -58,7 +58,7 @@ GROUP BY
 
 CREATE VIEW vista_cursos_usuario AS
 SELECT 
-	ic.idUsuario,
+    ic.idUsuario,
     ic.idCurso,
     c.titulo AS cursoTitulo,
     ic.fechaInscripcion,
@@ -73,7 +73,4 @@ FROM
 JOIN 
     cursos c ON ic.idCurso = c.idCurso
 JOIN 
-    usuarios u ON ic.idInstructor = u.idUsuario;
-
-
-select * from vista_cursos_usuario where idUsuario = 1;
+    usuarios u ON c.idInstructor = u.idUsuario;

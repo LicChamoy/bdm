@@ -27,3 +27,6 @@ WHERE
     c.estado = 'activo'
 GROUP BY 
     c.idCurso;
+
+
+select * from VistaCursosDisponibles

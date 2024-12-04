@@ -1,14 +1,20 @@
 use judav;
 
 select * from usuarios;
+
+select * from cursos;
 SELECT idUsuario, LENGTH(avatar) AS avatar_size FROM usuarios WHERE nombre = 'Diego';
-delete from usuarios;
+
+SELECT idUsuario, idCurso, titulo_curso, imagen_curso FROM vistamiscursos;
+
+
+select * from cursoCategoria;
 
 select ReactivateUser('diego78041@gmail.com');
-ALTER TABLE usuarios ADD COLUMN intentos INT DEFAULT 0;
+ALTER TABLE niveles modify COLUMN video VARCHAR(255);
 update usuarios
-set rol = 'alumno'
-where rol = 'admin';
+set rol = 'admin'
+where rol = 'alumno';
 
 CREATE TABLE usuarios (
     idUsuario INT AUTO_INCREMENT PRIMARY KEY,
@@ -105,3 +111,13 @@ CREATE TABLE interaccionesCurso (
     FOREIGN KEY (idCurso) REFERENCES cursos(idCurso) ON DELETE CASCADE,
     FOREIGN KEY (idInstructor) REFERENCES usuarios(idUsuario) ON DELETE CASCADE
 );
+
+CREATE TABLE nivelesCompletados (
+    idUsuario INT NOT NULL,
+    idNivel INT NOT NULL,
+    fechaCompletado DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (idUsuario, idNivel),
+    FOREIGN KEY (idUsuario) REFERENCES usuarios(idUsuario) ON DELETE CASCADE,
+    FOREIGN KEY (idNivel) REFERENCES niveles(idNivel) ON DELETE CASCADE
+);
+

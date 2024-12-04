@@ -6,4 +6,8 @@ VIEW judav.vistavervideo AS
         judav.niveles.descripcion AS descripcion_nivel,
         judav.niveles.video AS url_video
     FROM
-        judav.niveles
+        judav.niveles;
+        
+        
+        
+select video from niveles where idNivel = 6;

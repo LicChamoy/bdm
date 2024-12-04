@@ -2,27 +2,25 @@
 session_start();
 require_once 'metodos/conexion.php';
 
-$userId = $_SESSION['user_id'];  // Asumimos que el ID de usuario está guardado en la sesión
+$userId = $_SESSION['user_id'];
 $conexion = new ConexionBD();
 $mysqli = $conexion->obtenerConexion();
 
-// Consulta para obtener los cursos de la vista
+$cursos = []; // Inicializar un array para almacenar los cursos
+
 if (isset($userId)) {
-    // Llamar al procedimiento almacenado GetUserCourses
-    $stmt = $mysqli->prepare("CALL GetUserCourses(?)");
+    // Llamar al procedimiento almacenado GetCoursesByUser
+    $stmt = $mysqli->prepare("CALL GetCoursesByUser(?)");
     $stmt->bind_param('i', $userId);
 
     if ($stmt->execute()) {
-        // Obtener los resultados
+        // Obtener los resultados de cursos
         $result = $stmt->get_result();
         if ($result && $result->num_rows > 0) {
-            $cursos = [];
             while ($row = $result->fetch_assoc()) {
-                $cursos[] = $row;
+                // Agregar el curso al array
+                $cursos[$row['idCurso']] = $row;
             }
-
-            // Puedes usar $cursos para procesar los datos o enviarlos como JSON
-            echo json_encode($cursos);
         } else {
             echo "<script>alert('No se encontraron cursos para el usuario.');</script>";
         }
@@ -34,6 +32,8 @@ if (isset($userId)) {
 } else {
     echo "<script>alert('Usuario no autenticado.'); window.location.href = 'login.php';</script>";
 }
+
+$mysqli->close();
 ?>
 
 <!DOCTYPE html>
@@ -66,17 +66,17 @@ if (isset($userId)) {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php while ($row = $result->fetch_assoc()) { ?>
+                        <?php foreach ($cursos as $curso) { ?>
                             <tr>
-                                <td><?php echo $row['cursoTitulo']; ?></td>
-                                <td><?php echo $row['fechaInscripcion']; ?></td>
-                                <td><?php echo $row['fechaUltimaActividad']; ?></td>
-                                <td><?php echo $row['progresoDelCurso'] . '%'; ?></td>
-                                <td><?php echo $row['fechaTerminoCurso'] ?? 'En progreso'; ?></td>
-                                <td><?php echo $row['estadoAlumno']; ?></td>
+                                <td><?php echo htmlspecialchars($curso['cursoTitulo'] ?? 'N/A'); ?></td>
+                                <td><?php echo htmlspecialchars($curso['fechaInscripcion'] ?? 'N/A'); ?></td>
+                                <td><?php echo htmlspecialchars($curso['fechaUltimaActividad'] ?? 'N/A'); ?></td>
+                                <td><?php echo htmlspecialchars($curso['progresoDelCurso']) . '%'; ?></td>
+                                <td><?php echo isset($curso['fechaTerminoCurso']) ? htmlspecialchars($curso['fechaTerminoCurso']) : 'En progreso'; ?></td>
+                                <td><?php echo htmlspecialchars($curso['estadoAlumno'] ?? 'N/A'); ?></td>
                                 <td>
-                                    <?php if ($row['estadoAlumno'] == 'terminado') { ?>
-                                        <button onclick="window.location.href='certificado.php?curso_id=<?php echo $row['idCurso']; ?>'">Ver Certificado</button>
+                                    <?php if ($curso['estadoAlumno'] == 'terminado') { ?>
+                                        <button onclick="window.location.href='certificado.php?curso_id=<?php echo $curso['idCurso']; ?>'">Ver Certificado</button>
                                     <?php } ?>
                                 </td>
                             </tr>
@@ -86,14 +86,5 @@ if (isset($userId)) {
             </div>
         </main>
 
-        <script src="js/kardex.js"></script>
-        <footer>
-            <p>Judav Academy - 2024</p>
-        </footer>
     </body>
 </html>
-
-<?php
-$stmt->close();
-$mysqli->close();
-?>

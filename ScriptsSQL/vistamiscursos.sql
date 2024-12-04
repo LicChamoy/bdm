@@ -1,4 +1,4 @@
-CREATE VIEW vistamiscursos AS
+CREATE OR REPLACE VIEW vistamiscursos AS
     SELECT 
         ic.idUsuario AS idUsuario,
         c.idCurso AS idCurso,
@@ -6,7 +6,7 @@ CREATE VIEW vistamiscursos AS
         c.descripcion AS descripcion_curso,
         c.imagen AS imagen_curso,
         u.nombre AS instructor,
-        ic.progresoDelCurso AS progresoTotal,
+        ic.progresoDelCurso AS progresoPorcentaje,
         ic.fechaUltimaActividad AS ultimoAcceso,
         n.idNivel AS idNivel,
         n.titulo AS titulo_nivel,
