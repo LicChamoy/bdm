@@ -38,7 +38,7 @@ $conexionBD->cerrarConexion();
                 <li>
                     <strong>Usuario:</strong> <?= htmlspecialchars($comentario['nombreUsuario'])?> <br>
                     <strong>Calificacion:</strong> <?= htmlspecialchars($comentario['calificacion'])?> <br>
-                    <strong>Fecha:</strong> <?= htmlspecialchars($comentario['FechaComentario'])?> <br>
+                    <strong>Fecha:</strong> <?= htmlspecialchars($comentario['fechaComentario'])?> <br>
                     <strong>Comentario</strong> <?= htmlspecialchars($comentario['textoComentrio'])?> <br>
                 </li>
                 <hr>
