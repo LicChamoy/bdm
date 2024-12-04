@@ -174,18 +174,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="es">
     <head>
+    <link rel="stylesheet" href="../css/registrar_curso.css">
         <meta charset="UTF-8">
         <title>Registrar Nuevo Curso</title>
-        <style>
-            .categoria-grupo {
-                display: flex;
-                align-items: center;
-                margin-bottom: 10px;
-            }
-            .categoria-grupo input, .categoria-grupo select {
-                margin-right: 10px;
-            }
-        </style>
+
         <script>
         let nivelCounter = 1;
         let categoriaCounter = 0; // Cambiado a 0 para empezar desde el primer grupo de categorías

@@ -1,0 +1,126 @@
+:root {
+    --primary-color: #4a5bd6;
+    --secondary-color: #6a78e0;
+    --background-color: #f4f6fb;
+    --text-color: #2c3e50;
+    --card-shadow: 0 4px 6px rgba(74, 91, 214, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-group input, 
+.form-group textarea, 
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus, 
+.form-group textarea:focus, 
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.categoria-grupo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+.categoria-grupo select, 
+.categoria-grupo input[type="text"], 
+.categoria-grupo button {
+    flex-grow: 1;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.nivel-grupo {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.nivel-grupo h3 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.btn {
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.2s;
+    font-weight: 500;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.btn:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.btn:disabled {
+    background-color: #a0a0a0;
+    cursor: not-allowed;
+    transform: none;
+}
+
+#categorias-container, 
+#niveles-container {
+    margin-bottom: 20px;
+}
+
+#categorias-container .categoria-grupo {
+    margin-bottom: 10px;
+}
+
+#btn-agregar-categoria, 
+[onclick="agregarNivel()"] {
+    background-color: #28a745;
+}
+
+#btn-agregar-categoria:hover, 
+[onclick="agregarNivel()"]:hover {
+    background-color: #218838;
+}

@@ -1,0 +1,80 @@
+/* General body styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #1e3c72, #2a5298); /* Tonos azulados */
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+}
+
+/* Header styling */
+h1 {
+    font-size: 2.5rem;
+    color: #a29bfe; /* Lila */
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Description styling */
+p {
+    font-size: 1.2rem;
+    color: #dfe6e9; /* Gris claro */
+    max-width: 800px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* Video styling */
+video {
+    border: 3px solid #6c5ce7; /* Morado */
+    border-radius: 8px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Button styling */
+button {
+    background-color: #0984e3; /* Azul fuerte */
+    color: #ffffff;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #6c5ce7; /* Cambia a morado */
+    transform: translateY(-3px);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+/* Form styling */
+form {
+    margin-top: 20px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    video {
+        width: 90%; /* Reduce tamaño en pantallas pequeñas */
+    }
+}

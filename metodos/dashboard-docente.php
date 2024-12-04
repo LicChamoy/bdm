@@ -12,8 +12,15 @@ if (!isset($_SESSION['user_id'])) {
 $conexion = new ConexionBD();
 $mysqli = $conexion->obtenerConexion();
 
-// Obtener categorías
-$queryCategorias = "SELECT DISTINCT nombre AS categoria FROM categorias"; // Cambiado para obtener nombres de categorías
+// Modificar la consulta para obtener categorías consolidadas
+$queryCategorias = "
+    SELECT DISTINCT categoria 
+    FROM (
+        SELECT c.categoria 
+        FROM VistaCursosDisponibles c
+        GROUP BY c.idCurso, c.categoria
+    ) AS CategoriasUnicas
+    ORDER BY categoria";
 $categorias = $mysqli->query($queryCategorias);
 
 // Inicializar la cláusula WHERE
@@ -22,7 +29,7 @@ $where = ' WHERE 1=1';
 // Filtrar por categoría
 if (isset($_GET['categoria']) && !empty($_GET['categoria'])) {
     $categoria = $mysqli->real_escape_string($_GET['categoria']);
-    $where .= " AND c.categoria = '$categoria'"; // Cambiado para referirse al nombre de categoría
+    $where .= " AND c.categoria = '$categoria'";
 }
 
 // Filtrar por búsqueda
@@ -31,7 +38,7 @@ if (isset($_GET['buscar']) && !empty($_GET['buscar'])) {
     $where .= " AND (c.titulo LIKE '%$buscar%' OR c.descripcion LIKE '%$buscar%')";
 }
 
-// Obtener cursos con filtros
+// Modificar consulta para obtener cursos con categorías consolidadas
 $query = "
 SELECT 
     c.idCurso,
@@ -42,11 +49,15 @@ SELECT
     c.fechaCreacion,
     c.promedio_calificaciones,
     c.total_niveles,
-    c.categoria,
-    c.instructor AS instructor
+    c.instructor AS instructor,
+    GROUP_CONCAT(DISTINCT c.categoria SEPARATOR ', ') AS categorias
 FROM 
     VistaCursosDisponibles c
 $where
+GROUP BY 
+    c.idCurso, c.titulo, c.descripcion, c.imagen, 
+    c.costoTotal, c.fechaCreacion, c.promedio_calificaciones, 
+    c.total_niveles, c.instructor
 ORDER BY 
     c.fechaCreacion DESC";
 
@@ -58,130 +69,160 @@ if (!$cursos) {
 
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <title>Dashboard Docente</title>
-        <style>
-            .btn-registrar {
-                display: block;
-                margin: 20px auto;
-                padding: 10px 20px;
-                background-color: #2c5282;
-                color: white;
-                border: none;
-                border-radius: 4px;
-                text-align: center;
-                text-decoration: none;
-                font-size: 1em;
-            }
-            .btn-registrar:hover {
-                background-color: #2a4365;
-            }
-            .cursos-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 20px;
-                padding: 20px;
-            }
-            .curso-card {
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                padding: 15px;
-                text-align: center;
-                background-color: white;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                transition: transform 0.2s;
-            }
-            .curso-card:hover {
-                transform: translateY(-5px);
-            }
-            .curso-card img {
-                max-width: 100%;
-                height: 200px;
-                object-fit: cover;
-                border-radius: 8px;
-            }
-            .categoria-badge {
-                background-color: #e2e8f0;
-                padding: 5px 10px;
-                border-radius: 15px;
-                display: inline-block;
-                margin: 10px 0;
-                font-size: 0.9em;
-            }
-            .calificacion {
-                color: #f6e05e;
-                font-size: 1.2em;
-                margin: 10px 0;
-            }
-            .curso-precio {
-                font-weight: bold;
-                color: #2c5282;
-                font-size: 1.1em;
-            }
-            .btn-ver-detalles {
-                display: inline-block;
-                padding: 8px 16px;
-                background-color: #2c5282;
-                color: white;
-                text-decoration: none;
-                border-radius: 4px;
-                margin-top: 10px;
-                transition: background-color 0.3s;
-            }
-            .btn-ver-detalles:hover {
-                background-color: #2a4365;
-            }
-            .filtros {
-                padding: 20px;
-                background-color: #f7fafc;
-                border-radius: 8px;
-                margin: 20px;
-            }
-            .filtros form {
-                display: flex;
-                gap: 10px;
-                align-items: center;
-                flex-wrap: wrap;
-            }
-            .filtros input[type="text"],
-            .filtros select {
-                padding: 8px;
-                border: 1px solid #e2e8f0;
-                border-radius: 4px;
-            }
-            .filtros button {
-                padding: 8px 16px;
-                background-color: #2c5282;
-                color: white;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-            }
-            .no-cursos {
-                text-align: center;
-                padding: 20px;
-                color: #718096;
-            }
-        </style>
-    </head>
-    <body>
-        <h1>Dashboard - Docente</h1>
+<head>
+    <meta charset="UTF-8">
+    <title>Judav Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a5bd6;
+            --secondary-color: #6a78e0;
+            --background-color: #f4f6fb;
+            --text-color: #2c3e50;
+            --card-shadow: 0 4px 6px rgba(74, 91, 214, 0.1);
+        }
 
-        <div class="dashboard-buttons">
-            <a href="registrar_curso.php" class="btn-registrar">Registrar Nuevo Curso</a>
-            <a href="../mis_cursos.php" class="btn-registrar">Mis Cursos</a>
-            <a href="../mensajes-instructor.php" class="btn-registrar">Bandeja de mensajes</a>
-            
-            <a href="../kardex.php" class="btn-registrar">Kardex</a>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .page-title {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .filtros {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .filtros form {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .filtros input,
+        .filtros select {
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            flex-grow: 1;
+        }
+
+        .cursos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .curso-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .curso-card:hover {
+            transform: scale(1.03);
+        }
+
+        .curso-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .curso-content {
+            padding: 15px;
+        }
+
+        .curso-titulo {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .curso-categorias {
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-bottom: 10px;
+        }
+
+        .curso-detalles {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .no-cursos {
+            text-align: center;
+            color: var(--primary-color);
+            padding: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="page-title">Judav Academy</h1>
+
+        <div class="nav-buttons">
+            <a href="registrar_curso.php" class="btn">Registrar Nuevo Curso</a>
+            <a href="../mis_cursos.php" class="btn">Mis Cursos</a>
+            <a href="../mensajes-instructor.php" class="btn">Bandeja de Mensajes</a>
+            <a href="../kardex.php" class="btn">Kardex</a>
+            <a href="../perfil.php" class="btn">Perfil</a>
         </div>
-    <?php if ($_SESSION['user_rol'] === 'docente'): ?>
-        <a href="registrar_curso.php" class="btn-registrar">Registrar Nuevo Curso</a>
-        <a href="eliminar_cursos.php" class="btn-registrar">Eliminar Cursos</a>
-    <?php endif; ?>
-    <a href="../mis_cursos.php" class="btn-registrar">Mis Cursos</a>
-    <a href="../perfil.php" class="btn-registrar">Perfil</a>
-</div>
 
         <div class="filtros">
             <form method="GET" action="">
@@ -198,38 +239,39 @@ if (!$cursos) {
                     <?php endwhile; ?>
                 </select>
                 
-                <button type="submit">Filtrar</button>
+                <button type="submit" class="btn">Filtrar</button>
             </form>
         </div>
 
         <div class="cursos-grid">
             <?php while($curso = $cursos->fetch_assoc()): ?>
                 <div class="curso-card">
-                    <img src="<?php echo htmlspecialchars($curso['imagen'] ?? '../img/placeholder.jpg'); ?>" 
-                        alt="<?php echo htmlspecialchars($curso['titulo']); ?>">
-                    <h3><?php echo htmlspecialchars($curso['titulo']); ?></h3>
-                    <p><?php echo htmlspecialchars(substr($curso['descripcion'], 0, 150)) . '...'; ?></p>
-                    <div class="categoria-badge">
-                        <?php echo htmlspecialchars($curso['categoria']); ?>
+                <img src="<?php echo htmlspecialchars($curso['imagen']); ?>" 
+                alt="<?php echo htmlspecialchars($curso['titulo']); ?>">
+                    <div class="curso-content">
+                        <h3 class="curso-titulo"><?php echo htmlspecialchars($curso['titulo']); ?></h3>
+                        <p><?php echo htmlspecialchars(substr($curso['descripcion'], 0, 100)) . '...'; ?></p>
+                        
+                        <div class="curso-categorias">
+                            <?php echo htmlspecialchars($curso['categorias']); ?>
+                        </div>
+                        
+                        <div class="curso-detalles">
+                            <span>Por: <?php echo htmlspecialchars($curso['instructor']); ?></span>
+                            <span>$<?php echo number_format($curso['costoTotal'], 2); ?> MXN</span>
+                        </div>
+                        
+                        <div class="curso-calificacion">
+                            <?php
+                            $calificacion = round($curso['promedio_calificaciones'] ?? 0);
+                            for ($i = 0; $i < 5; $i++) {
+                                echo $i < $calificacion ? '★' : '☆';
+                            }
+                            ?>
+                        </div>
+                        
+                        <a href="../ver-curso.php?idCurso=<?php echo $curso['idCurso']; ?>" class="btn">Ver Detalles</a>
                     </div>
-                    <p class="curso-instructor">
-                        Por: <?php echo htmlspecialchars($curso['instructor']); ?>
-                    </p>
-                    <div class="calificacion">
-                        <?php
-                        $calificacion = round($curso['promedio_calificaciones'] ?? 0);
-                        for ($i = 0; $i < 5; $i++) {
-                            echo $i < $calificacion ? '★' : '☆';
-                        }
-                        ?>
-                    </div>
-                    <p class="curso-precio">
-                        $<?php echo number_format($curso['costoTotal'], 2); ?> MXN
-                    </p>
-                    <p>
-                        <?php echo $curso['total_niveles']; ?> niveles
-                    </p>
-                    <a href="../ver-curso.php?idCurso=<?php echo $curso['idCurso']; ?>" class="btn-ver-detalles">Ver Detalles</a>
                 </div>
             <?php endwhile; ?>
         </div>
@@ -237,5 +279,6 @@ if (!$cursos) {
         <?php if ($cursos->num_rows == 0): ?>
             <p class="no-cursos">No se encontraron cursos que coincidan con tu búsqueda.</p>
         <?php endif; ?>
-    </body>
+    </div>
+</body>
 </html>
