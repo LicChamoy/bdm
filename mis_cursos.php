@@ -48,7 +48,7 @@ while ($curso = $cursos->fetch_assoc()) {
                 'descripcion' => $curso['descripcion_curso'],
                 'imagen' => $curso['imagen_curso'],
                 'instructor' => $curso['instructor'],
-                'progreso' => $curso['progresoTotal'],
+                'progreso' => $curso['progresoPorcentaje'],
                 'ultimoAcceso' => $curso['ultimoAcceso']
             ],
             'niveles' => []
@@ -265,8 +265,7 @@ while ($curso = $cursos->fetch_assoc()) {
                                         <?php endif; ?>
 
                                         <?php if ($nivel['videoUrl']): ?>
-                                            <a href="ver_video.php?nivel=<?php echo $nivel['idNivel']; ?>" class="btn-video">Ver video del nivel</a>
-                                               class="btn-video">Ver video del nivel</a>
+                                            <a href="ver_video.php?nivel=<?php echo $nivel['idNivel']; ?>&curso=<?php echo array_search($curso, $cursos); ?>" class="btn-video">Ver video del nivel</a>
                                         <?php endif; ?>
                                     </div>
                                 </div>
