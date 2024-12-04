@@ -5,16 +5,16 @@ CREATE PROCEDURE ObtenerComentariosCurso (
 )
 BEGIN
     SELECT 
-        ic.idUsuario,
+        ic.idUsuario AS idUser,
         u.nombre AS nombreUsuario,
-        ic.textoComentario,
-        ic.calificacion,
-        ic.fechaComentario,
-        ic.estatusComentario
+        ic.textoComentario AS textoComentario,
+        ic.calificacion AS calificacion,
+        ic.fechaComentario AS fechaComentario,
+        ic.estatusComentario AS estatus
     FROM 
         interaccionesCurso ic
     JOIN 
-        usuarios u ON ic.idUsuario = u.idUsuario  -- Cambia esto al nombre real de tu tabla de usuarios
+        usuarios u ON ic.idUsuario = u.idUsuario
     WHERE 
         ic.idCurso = p_idCurso
     ORDER BY 
