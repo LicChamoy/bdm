@@ -9,7 +9,6 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $userId = $_SESSION['user_id'];
-$cursosPorCategoria = [];
 
 // Conexión a la base de datos
 $conexion = new ConexionBD();
@@ -36,18 +35,18 @@ $stmtCursos->execute();
 $cursos = $stmtCursos->get_result();
 
 // Organizar cursos por categoría
+$cursosPorCategoria = [];
 while ($curso = $cursos->fetch_assoc()) {
     $categoria = $curso['categoria'];
     if (!isset($cursosPorCategoria[$categoria])) {
         $cursosPorCategoria[$categoria] = [];
     }
-    // Agregar información de curso
     if (!isset($cursosPorCategoria[$categoria][$curso['idCurso']])) {
         $cursosPorCategoria[$categoria][$curso['idCurso']] = [
             'info' => [
                 'titulo' => $curso['titulo_curso'],
                 'descripcion' => $curso['descripcion_curso'],
-                'imagen' => !empty($curso['imagen_curso']) ? $curso['imagen_curso'] : '../img/placeholder.jpg',
+                'imagen' => $curso['imagen_curso'],
                 'instructor' => $curso['instructor'],
                 'progreso' => $curso['progresoTotal'],
                 'ultimoAcceso' => $curso['ultimoAcceso']
@@ -55,7 +54,6 @@ while ($curso = $cursos->fetch_assoc()) {
             'niveles' => []
         ];
     }
-    // Agregar niveles
     $cursosPorCategoria[$categoria][$curso['idCurso']]['niveles'][] = [
         'idNivel' => $curso['idNivel'],
         'titulo' => $curso['titulo_nivel'],
@@ -65,7 +63,6 @@ while ($curso = $cursos->fetch_assoc()) {
     ];
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="es">
@@ -226,14 +223,13 @@ while ($curso = $cursos->fetch_assoc()) {
             <div class="categoria">
                 <h2 class="categoria-titulo"><?php echo htmlspecialchars($categoria); ?></h2>
                 
-                <?php foreach ($cursos as $curso): var_dump($curso['info']['imagen']);
-?>
+                <?php foreach ($cursos as $curso): ?>
                     <div class="curso">
                         <div class="curso-header">
-                            <img src="<?php echo htmlspecialchars(!empty($curso['info']['imagen']) ? $curso['info']['imagen'] : '../img/placeholder.jpg'); ?>" 
-                                alt="<?php echo htmlspecialchars($curso['info']['titulo']); ?>" 
-                                class="curso-imagen">
-                                
+                            <img src="<?php echo htmlspecialchars($curso['info']['imagen'] ?? '/api/placeholder/400/320'); ?>" 
+                                 alt="<?php echo htmlspecialchars($curso['info']['titulo']); ?>" 
+                                 class="curso-imagen">
+                            
                             <div class="curso-info">
                                 <h3 class="curso-titulo"><?php echo htmlspecialchars($curso['info']['titulo']); ?></h3>
                                 
@@ -259,7 +255,7 @@ while ($curso = $cursos->fetch_assoc()) {
                                     <div class="nivel-content">
                                         <p><?php echo htmlspecialchars($nivel['descripcion']); ?></p>
                                         
-                                        <?php if (!empty($nivel['recursos']) && is_array(json_decode($nivel['recursos'], true))): ?>
+                                        <?php if ($nivel['recursos']): ?>
                                             <h5>Recursos disponibles:</h5>
                                             <ul class="recursos-lista">
                                                 <?php foreach (json_decode($nivel['recursos']) as $recurso): ?>
@@ -267,8 +263,10 @@ while ($curso = $cursos->fetch_assoc()) {
                                                 <?php endforeach; ?>
                                             </ul>
                                         <?php endif; ?>
+
                                         <?php if ($nivel['videoUrl']): ?>
                                             <a href="ver_video.php?nivel=<?php echo $nivel['idNivel']; ?>" class="btn-video">Ver video del nivel</a>
+                                               class="btn-video">Ver video del nivel</a>
                                         <?php endif; ?>
                                     </div>
                                 </div>

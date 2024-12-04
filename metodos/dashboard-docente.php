@@ -3,7 +3,7 @@ session_start();
 require_once 'conexion.php';
 
 // Verificar si el usuario está logueado y es docente
-if (!isset($_SESSION['user_id']) || $_SESSION['user_rol'] !== 'docente') {
+if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
@@ -43,11 +43,9 @@ SELECT
     c.promedio_calificaciones,
     c.total_niveles,
     c.categoria,
-    CONCAT(u.nombre, ' ', u.apellidos) AS instructor
+    c.instructor AS instructor
 FROM 
     VistaCursosDisponibles c
-JOIN 
-    usuarios u ON c.idInstructor = u.idUsuario
 $where
 ORDER BY 
     c.fechaCreacion DESC";
@@ -173,9 +171,6 @@ if (!$cursos) {
         <div class="dashboard-buttons">
             <a href="registrar_curso.php" class="btn-registrar">Registrar Nuevo Curso</a>
             <a href="../mis_cursos.php" class="btn-registrar">Mis Cursos</a>
-            <a href="../mensajes-instructor.php" class="btn-registrar">Bandeja de mensajes</a>
-            
-            <a href="../kardex.php" class="btn-registrar">Kardex</a>
         </div>
 
         <div class="filtros">

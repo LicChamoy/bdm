@@ -12,8 +12,26 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_rol'] !== 'docente') {
 $conexion = new ConexionBD();
 $mysqli = $conexion->obtenerConexion();
 
-// Obtener el ID del usuario
-$idUsuario = $_SESSION['user_id'];
+// Función para validar subida de archivos
+function validarSubidaArchivo($archivo) {
+    $maxTamañoArchivo = 5 * 1024 * 1024; // 5 MB
+    $tiposPermitidos = ['image/jpeg', 'image/png', 'image/gif', 'video/mp4', 'application/pdf'];
+
+    if ($archivo['error'] !== UPLOAD_ERR_OK) {
+        return false;
+    }
+
+    if ($archivo['size'] > $maxTamañoArchivo) {
+        return false;
+    }
+
+    $tipoMime = mime_content_type($archivo['tmp_name']);
+    if (!in_array($tipoMime, $tiposPermitidos)) {
+        return false;
+    }
+
+    return true;
+}
 
 // Obtener categorías existentes
 $queryCategorias = "SELECT idCategoria, nombre FROM categorias";
@@ -27,7 +45,7 @@ while ($categoria = $resultCategorias->fetch_assoc()) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $titulo = trim($_POST['titulo']);
     $descripcion = trim($_POST['descripcion']);
-    $categorias = $_POST['categorias'] ?? []; // Lista de IDs de categorías seleccionadas
+    $categorias = $_POST['categorias'] ?? []; 
     $niveles = $_POST['niveles'] ?? [];
     $imagenCurso = null;
 
@@ -41,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Manejar subida de imagen
+    // Manejar subida de imagen del curso
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
         $uploadDir = 'uploads/cursos/';
         if (!is_dir($uploadDir)) {
@@ -52,23 +70,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $imagePath = $uploadDir . $imageName;
 
         if (move_uploaded_file($_FILES['imagen']['tmp_name'], $imagePath)) {
-            $imagenCurso = $imagePath; // Guardar la ruta de la imagen
+            $imagenCurso = $imagePath;
         } else {
-            echo "<script>alert('Error al subir la imagen.');</script>";
+            echo "<script>alert('Error al subir la imagen del curso.');</script>";
             exit;
         }
     }    
 
-    // Validar y procesar niveles
+    // Procesar niveles
     $nivelTitulos = [];
     $nivelDescripciones = [];
     $nivelCostos = [];
     $nivelVideos = [];
     $nivelDocumentos = [];
-    $nivelCounter = 0;
 
-    foreach ($niveles as $nivel) {
-        $nivelCounter++;
+    foreach ($niveles as $index => $nivel) {
         $nivelTitulos[] = $nivel['titulo'] ?? '';
         $nivelDescripciones[] = $nivel['descripcion'] ?? '';
         $nivelCostos[] = floatval($nivel['costoNivel'] ?? 0);
@@ -78,13 +94,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $documentoNombre = 'doc_nivel_' . uniqid() . '_' . $_FILES['niveles']['name'][$index]['documento'];
             $documentoRuta = 'uploads/documentos/' . $documentoNombre;
 
-            // Crear directorio si no existe
             if (!is_dir('uploads/documentos')) {
                 mkdir('uploads/documentos', 0755, true);
             }
 
             if (move_uploaded_file($_FILES['niveles']['tmp_name'][$index]['documento'], $documentoRuta)) {
-                $nivelData['documento'] = $documentoRuta;
+                $nivelDocumentos[] = $documentoRuta;
             }
         }
 
@@ -93,16 +108,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $videoNombre = 'video_nivel_' . uniqid() . '_' . $_FILES['niveles']['name'][$index]['video'];
             $videoRuta = 'uploads/videos/' . $videoNombre;
 
-            // Crear directorio si no existe
             if (!is_dir('uploads/videos')) {
                 mkdir('uploads/videos', 0755, true);
             }
 
             if (move_uploaded_file($_FILES['niveles']['tmp_name'][$index]['video'], $videoRuta)) {
-                $nivelData['video'] = $videoRuta;
+                $nivelVideos[] = $videoRuta;
             }
         }
-
     }
 
     // Calcular costo total
@@ -117,23 +130,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $nivelVideosJson = json_encode($nivelVideos, JSON_THROW_ON_ERROR);
         $nivelDocumentosJson = json_encode($nivelDocumentos, JSON_THROW_ON_ERROR);
     } catch (JsonException $e) {
-        echo "<script>alert('Error al procesar datos en formato JSON: ');</script>" . $e->getMessage();
+        echo "<script>alert('Error al procesar datos en formato JSON: " . $e->getMessage() . "');</script>";
         exit;
     }
 
     // Llamar al procedimiento almacenado
-    $stmt = $mysqli->prepare("CALL RegistrarCursoConNiveles(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $mysqli->prepare("CALL RegistrarCursoConNiveles(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
     $accion = 'registrar';
     $resultado = '';
 
-    // Actualizar bind_param para incluir videos y documentos
     $stmt->bind_param(
-        'sssisdsssssss',
+        'sssissssssss',
         $accion,
         $titulo,
         $descripcion,
-        $idUsuario,
+        $_SESSION['user_id'],
         $categoriasJson,
         $costoTotal,
         $nivelTitulosJson,
@@ -141,10 +153,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $nivelCostosJson,
         $nivelVideosJson,
         $nivelDocumentosJson,
-        $imagenCurso,
         $resultado
     );
-
 
     try {
         if ($stmt->execute()) {
@@ -155,10 +165,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception($stmt->error);
         }
     } catch (Exception $e) {
-        echo "<script>alert('Error al registrar el curso, contacta con tu administrador, error: {$e->getMessage()}');</script>";
+        echo "<script>alert('Error al registrar el curso: " . $e->getMessage() . "');</script>";
         exit;
     }
-    
 }
 ?>
 
