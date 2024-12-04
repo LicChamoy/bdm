@@ -14,6 +14,8 @@ $idCurso = $_POST['idCurso'];
 $textoComentario = $_POST['textoComentario'];
 $calificacion = $_POST['calificacion'];
 
+
+var_dump($_POST);
 // Validar datos de entrada
 if (!is_numeric($calificacion) || $calificacion < 1 || $calificacion > 5) {
     die(json_encode(["success" => false, "message" => "Calificación inválida."]));

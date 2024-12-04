@@ -35,8 +35,12 @@ BEGIN
             WHERE idUsuario = p_idUsuario AND idCurso = p_idCurso;
         ELSE
             -- Insertar nuevo comentario
-            INSERT INTO interaccionesCurso (idUsuario, idCurso, textoComentario, calificacion, fechaComentario, estatusComentario)
-            VALUES (p_idUsuario, p_idCurso, p_textoComentario, p_calificacion, NOW(), 'visible');
+            UPDATE interaccionesCurso
+            SET textoComentario = p_textoComentario,
+                calificacion = p_calificacion,
+                fechaComentario = NOW(),
+                estatusComentario = 'visible'
+            WHERE idUsuario = p_idUsuario AND idCurso = p_idCurso;
         END IF;
     END IF;
 END //
