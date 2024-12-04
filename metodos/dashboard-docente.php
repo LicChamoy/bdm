@@ -171,7 +171,17 @@ if (!$cursos) {
         <div class="dashboard-buttons">
             <a href="registrar_curso.php" class="btn-registrar">Registrar Nuevo Curso</a>
             <a href="../mis_cursos.php" class="btn-registrar">Mis Cursos</a>
+            <a href="../mensajes-instructor.php" class="btn-registrar">Bandeja de mensajes</a>
+            
+            <a href="../kardex.php" class="btn-registrar">Kardex</a>
         </div>
+    <?php if ($_SESSION['user_rol'] === 'docente'): ?>
+        <a href="registrar_curso.php" class="btn-registrar">Registrar Nuevo Curso</a>
+        <a href="eliminar_cursos.php" class="btn-registrar">Eliminar Cursos</a>
+    <?php endif; ?>
+    <a href="../mis_cursos.php" class="btn-registrar">Mis Cursos</a>
+    <a href="../perfil.php" class="btn-registrar">Perfil</a>
+</div>
 
         <div class="filtros">
             <form method="GET" action="">
