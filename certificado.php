@@ -33,7 +33,7 @@ if (isset($_GET['curso_id'])) {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Vista Previa del Certificado</title>
-        <link rel="stylesheet" href="/css/certificado.css">
+        <link rel="stylesheet" href="css/certificado.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     </head>
     <body>

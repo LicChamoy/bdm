@@ -162,7 +162,7 @@ while ($curso = $cursos->fetch_assoc()) {
             <div class="modal-content">
                 <span class="cerrar" onclick="cerrarModalComentario()">&times;</span>
                 <h2>Dejar un comentario</h2>
-                <form id="formComentario" method="POST" action="/metodos/RegistrarComentarioCurso.php">
+                <form id="formComentario" method="POST" action="/bdm/metodos/RegistrarComentarioCurso.php">
                     <input type="hidden" id="idCurso" name="idCurso">
                     <p id="tituloCurso"></p>
                     <textarea name="textoComentario" placeholder="Escribe tu comentario" required></textarea>

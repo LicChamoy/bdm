@@ -9,6 +9,8 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+var_dump($_POST);
+
 $userId = $_SESSION['user_id'];
 $idCurso = $_POST['idCurso'];
 $textoComentario = $_POST['textoComentario'];

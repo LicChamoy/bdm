@@ -219,7 +219,7 @@ if (!$cursos) {
         <div class="nav-buttons">
             <a href="registrar_curso.php" class="btn">Registrar Nuevo Curso</a>
             <a href="../mis_cursos.php" class="btn">Mis Cursos</a>
-            <a href="../mensajes-instructor.php" class="btn">Bandeja de Mensajes</a>
+            <a href="../chat/mensajes_entrantes.php" class="btn">Bandeja de Mensajes</a>
             <a href="../kardex.php" class="btn">Kardex</a>
             <a href="../perfil.php" class="btn">Perfil</a>
         </div>

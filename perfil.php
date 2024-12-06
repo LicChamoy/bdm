@@ -86,7 +86,7 @@ if ($user_avatar) {
                 <button type="submit">Guardar Cambios</button>
             </form>
 
-            <p><a href="dashboard.html">Volver al Dashboard</a></p>
+            <a href="metodos/dashboard-docente.php">Volver al dashboard</a>
         </main>
 
         <script>

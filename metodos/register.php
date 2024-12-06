@@ -32,11 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $row = $result->fetch_assoc();
             $resultado = $row['resultado'] ?? '';
 
-            if ($resultado === 'Registro exitoso.') {
-                header("Location: ../login.html"); // Redirigir a la página de login
-            } else {
-                echo "<script>alert('$resultado'); window.history.back();</script>";
-            }
+        header("Location: ../login.html"); // Redirigir a la página de login
         }
     }
 

@@ -3,10 +3,20 @@ use judav;
 select * from usuarios;
 
 select * from cursos;
+
+
+select * from chat;
+select * from mensaje;
+
+select * from niveles;
 SELECT idUsuario, LENGTH(avatar) AS avatar_size FROM usuarios WHERE nombre = 'Diego';
 
 SELECT idUsuario, idCurso, titulo_curso, imagen_curso FROM vistamiscursos;
 
+
+SELECT m.texto AS contenido, u.nombre AS usuario, m.fecha AS timestamp
+         FROM mensajes m
+         JOIN usuarios u;
 
 select * from cursoCategoria;
 
@@ -72,14 +82,24 @@ CREATE TABLE niveles (
     FOREIGN KEY (idCurso) REFERENCES cursos(idCurso) ON DELETE CASCADE
 );
 
-CREATE TABLE mensajes (
-    idMensaje INT AUTO_INCREMENT PRIMARY KEY,
+
+CREATE TABLE chat (
+    idChat INT AUTO_INCREMENT PRIMARY KEY,
     idEmisor INT NOT NULL,
     idReceptor INT NOT NULL,
-    texto TEXT NOT NULL,
-    fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (idEmisor) REFERENCES usuarios(idUsuario) ON DELETE CASCADE,
-    FOREIGN KEY (idReceptor) REFERENCES usuarios(idUsuario) ON DELETE CASCADE
+    FOREIGN KEY (idEmisor) REFERENCES usuarios(idUsuario),
+    FOREIGN KEY (idReceptor) REFERENCES usuarios(idUsuario)
+);
+
+
+CREATE TABLE mensaje (
+    idMensaje INT AUTO_INCREMENT PRIMARY KEY,
+    chat_id INT,
+    idAutor INT,
+    contenido TEXT,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (chat_id) REFERENCES chat(idChat),
+    FOREIGN KEY (idAutor) REFERENCES usuarios(idUsuario)
 );
 
 CREATE TABLE interaccionesCurso (

@@ -219,8 +219,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comprar'])) {
                 <?php endif; ?>
                     <!-- Botón para contactar con el instructor -->
                 <div style="margin-top: 20px;">
-                    <button class="btn-comprar" 
-                            onclick="location.href='chat.php?idInstructor=<?php echo $curso['idInstructor']; ?>&idCurso=<?php echo $idCurso; ?>'">
+                    <button class="btn-comprar" type="button"
+                            onclick="location.href='chat/contactar_instructor.php?idInstructor=<?php echo $curso['idInstructor']; ?>'">
                         Contactar al instructor
                     </button>
                 </div>
@@ -249,6 +249,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comprar'])) {
                 </div>
             <?php endwhile; ?>
         </div>
+
+        <?php
+        include 'metodos/comentarios.php';
+        mostrarComentrios($idCurso);
+        ?>
 
         <!-- Modal de compra -->
         <div id="modalCompra" class="modal">

@@ -83,6 +83,8 @@ $mysqli->close();
                         <?php } ?>
                     </tbody>
                 </table>
+                
+            <a href="metodos/dashboard-docente.php">Volver al dashboard</a>
             </div>
         </main>
 
