@@ -22,7 +22,7 @@ ADD CONSTRAINT UNIQUE (idUsuario, idCurso);
 
 CALL ObtenerComentariosCurso(11);
 
-call RegistrarComentarioCurso(5, )
+call RegistrarComentarioCurso(5, 8);
 
 SELECT 
     ic.idUsuario,
