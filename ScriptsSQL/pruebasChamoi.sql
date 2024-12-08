@@ -11,6 +11,8 @@ select * from usuarios;
 
 select* from cursos;
 
+SELECT * FROM VistaCursosDisponibles WHERE instructor = 5;
+
 call ObtenerProgresoCurso(5,11);
 
 call GetCoursesByUser(5);

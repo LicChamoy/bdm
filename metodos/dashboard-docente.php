@@ -8,6 +8,9 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+// Obtener el ID del instructor desde la sesión
+$instructorId = $_SESSION['user_id']; // Asumiendo que el ID del usuario se guarda en esta variable
+
 // Conexión a la base de datos
 $conexion = new ConexionBD();
 $mysqli = $conexion->obtenerConexion();
@@ -24,7 +27,7 @@ $queryCategorias = "
 $categorias = $mysqli->query($queryCategorias);
 
 // Inicializar la cláusula WHERE
-$where = ' WHERE 1=1';
+$where = " WHERE c.idInstructor = '$instructorId'"; // Filtrar por instructor
 
 // Filtrar por categoría
 if (isset($_GET['categoria']) && !empty($_GET['categoria'])) {
@@ -66,6 +69,7 @@ if (!$cursos) {
     die("Error en la consulta: " . $mysqli->error);
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
