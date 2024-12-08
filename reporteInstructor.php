@@ -176,12 +176,18 @@ $mysqli->close();
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($alumnos as $alumno) { ?>
+                                <?php foreach ($alumnos as $alumno) { 
+                                    // Formatear las fechas y horas
+                                    $fechaInscripcion = (new DateTime($alumno['fechaInscripcion']))->format('d-m-y H:i');
+                                    $fechaUltimoAcceso = isset($alumno['fechaUltimaActividad']) ? 
+                                        (new DateTime($alumno['fechaUltimaActividad']))->format('d-m-y H:i') : 
+                                        'No disponible'; // Si no hay fecha de último acceso
+                                ?>
                                     <tr>
                                         <td><?php echo htmlspecialchars($alumno['nombreAlumno']); ?></td>
-                                        <td><?php echo htmlspecialchars($alumno['fechaInscripcion']); ?></td>
+                                        <td><?php echo htmlspecialchars($fechaInscripcion); ?></td>
                                         <td><?php echo htmlspecialchars($alumno['nivelAvance']); ?>%</td>
-                                        <td><?php echo htmlspecialchars($alumno['fechaUltimaActividad'] ?? 'No disponible'); ?></td>
+                                        <td><?php echo htmlspecialchars($fechaUltimoAcceso); ?></td>
                                         <td>$<?php echo number_format($alumno['precioPagado'], 2, '.', ','); ?></td>
                                         <td><?php echo htmlspecialchars($alumno['formaPago']); ?></td>
                                     </tr>
@@ -190,6 +196,7 @@ $mysqli->close();
                         </table>
                     <?php } ?>
                 </section>
+
             </div>
         </main>
     </body>
