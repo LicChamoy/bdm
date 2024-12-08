@@ -10,13 +10,25 @@ $resumenCursos = [];
 $ingresosPorFormaPago = [];
 $alumnosPorCurso = [];
 
+// Obtener las categorías
+$categorias = [];
+$queryCategorias = "SELECT idCategoria, nombre_categoria, descripcion_categoria, nombre_creador, total_cursos FROM vista_categorias_cursos"; // Ajusta la consulta según tu estructura de base de datos
+$resultCategorias = $mysqli->query($queryCategorias);
+if ($resultCategorias) {
+    while ($row = $resultCategorias->fetch_assoc()) {
+        $categorias[] = $row;
+    }
+}
+
 if (isset($instructorId)) {
+    // Capturar los valores del formulario
+    $fechaInicio = isset($_GET['fechaInicio']) ? $_GET['fechaInicio'] : '2000-01-01';
+    $fechaFin = isset($_GET['fechaFin']) ? $_GET['fechaFin'] : date('Y-m-d');
+    $idCategoria = isset($_GET['categoria']) ? intval($_GET['categoria']) : 0; // 0 para todas
+    $soloActivos = isset($_GET['soloActivos']) ? intval($_GET['soloActivos']) : 1; // Solo activos por defecto
+
     // Llamar al procedimiento para el resumen de cursos
     $stmtResumen = $mysqli->prepare("CALL ObtenerResumenCursos(?, ?, ?, ?, ?)");
-    $fechaInicio = '2000-01-01';
-    $fechaFin = date('Y-m-d');
-    $idCategoria = 0; // Sin filtrar por categoría
-    $soloActivos = 1; // Solo cursos activos
     $stmtResumen->bind_param('issii', $instructorId, $fechaInicio, $fechaFin, $idCategoria, $soloActivos);
 
     if ($stmtResumen->execute()) {
@@ -56,6 +68,7 @@ if (isset($instructorId)) {
     echo "<script>alert('Usuario no autenticado.'); window.location.href = 'login.php';</script>";
 }
 
+
 $mysqli->close();
 ?>
 <!DOCTYPE html>
@@ -74,6 +87,32 @@ $mysqli->close();
         
         <main>
             <div class="dashboard-container">
+            <form method="GET" action="">
+                <label for="fechaInicio">Fecha de Inicio:</label>
+                <input type="date" id="fechaInicio" name="fechaInicio" value="<?php echo isset($_GET['fechaInicio']) ? htmlspecialchars($_GET['fechaInicio']) : '2000-01-01'; ?>">
+
+                <label for="fechaFin">Fecha de Fin:</label>
+                <input type="date" id="fechaFin" name="fechaFin" value="<?php echo isset($_GET['fechaFin']) ? htmlspecialchars($_GET['fechaFin']) : date('Y-m-d'); ?>">
+
+                <label for="categoria">Categoría:</label>
+                <select id="categoria" name="categoria">
+                    <option value="0" <?php echo (isset($_GET['categoria']) && $_GET['categoria'] == 0) ? 'selected' : ''; ?>>Todas</option>
+                    <?php foreach ($categorias as $categoria) { ?>
+                        <option value="<?php echo htmlspecialchars($categoria['idCategoria']); ?>" <?php echo (isset($_GET['categoria']) && $_GET['categoria'] == $categoria['idCategoria']) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($categoria['nombre_categoria']); ?>
+                        </option>
+                    <?php } ?>
+                </select>
+
+                <label for="soloActivos">Solo Cursos Activos:</label>
+                <select id="soloActivos" name="soloActivos">
+                    <option value="1" <?php echo (isset($_GET['soloActivos']) && $_GET['soloActivos'] == 1) ? 'selected' : ''; ?>>Sí</option>
+                    <option value="0" <?php echo (isset($_GET['soloActivos']) && $_GET['soloActivos'] == 0) ? 'selected' : ''; ?>>No</option>
+                </select>
+
+                <input type="submit" value="Filtrar">
+            </form>
+            
                 <!-- Resumen de Cursos -->
                 <section id="resumen-cursos">
                     <h2>Resumen de Cursos</h2>
