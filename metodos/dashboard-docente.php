@@ -4,7 +4,7 @@ require_once 'conexion.php';
 
 // Verificar si el usuario está logueado y es docente
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: ../login.html");
     exit;
 }
 
@@ -27,7 +27,15 @@ $queryCategorias = "
 $categorias = $mysqli->query($queryCategorias);
 
 // Inicializar la cláusula WHERE
-$where = " WHERE c.idInstructor = '$instructorId'"; // Filtrar por instructor
+$where = "";
+
+if ($_SESSION['user_rol'] == 'docente') {
+    // Si es docente, filtrar por instructor
+    $where .= " WHERE c.idInstructor = '$instructorId'";
+} elseif ($_SESSION['user_rol'] == 'alumno') {
+    // Si es alumno, no filtrar por instructor
+    $where .= " WHERE 1=1"; // Esto mantiene la sintaxis correcta al concatenar con otros filtros
+}
 
 // Filtrar por categoría
 if (isset($_GET['categoria']) && !empty($_GET['categoria'])) {
@@ -221,10 +229,17 @@ if (!$cursos) {
         <h1 class="page-title">Judav Academy</h1>
 
         <div class="nav-buttons">
-            <a href="registrar_curso.php" class="btn">Registrar Nuevo Curso</a>
-            <!--<a href="../mis_cursos.php" class="btn">Mis Cursos</a>-->
-            <a href="../chat/mensajes_entrantes.php" class="btn">Bandeja de Mensajes</a>
-            <a href="../reporteInstructor.php" class="btn">Registro de ventas</a>
+            <?php if($_SESSION['user_rol']=='alumno'){ ?>
+                <a href="../mis_cursos.php" class="btn">Mis Cursos</a>
+            <?php } else if($_SESSION['user_rol']=='docente'){ ?>
+                <a href="registrar_curso.php" class="btn">Registrar Nuevo Curso</a>
+            <?php }?>
+                <a href="../chat/mensajes_entrantes.php" class="btn">Bandeja de Mensajes</a>
+            <?php if($_SESSION['user_rol']=='alumno'){ ?>
+                <a href="../kardex.php" class="btn">Kardex</a>
+            <?php } else if($_SESSION['user_rol']=='docente'){ ?>
+                <a href="../reporteInstructor.php" class="btn">Registro de ventas</a>
+            <?php }?>
             <a href="../perfil.php" class="btn">Perfil</a>
         </div>
 

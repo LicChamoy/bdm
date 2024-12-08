@@ -6,6 +6,11 @@ require 'conexion.php';
 $conexionBD = new ConexionBD();
 $conexion = $conexionBD->obtenerConexion();
 
+if (isset($_SESSION['user_id'])) {
+    header("Location: ../login.html");
+    exit;
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $accion = 'login';
     $email = $_POST['email'];
@@ -77,13 +82,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Redirigir a la página de administrador
                 header("Location: ../admin/vistaAdmin.html");
                 exit;
-            } else if($_SESSION['user_rol']=='docente'){
+            } else {
                 // Redirigir a la página de administrador
                 header("Location: ../metodos/dashboard-docente.php");
-                exit;
-            } else {
-                // Si no es admin, redirigir a la página principal del usuario
-                header("Location: ../dashboard.html");
                 exit;
             }
         } else {

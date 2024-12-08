@@ -4,7 +4,7 @@ require_once 'conexion.php';
 
 // Verificar si el usuario está logueado y es docente
 if (!isset($_SESSION['user_id']) || $_SESSION['user_rol'] !== 'docente') {
-    header("Location: login.php");
+    header("Location: ../login.html");
     exit;
 }
 
