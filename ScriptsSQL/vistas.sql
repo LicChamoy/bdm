@@ -1,4 +1,4 @@
-CREATE VIEW UsuarioLoginView AS
+CREATE or replace VIEW UsuarioLoginView AS
 SELECT idUsuario, email, contraseña, rol, estado
 FROM usuarios;
 
@@ -12,34 +12,6 @@ FROM
 WHERE 
     estado = 'baja';
 
-CREATE VIEW vista_usuarios AS
-SELECT 
-    u.idUsuario,
-    u.nombre,
-    u.apellidos,
-    u.rol,
-    u.fechaDeRegistro,
-    CASE
-        WHEN u.rol = 'alumno' THEN
-            (SELECT COUNT(*) FROM interaccionesCurso ic WHERE ic.idUsuario = u.idUsuario AND ic.estadoAlumno = 'en progreso')
-        ELSE NULL
-    END AS cursosInscritos,
-    CASE
-        WHEN u.rol = 'alumno' THEN
-            (SELECT COUNT(*) FROM interaccionesCurso ic WHERE ic.idUsuario = u.idUsuario AND ic.estadoAlumno = 'terminado')
-        ELSE NULL
-    END AS cursosTerminados,
-    CASE
-        WHEN u.rol = 'instructor' THEN
-            (SELECT COUNT(*) FROM cursos c WHERE c.idInstructor = u.idUsuario)
-        ELSE NULL
-    END AS cursosOfrecidos,
-    CASE
-        WHEN u.rol = 'instructor' THEN
-            (SELECT SUM(ic.montoPorVenta) FROM interaccionesCurso ic WHERE ic.idInstructor = u.idUsuario)
-        ELSE NULL
-    END AS ganancias
-FROM usuarios u;
 
 CREATE VIEW vista_categorias_cursos AS
 SELECT 

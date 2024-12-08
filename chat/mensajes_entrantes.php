@@ -14,16 +14,9 @@ function obtenerChats($usuario_id) {
     $conexionBD = new ConexionBD();
     $conexion = $conexionBD->obtenerConexion();
 
-    // Consulta para obtener chats donde el usuario es el emisor o receptor
-    $stmt = $conexion->prepare("
-        SELECT DISTINCT 
-            IF(c.idEmisor = ?, c.idReceptor, c.idEmisor) AS otro_usuario_id,
-            u.nombre, u.apellidos, idChat
-        FROM chat c
-        INNER JOIN usuarios u ON u.idUsuario = IF(c.idEmisor = ?, c.idReceptor, c.idEmisor)
-        WHERE c.idEmisor = ? OR c.idReceptor = ?
-    ");
-    $stmt->bind_param("iiii", $usuario_id, $usuario_id, $usuario_id, $usuario_id);
+    // Preparar y ejecutar el procedimiento almacenado
+    $stmt = $conexion->prepare("CALL ObtenerChats(?)");
+    $stmt->bind_param("i", $usuario_id);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -41,40 +34,16 @@ function obtenerUltimoMensaje($usuario_id, $otro_usuario_id) {
     $conexionBD = new ConexionBD();
     $conexion = $conexionBD->obtenerConexion();
 
-    // Obtener el chat_id entre los dos usuarios
-    $stmt_chat = $conexion->prepare("
-        SELECT idChat 
-        FROM chat 
-        WHERE (idEmisor = ? AND idReceptor = ?) OR (idEmisor = ? AND idReceptor = ?)
-    ");
-    $stmt_chat->bind_param("iiii", $usuario_id, $otro_usuario_id, $otro_usuario_id, $usuario_id);
-    $stmt_chat->execute();
-    $result_chat = $stmt_chat->get_result();
-    $chat = $result_chat->fetch_assoc();
-    
-    if ($chat) {
-        $chat_id = $chat['idChat'];
-        
-        // Obtener el último mensaje en el chat
-        $stmt = $conexion->prepare("
-            SELECT contenido, timestamp
-            FROM mensaje
-            WHERE chat_id = ?
-            ORDER BY timestamp DESC
-            LIMIT 1
-        ");
-        $stmt->bind_param("i", $chat_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
+    // Preparar y ejecutar el procedimiento almacenado
+    $stmt = $conexion->prepare("CALL ObtenerUltimoMensaje(?, ?)");
+    $stmt->bind_param("ii", $usuario_id, $otro_usuario_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-        $ultimo_mensaje = $result->fetch_assoc();
-        $conexionBD->cerrarConexion();
+    $ultimo_mensaje = $result->fetch_assoc();
+    $conexionBD->cerrarConexion();
 
-        return $ultimo_mensaje ? $ultimo_mensaje['contenido'] : "No hay mensajes en este chat.";
-    } else {
-        $conexionBD->cerrarConexion();
-        return "No hay chat.";
-    }
+    return $ultimo_mensaje ? $ultimo_mensaje['contenido'] : "No hay mensajes en este chat.";
 }
 
 $chats = obtenerChats($usuario_id);

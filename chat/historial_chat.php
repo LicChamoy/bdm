@@ -14,20 +14,19 @@ function obtenerMensajesChat($chat_id) {
     $conexionBD = new ConexionBD();
     $conexion = $conexionBD->obtenerConexion();
 
-    // Consulta para obtener los mensajes entre el usuario actual y el otro usuario
-    $stmt = $conexion->prepare(
-        "SELECT m.contenido AS contenido, u.nombre AS usuario, m.timestamp AS timestamp
-         FROM mensaje m
-         JOIN usuarios u ON m.idAutor = u.idUsuario
-         WHERE m.chat_id = ?
-         ORDER BY m.timestamp"
-    );
-    
+    // Preparar la llamada al procedimiento almacenado
+    $stmt = $conexion->prepare("CALL ObtenerMensajesChat(?)");
     $stmt->bind_param("i", $chat_id);
+    
+    // Ejecutar el procedimiento
     $stmt->execute();
+    
+    // Obtener el resultado
     $result = $stmt->get_result();
     $mensajes = $result->fetch_all(MYSQLI_ASSOC);
 
+    // Cerrar la conexión
+    $stmt->close();
     $conexionBD->cerrarConexion();
 
     return $mensajes;

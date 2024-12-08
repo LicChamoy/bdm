@@ -51,13 +51,14 @@ session_start();
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php
-                                require '../metodos/conexion.php';
-                                $conexionBD = new ConexionBD();
-                                $conexion = $conexionBD->obtenerConexion();
+                            <?php
+                            require '../metodos/conexion.php';
+                            $conexionBD = new ConexionBD();
+                            $conexion = $conexionBD->obtenerConexion();
 
-                                // Consulta a la vista
-                                $query = "SELECT nombre_categoria, descripcion_categoria, nombre_creador, total_cursos FROM vista_categorias_cursos";
+                            try {
+                                // Llamada al procedimiento almacenado
+                                $query = "CALL ObtenerCategoriasConCursos()";
                                 $result = $conexion->query($query);
 
                                 if ($result && $result->num_rows > 0) {
@@ -69,14 +70,21 @@ session_start();
                                                 <td>{$row['total_cursos']}</td>
                                             </tr>";
                                     }
+                                    $result->close(); // Importante para liberar los resultados del procedimiento
+                                    $conexion->next_result(); // Manejo de múltiples resultados en procedimientos almacenados
                                 } else {
                                     echo "<tr>
                                             <td colspan='4'>No hay categorías registradas.</td>
                                         </tr>";
                                 }
+                            } catch (Exception $e) {
+                                echo "<tr>
+                                        <td colspan='4'>Error: " . htmlspecialchars($e->getMessage()) . "</td>
+                                    </tr>";
+                            }
 
-                                $conexionBD->cerrarConexion();
-                                ?>
+                            $conexionBD->cerrarConexion();
+                            ?>
                             </tbody>
                         </table>
                     </div>

@@ -22,10 +22,15 @@ function insertarMensaje($chat_id, $contenido, $autor_id) {
     $conexionBD = new ConexionBD();
     $conexion = $conexionBD->obtenerConexion();
 
-    $stmt = $conexion->prepare("INSERT INTO mensaje (chat_id, contenido, idAutor) VALUES (?, ?, ?)");
+    // Preparar la llamada al procedimiento almacenado
+    $stmt = $conexion->prepare("CALL InsertarMensaje(?, ?, ?)");
     $stmt->bind_param("isi", $chat_id, $contenido, $autor_id);
+    
+    // Ejecutar el procedimiento
     $stmt->execute();
 
+    // Cerrar la conexión
+    $stmt->close();
     $conexionBD->cerrarConexion();
 }
 ?>

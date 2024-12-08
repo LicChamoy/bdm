@@ -20,27 +20,9 @@ function enviarMensaje($idInstructor, $idAlumno, $mensaje) {
     $conexionBD = new ConexionBD();
     $conexion = $conexionBD->obtenerConexion();
 
-    // Comprobar si ya existe un chat entre el alumno y el instructor
-    $stmt_chat = $conexion->prepare("SELECT idChat FROM chat WHERE (idEmisor = ? AND idReceptor = ?) OR (idEmisor = ? AND idReceptor = ?)");
-    $stmt_chat->bind_param("iiii", $idAlumno, $idInstructor, $idInstructor, $idAlumno);
-    $stmt_chat->execute();
-    $result_chat = $stmt_chat->get_result();
-
-    // Si el chat existe, usar el idChat, si no, crear un nuevo chat
-    if ($result_chat->num_rows > 0) {
-        $chat = $result_chat->fetch_assoc();
-        $chat_id = $chat['idChat'];
-    } else {
-        // Crear un nuevo chat
-        $stmt_nuevo_chat = $conexion->prepare("INSERT INTO chat (idEmisor, idReceptor) VALUES (?, ?)");
-        $stmt_nuevo_chat->bind_param("ii", $idAlumno, $idInstructor);
-        $stmt_nuevo_chat->execute();
-        $chat_id = $stmt_nuevo_chat->insert_id;
-    }
-
-    // Insertar el mensaje en la tabla mensaje
-    $stmt = $conexion->prepare("INSERT INTO mensaje (chat_id, idAutor, contenido) VALUES (?, ?, ?)");
-    $stmt->bind_param("iis", $chat_id, $idAlumno, $mensaje);
+    // Preparar la llamada al procedimiento almacenado
+    $stmt = $conexion->prepare("CALL EnviarMensaje(?, ?, ?)");
+    $stmt->bind_param("iis", $idInstructor, $idAlumno, $mensaje);
 
     if ($stmt->execute()) {
         echo "Mensaje enviado correctamente.";
@@ -48,6 +30,8 @@ function enviarMensaje($idInstructor, $idAlumno, $mensaje) {
         echo "Error al enviar el mensaje: " . $stmt->error;
     }
 
+    // Cerrar la conexión
+    $stmt->close();
     $conexionBD->cerrarConexion();
 }
 

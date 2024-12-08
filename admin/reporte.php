@@ -6,12 +6,12 @@ $conexion = $conexionBD->obtenerConexion();
 
 // Obtener el rol desde la solicitud GET
 $role = isset($_GET['role']) ? $_GET['role'] : '';
-$query = "SELECT * FROM vista_usuarios";
-if ($role) {
-    $query .= " WHERE rol = '$role'";  // Filtrar por rol
-}
 
-$result = $conexion->query($query);
+$stmt = $conexion->prepare("CALL ObtenerUsuarios(?)");
+$stmt->bind_param("s", $role);
+$stmt->execute();
+
+$result = $stmt->get_result();
 
 $usuarios = [];
 if ($result->num_rows > 0) {
@@ -46,7 +46,7 @@ $conexionBD->cerrarConexion();
                         <select id="role-filter" onchange="filterByRole()">
                             <option value="">Todos</option>
                             <option value="alumno">Alumno</option>
-                            <option value="instructor">Instructor</option>
+                            <option value="docente">Instructor</option>
                         </select>
                     </div>
                     <table class="users-table">

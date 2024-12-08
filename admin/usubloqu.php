@@ -31,7 +31,7 @@
                     $conexion = $conexionBD->obtenerConexion();
 
                     // Consulta para obtener usuarios bloqueados
-                    $query = "SELECT nombre, apellidos, email FROM UsuariosBloqueados";
+                    $query = "CALL UsuariosBloqueados()";
                     $result = $conexion->query($query);
 
                     if ($result->num_rows > 0) {
