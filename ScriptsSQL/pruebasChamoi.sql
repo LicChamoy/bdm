@@ -17,7 +17,6 @@ call ObtenerProgresoCurso(5,11);
 
 call GetCoursesByUser(5);
 
-delete imagen from cursos;
 
     SELECT 
         c.idCurso,

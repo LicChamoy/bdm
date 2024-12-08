@@ -271,7 +271,7 @@ if (!$cursos) {
                     $cursoimagen_base64 = base64_encode($curso['imagen']);
                     $cursoimagen_base64 = "data:image/jpeg;base64," . $cursoimagen_base64;
                 } else {
-                    $cursoimagen_base64 = '';  // No hay avatar
+                    $cursoimagen_base64 = '';
                 }
                 ?>
                 <img src="<?php echo $cursoimagen_base64; ?>" 

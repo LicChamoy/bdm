@@ -101,9 +101,13 @@ while ($curso = $cursos->fetch_assoc()) {
                                     </div>
                                     <small>Progreso: <?php echo $curso['info']['progreso']; ?>%</small>
                                 </div>
-                                <button class="btn-comentario" onclick="abrirModalComentario(<?php echo $curso['info']['idCurso']; ?>, '<?php echo htmlspecialchars($curso['info']['titulo']); ?>')">
-                                    Dejar comentario
-                                </button>
+
+                                <?php if($curso['info']['progreso'] == 100){?>
+                                    <button class="btn-comentario" onclick="abrirModalComentario(<?php echo $curso['info']['idCurso']; ?>, '<?php echo htmlspecialchars($curso['info']['titulo']); ?>')">
+                                        Dejar comentario
+                                    </button>
+                                <?php }?>
+                                
                             </div>
 
                             <div class="niveles">
