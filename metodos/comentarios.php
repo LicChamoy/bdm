@@ -14,14 +14,15 @@ function mostrarComentrios($idCurso){
     $comentarios = [];
     
     while($row = $result->fetch_assoc()){
-        $comentarios[] = $row;
-    
+        // Filtrar comentarios nulos de gente que recien compro el curso
+        if (!empty($row['textoComentario'])) {
+            $comentarios[] = $row;
+        }
     }
     
     $stmt->close();
     $conexion->cerrarConexion();
 
-    
     if (count($comentarios) > 0){
         echo '<ul>';
         foreach ($comentarios as $comentario){
@@ -33,7 +34,7 @@ function mostrarComentrios($idCurso){
             echo '</li><hr>';
         }
         echo '</ul>';
-    }else{
-        echo'<p>No hay comentarios disponibles para este curso</p>';
+    } else {
+        echo '<p>No hay comentarios disponibles para este curso</p>';
     }
 }
