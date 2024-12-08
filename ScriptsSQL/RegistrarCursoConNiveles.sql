@@ -12,7 +12,7 @@ CREATE PROCEDURE RegistrarCursoConNiveles(
     IN nivelCosto JSON,
     IN nivelVideo JSON,
     IN nivelDocumento JSON,
-    IN imagenCurso VARCHAR(255),
+    IN imagenCurso MEDIUMBLOB,
     OUT resultado VARCHAR(255)
 )
 BEGIN

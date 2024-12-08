@@ -59,23 +59,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Manejar subida de imagen del curso
+
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = 'uploads/cursos/';
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
-        }
+        $imagenCurso = file_get_contents($_FILES['imagen']['tmp_name']);
+    } else {
+        $imagenCurso = null; // Si no se proporciona una imagen
+    }
+    
 
-        $imageName = uniqid('curso_') . '_' . basename($_FILES['imagen']['name']);
-        $imagePath = $uploadDir . $imageName;
-
-        if (move_uploaded_file($_FILES['imagen']['tmp_name'], $imagePath)) {
-            $imagenCurso = $imagePath;
-        } else {
-            echo "<script>alert('Error al subir la imagen del curso.');</script>";
-            exit;
-        }
-    }    
+    // Manejar subida de imagen del curso
+    //if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+    //    $uploadDir = 'uploads/cursos/';
+    //    if (!is_dir($uploadDir)) {
+    //        mkdir($uploadDir, 0777, true);
+    //    }
+    //
+    //    $imageName = uniqid('curso_') . '_' . basename($_FILES['imagen']['name']);
+    //    $imagePath = $uploadDir . $imageName;
+    //
+    //    if (move_uploaded_file($_FILES['imagen']['tmp_name'], $imagePath)) {
+    //        $imagenCurso = $imagePath;
+    //    } else {
+    //        echo "<script>alert('Error al subir la imagen del curso.');</script>";
+    //       exit;
+    //    }
+    //}    
 
     // Procesar niveles
     $nivelTitulos = [];
@@ -135,13 +143,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Llamar al procedimiento almacenado
-    $stmt = $mysqli->prepare("CALL RegistrarCursoConNiveles(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $mysqli->prepare("CALL RegistrarCursoConNiveles(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
     $accion = 'registrar';
     $resultado = '';
 
     $stmt->bind_param(
-        'sssissssssss',
+        'sssisssssssss',
         $accion,
         $titulo,
         $descripcion,
@@ -153,6 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $nivelCostosJson,
         $nivelVideosJson,
         $nivelDocumentosJson,
+        $imagenCurso,
         $resultado
     );
 
