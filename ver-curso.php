@@ -189,9 +189,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comprar'])) {
             <?php endif; ?>
 
             <div class="curso-header">
-                <div class="curso-imagen">
-                    <img src="<?php echo htmlspecialchars($curso['imagen'] ?? '/api/placeholder/400/320'); ?>" 
-                        alt="<?php echo htmlspecialchars($curso['titulo']); ?>">
+                <div class="curso-imagen"><?php 
+                if ($curso['imagen']) {
+                    $cursoimagen_base64 = base64_encode($curso['imagen']);
+                    $cursoimagen_base64 = "data:image/jpeg;base64," . $cursoimagen_base64;
+                } else {
+                    $cursoimagen_base64 = '';
+                }
+                ?>
+                <img src="<?php echo $cursoimagen_base64; ?>" 
+                alt="<?php echo htmlspecialchars($curso['titulo']); ?>">
                 </div>
                 <div class="curso-info">
                     <h1><?php echo htmlspecialchars($curso['titulo']); ?></h1>
@@ -220,16 +227,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comprar'])) {
                             <p>Ya estás inscrito en este curso</p>
                         <?php endif; ?>
 
-                    <?php else: ?>
-                        <p>Como docente, no puedes comprar cursos.</p>
-                    <?php endif; ?>
-                        <!-- Botón para contactar con el instructor -->
-                    <div style="margin-top: 20px;">
+                        <div style="margin-top: 20px;">
                         <button class="btn-comprar" type="button"
                                 onclick="location.href='chat/contactar_instructor.php?idInstructor=<?php echo $curso['idInstructor']; ?>'">
                             Contactar al instructor
                         </button>
                     </div>
+                    <?php else: ?>
+                        <p></p>
+                    <?php endif; ?>
+
                 </div>
             </div>
 

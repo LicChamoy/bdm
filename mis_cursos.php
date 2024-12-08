@@ -83,10 +83,16 @@ while ($curso = $cursos->fetch_assoc()) {
                     
                     <?php foreach ($cursos as $curso): ?>
                         <div class="curso">
-                            <div class="curso-header">
-                                <img src="<?php echo htmlspecialchars($curso['info']['imagen'] ?? '/api/placeholder/400/320'); ?>" 
-                                    alt="<?php echo htmlspecialchars($curso['info']['titulo']); ?>" 
-                                    class="curso-imagen">
+                            <div class="curso-header"><?php 
+                                    if ($curso['info']['imagen']) {
+                                        $cursoimagen_base64 = base64_encode($curso['info']['imagen']);
+                                        $cursoimagen_base64 = "data:image/jpeg;base64," . $cursoimagen_base64;
+                                    } else {
+                                        $cursoimagen_base64 = '';
+                                    }
+                                    ?>
+                                    <img src="<?php echo $cursoimagen_base64; ?>" 
+                                    alt="<?php echo htmlspecialchars($curso['info']['titulo']); ?>" class="curso-imagen">
                                 
                                 <div class="curso-info">
                                     <h3 class="curso-titulo"><?php echo htmlspecialchars($curso['info']['titulo']); ?></h3>
