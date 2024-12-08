@@ -4,6 +4,10 @@ select * from usuarios;
 
 select * from cursos;
 
+SELECT * FROM cursos WHERE estado = 'activo';
+
+SELECT * FROM cursos WHERE estado = 'activo' AND costoTotal > 0;
+
 
 select * from chat;
 select * from mensaje;
@@ -21,10 +25,10 @@ SELECT m.texto AS contenido, u.nombre AS usuario, m.fecha AS timestamp
 select * from cursoCategoria;
 
 select ReactivateUser('diego78041@gmail.com');
-ALTER TABLE niveles modify COLUMN video VARCHAR(255);
+ALTER TABLE cursos modify COLUMN imagen mediumblob;
 update usuarios
-set rol = 'admin'
-where rol = 'alumno';
+set rol = 'alumno'
+where rol = 'admin';
 
 CREATE TABLE usuarios (
     idUsuario INT AUTO_INCREMENT PRIMARY KEY,

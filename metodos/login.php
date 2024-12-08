@@ -6,11 +6,6 @@ require 'conexion.php';
 $conexionBD = new ConexionBD();
 $conexion = $conexionBD->obtenerConexion();
 
-if (isset($_SESSION['user_id'])) {
-    header("Location: ../login.html");
-    exit;
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $accion = 'login';
     $email = $_POST['email'];

@@ -34,7 +34,7 @@ if ($_SESSION['user_rol'] == 'docente') {
     $where .= " WHERE c.idInstructor = '$instructorId'";
 } elseif ($_SESSION['user_rol'] == 'alumno') {
     // Si es alumno, no filtrar por instructor
-    $where .= " WHERE 1=1"; // Esto mantiene la sintaxis correcta al concatenar con otros filtros
+    $where .= " WHERE 1=1";
 }
 
 // Filtrar por categoría
@@ -76,6 +76,7 @@ $cursos = $mysqli->query($query);
 if (!$cursos) {
     die("Error en la consulta: " . $mysqli->error);
 }
+
 ?>
 
 
@@ -265,7 +266,15 @@ if (!$cursos) {
         <div class="cursos-grid">
             <?php while($curso = $cursos->fetch_assoc()): ?>
                 <div class="curso-card">
-                <img src="<?php echo htmlspecialchars($curso['imagen']); ?>" 
+                <?php 
+                if ($curso['imagen']) {
+                    $cursoimagen_base64 = base64_encode($curso['imagen']);
+                    $cursoimagen_base64 = "data:image/jpeg;base64," . $cursoimagen_base64;
+                } else {
+                    $cursoimagen_base64 = '';  // No hay avatar
+                }
+                ?>
+                <img src="<?php echo $cursoimagen_base64; ?>" 
                 alt="<?php echo htmlspecialchars($curso['titulo']); ?>">
                     <div class="curso-content">
                         <h3 class="curso-titulo"><?php echo htmlspecialchars($curso['titulo']); ?></h3>

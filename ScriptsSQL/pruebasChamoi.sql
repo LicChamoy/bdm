@@ -11,12 +11,35 @@ select * from usuarios;
 
 select* from cursos;
 
-SELECT * FROM VistaCursosDisponibles WHERE instructor = 5;
+SELECT * FROM VistaCursosDisponibles WHERE idInstructor = 5;
 
 call ObtenerProgresoCurso(5,11);
 
 call GetCoursesByUser(5);
 
+delete imagen from cursos;
+
+    SELECT 
+        c.idCurso,
+        c.titulo,
+        c.descripcion,
+        c.imagen,
+        c.costoTotal,
+        c.fechaCreacion,
+        c.promedio_calificaciones,
+        c.total_niveles,
+        c.instructor AS instructor,
+        GROUP_CONCAT(DISTINCT c.categoria SEPARATOR ', ') AS categorias
+    FROM 
+        VistaCursosDisponibles c
+            GROUP BY 
+        c.idCurso, c.titulo, c.descripcion, c.imagen, 
+        c.costoTotal, c.fechaCreacion, c.promedio_calificaciones, 
+        c.total_niveles, c.instructor
+    ORDER BY 
+        c.fechaCreacion DESC;
+
+SET GLOBAL sort_buffer_size = 256000000;
 
 ALTER TABLE interaccionesCurso
 ADD CONSTRAINT UNIQUE (idUsuario, idCurso);
