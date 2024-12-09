@@ -15,14 +15,21 @@ $conexion = new ConexionBD();
 $mysqli = $conexion->obtenerConexion();
 
 // Obtener todas las categorías de los cursos del usuario
-$queryCategorias = "SELECT DISTINCT categoria 
-                   FROM VistaMisCursos 
-                   WHERE idUsuario = ?
-                   ORDER BY categoria";
-$stmtCategorias = $mysqli->prepare($queryCategorias);
-$stmtCategorias->bind_param("i", $userId);
-$stmtCategorias->execute();
-$categorias = $stmtCategorias->get_result();
+$categorias = [];
+$stmtCategorias = $mysqli->prepare("CALL ObtenerCategoriasUsuario(?)");
+if ($stmtCategorias) {
+    $stmtCategorias->bind_param("i", $userId);
+    $stmtCategorias->execute();
+    $resultadoCategorias = $stmtCategorias->get_result();
+
+    while ($categoria = $resultadoCategorias->fetch_assoc()) {
+        $categorias[] = $categoria['categoria'];
+    }
+
+    $stmtCategorias->close();
+} else {
+    die("Error al obtener categorías: " . $mysqli->error);
+}
 
 // Obtener cursos por categoría
 $queryCursos = "SELECT * 
@@ -36,32 +43,43 @@ $cursos = $stmtCursos->get_result();
 
 // Organizar cursos por categoría
 $cursosPorCategoria = [];
-while ($curso = $cursos->fetch_assoc()) {
-    $categoria = $curso['categoria'];
-    if (!isset($cursosPorCategoria[$categoria])) {
-        $cursosPorCategoria[$categoria] = [];
-    }
-    if (!isset($cursosPorCategoria[$categoria][$curso['idCurso']])) {
-        $cursosPorCategoria[$categoria][$curso['idCurso']] = [
-            'info' => [
-                'idCurso' => $curso['idCurso'],
-                'titulo' => $curso['titulo_curso'],
-                'descripcion' => $curso['descripcion_curso'],
-                'imagen' => $curso['imagen_curso'],
-                'instructor' => $curso['instructor'],
-                'progreso' => $curso['progresoPorcentaje'],
-                'ultimoAcceso' => $curso['ultimoAcceso']
-            ],
-            'niveles' => []
+$stmtCursos = $mysqli->prepare("CALL ObtenerCursosUsuario(?)");
+if ($stmtCursos) {
+    $stmtCursos->bind_param("i", $userId);
+    $stmtCursos->execute();
+    $resultadoCursos = $stmtCursos->get_result();
+
+    while ($curso = $resultadoCursos->fetch_assoc()) {
+        $categoria = $curso['categoria'];
+        if (!isset($cursosPorCategoria[$categoria])) {
+            $cursosPorCategoria[$categoria] = [];
+        }
+        if (!isset($cursosPorCategoria[$categoria][$curso['idCurso']])) {
+            $cursosPorCategoria[$categoria][$curso['idCurso']] = [
+                'info' => [
+                    'idCurso' => $curso['idCurso'],
+                    'titulo' => $curso['titulo_curso'],
+                    'descripcion' => $curso['descripcion_curso'],
+                    'imagen' => $curso['imagen_curso'],
+                    'instructor' => $curso['instructor'],
+                    'progreso' => $curso['progresoPorcentaje'],
+                    'ultimoAcceso' => $curso['ultimoAcceso']
+                ],
+                'niveles' => []
+            ];
+        }
+        $cursosPorCategoria[$categoria][$curso['idCurso']]['niveles'][] = [
+            'idNivel' => $curso['idNivel'],
+            'titulo' => $curso['titulo_nivel'],
+            'descripcion' => $curso['descripcion_nivel'],
+            'recursos' => $curso['recursos'],
+            'videoUrl' => $curso['videoUrl']
         ];
     }
-    $cursosPorCategoria[$categoria][$curso['idCurso']]['niveles'][] = [
-        'idNivel' => $curso['idNivel'],
-        'titulo' => $curso['titulo_nivel'],
-        'descripcion' => $curso['descripcion_nivel'],
-        'recursos' => $curso['recursos'],
-        'videoUrl' => $curso['videoUrl']
-    ];
+
+    $stmtCursos->close();
+} else {
+    die("Error al obtener cursos: " . $mysqli->error);
 }
 ?>
 

@@ -8,28 +8,21 @@ $conexion = new ConexionBD();
 $mysqli = $conexion->obtenerConexion();
 
 // Obtener el ID del nivel desde los parámetros GET
+// Obtener el ID del nivel desde los parámetros GET
 $idNivel = isset($_GET['nivel']) ? (int)$_GET['nivel'] : 0;
-
-var_dump($idNivel);
 
 if ($idNivel <= 0) {
     die("ID de nivel inválido.");
 }
-// Verifica si $idCurso está definido y obtén su valor
-$idCurso = isset($_GET['curso']) ? (int)$_GET['curso'] : 0;
 
-var_dump($idCurso);
+$idCurso = isset($_GET['curso']) ? (int)$_GET['curso'] : 0;
 
 if ($idCurso <= 0) {
     die("ID de curso no válido.");
 }
 
-
-// Consulta para obtener la información del nivel desde la vista
-$queryNivel = "SELECT titulo_nivel, descripcion_nivel, url_video 
-               FROM vistavervideo 
-               WHERE idNivel = ?";
-$stmtNivel = $mysqli->prepare($queryNivel);
+// Llamar al procedimiento almacenado para obtener la información del nivel
+$stmtNivel = $mysqli->prepare("CALL ObtenerInformacionNivel(?)");
 
 if (!$stmtNivel) {
     die("Error al preparar la consulta: " . $mysqli->error);
@@ -46,9 +39,7 @@ if ($resultado->num_rows === 0) {
 
 // Asignar los valores del resultado
 $nivel = $resultado->fetch_assoc();
-
-// Depuración de la URL del video
-var_dump($nivel['url_video']);
+$stmtNivel->close();
 
 // Asignar los valores a las variables
 $titulo = htmlspecialchars($nivel['titulo_nivel']);
@@ -58,7 +49,7 @@ $urlVideo = htmlspecialchars($nivel['url_video']);
 // Construir la URL completa del video si es necesario
 $urlBase = 'http://localhost/bdm/metodos/';
 if (strpos($urlVideo, 'http') !== 0) {
-    $urlVideo = $urlBase . $urlVideo;  // Si no tiene el prefijo, se agrega
+    $urlVideo = $urlBase . $urlVideo;
 }
 
 // Cerrar la conexión

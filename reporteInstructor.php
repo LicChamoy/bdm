@@ -10,14 +10,28 @@ $resumenCursos = [];
 $ingresosPorFormaPago = [];
 $alumnosPorCurso = [];
 
-// Obtener las categorías
+// Obtener las categorías a través del procedimiento almacenado
 $categorias = [];
-$queryCategorias = "SELECT idCategoria, nombre_categoria, descripcion_categoria, nombre_creador, total_cursos FROM vista_categorias_cursos"; // Ajusta la consulta según tu estructura de base de datos
-$resultCategorias = $mysqli->query($queryCategorias);
-if ($resultCategorias) {
-    while ($row = $resultCategorias->fetch_assoc()) {
-        $categorias[] = $row;
+$stmt = $mysqli->prepare("CALL ObtenerCategorias()");
+
+if ($stmt) {
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    if ($resultado) {
+        while ($row = $resultado->fetch_assoc()) {
+            $categorias[] = $row;
+        }
     }
+
+    $stmt->close();
+} else {
+    die("Error al preparar la consulta: " . $mysqli->error);
+}
+
+// Verificar el resultado
+if (empty($categorias)) {
+    echo "No hay categorías disponibles.";
 }
 
 if (isset($instructorId)) {

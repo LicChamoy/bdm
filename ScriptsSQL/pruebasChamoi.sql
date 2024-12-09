@@ -9,6 +9,10 @@ select * from niveles;
 
 select * from usuarios;
 
+UPDATE usuarios
+set estado = 'baja'
+where idUsuario = 6;
+
 select* from cursos;
 
 SELECT * FROM VistaCursosDisponibles WHERE idInstructor = 5;
@@ -17,6 +21,7 @@ call ObtenerProgresoCurso(5,11);
 
 call GetCoursesByUser(5);
 
+insert into usuarios (nombre, apellidos, genero, fechaNacimiento, email, contraseña, rol) values ('admin','admin','otro', '2024-11-06', 'admin', 'admin', 'admin');
 
     SELECT 
         c.idCurso,

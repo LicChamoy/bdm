@@ -21,9 +21,7 @@ $userId = $_SESSION['user_id'];
 $conexion = new ConexionBD();
 $mysqli = $conexion->obtenerConexion();
 
-// Obtener detalles del curso
-$query = "SELECT * FROM VistaCursosDisponibles WHERE idCurso = ?";
-$stmt = $mysqli->prepare($query);
+$stmt = $mysqli->prepare("CALL ObtenerDetallesCurso(?)");
 $stmt->bind_param("i", $idCurso);
 $stmt->execute();
 $curso = $stmt->get_result()->fetch_assoc();
@@ -34,15 +32,13 @@ if (!$curso) {
 }
 
 // Obtener niveles del curso
-$queryNiveles = "SELECT * FROM niveles WHERE idCurso = ? ORDER BY idNivel";
-$stmtNiveles = $mysqli->prepare($queryNiveles);
+$stmtNiveles = $mysqli->prepare("CALL ObtenerNivelesCurso(?)");
 $stmtNiveles->bind_param("i", $idCurso);
 $stmtNiveles->execute();
 $niveles = $stmtNiveles->get_result();
 
 // Verificar si el usuario ya está inscrito
-$queryInscripcion = "SELECT * FROM interaccionesCurso WHERE idUsuario = ? AND idCurso = ?";
-$stmtInscripcion = $mysqli->prepare($queryInscripcion);
+$stmtInscripcion = $mysqli->prepare("CALL VerificarInscripcion(?, ?)");
 $stmtInscripcion->bind_param("ii", $userId, $idCurso);
 $stmtInscripcion->execute();
 $inscripcion = $stmtInscripcion->get_result()->fetch_assoc();
@@ -51,27 +47,24 @@ $inscripcion = $stmtInscripcion->get_result()->fetch_assoc();
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comprar'])) {
     $idNivel = isset($_POST['nivel']) ? intval($_POST['nivel']) : null;
     $formaPago = $_POST['formaPago'];
-    $mensaje = '';
 
-    $stmt = $mysqli->prepare("CALL RealizarCompraCurso(?, ?, ?, ?, @mensaje)");
+    $stmt = $mysqli->prepare("CALL RealizarCompraCurso(?, ?, ?, ?)");
     $stmt->bind_param("iiis", $userId, $idCurso, $idNivel, $formaPago);
-    
+
     if ($stmt->execute()) {
-        // Recuperar el mensaje de la variable de sesión @mensaje
-        $result = $mysqli->query("SELECT @mensaje AS mensaje");
+        $result = $stmt->get_result();
         if ($result) {
             $row = $result->fetch_assoc();
             $mensaje = $row['mensaje'];
+
+            if ($mensaje === 'Compra realizada con éxito') {
+                header("Location: ver-curso.php?idCurso=$idCurso&success=1");
+                exit;
+            }
         } else {
-            $mensaje = "Error al recuperar el mensaje.";
-        }
-        
-        if ($mensaje === 'Compra realizada con éxito') {
-            header("Location: ver-curso.php?idCurso=$idCurso&success=1");
-            exit;
+            $mensaje = "Error al procesar la compra.";
         }
     }
-    
 }
 ?>
 
