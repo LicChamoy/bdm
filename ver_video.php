@@ -8,7 +8,6 @@ $conexion = new ConexionBD();
 $mysqli = $conexion->obtenerConexion();
 
 // Obtener el ID del nivel desde los parámetros GET
-// Obtener el ID del nivel desde los parámetros GET
 $idNivel = isset($_GET['nivel']) ? (int)$_GET['nivel'] : 0;
 
 if ($idNivel <= 0) {

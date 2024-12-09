@@ -21,15 +21,18 @@ $userId = $_SESSION['user_id'];
 $conexion = new ConexionBD();
 $mysqli = $conexion->obtenerConexion();
 
+// Obtener detalles del curso
 $stmt = $mysqli->prepare("CALL ObtenerDetallesCurso(?)");
 $stmt->bind_param("i", $idCurso);
 $stmt->execute();
 $curso = $stmt->get_result()->fetch_assoc();
-
 if (!$curso) {
     header("Location: metodos/dashboard-docente.php");
     exit;
 }
+
+$stmt->close();
+$mysqli->next_result();
 
 // Obtener niveles del curso
 $stmtNiveles = $mysqli->prepare("CALL ObtenerNivelesCurso(?)");
@@ -37,22 +40,28 @@ $stmtNiveles->bind_param("i", $idCurso);
 $stmtNiveles->execute();
 $niveles = $stmtNiveles->get_result();
 
-// Verificar si el usuario ya está inscrito
+$stmtNiveles->close();
+$mysqli->next_result();
+
+// Verificar inscripción del usuario
 $stmtInscripcion = $mysqli->prepare("CALL VerificarInscripcion(?, ?)");
 $stmtInscripcion->bind_param("ii", $userId, $idCurso);
 $stmtInscripcion->execute();
 $inscripcion = $stmtInscripcion->get_result()->fetch_assoc();
+
+$stmtInscripcion->close();
+$mysqli->next_result();
 
 // Procesar compra si se envió el formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comprar'])) {
     $idNivel = isset($_POST['nivel']) ? intval($_POST['nivel']) : null;
     $formaPago = $_POST['formaPago'];
 
-    $stmt = $mysqli->prepare("CALL RealizarCompraCurso(?, ?, ?, ?)");
-    $stmt->bind_param("iiis", $userId, $idCurso, $idNivel, $formaPago);
+    $stmtCompra = $mysqli->prepare("CALL RealizarCompraCurso(?, ?, ?, ?)");
+    $stmtCompra->bind_param("iiis", $userId, $idCurso, $idNivel, $formaPago);
 
-    if ($stmt->execute()) {
-        $result = $stmt->get_result();
+    if ($stmtCompra->execute()) {
+        $result = $stmtCompra->get_result();
         if ($result) {
             $row = $result->fetch_assoc();
             $mensaje = $row['mensaje'];
@@ -65,8 +74,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comprar'])) {
             $mensaje = "Error al procesar la compra.";
         }
     }
+    $stmtCompra->close();
+    $mysqli->next_result();
 }
+
+$mysqli->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
