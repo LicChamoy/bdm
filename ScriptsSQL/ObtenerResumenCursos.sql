@@ -20,7 +20,7 @@ BEGIN
         interaccionesCurso ic ON c.idCurso = ic.idCurso
     WHERE 
         c.idInstructor = p_idInstructor
-        AND c.fechaCreacion BETWEEN p_fechaInicio AND p_fechaFin
+		AND c.fechaCreacion BETWEEN p_fechaInicio AND DATE_ADD(p_fechaFin, INTERVAL 1 DAY) - INTERVAL 1 SECOND
         AND (p_soloActivos = 0 OR c.estado = 'activo')
         AND (p_idCategoria = 0 OR c.idCurso IN (
             SELECT cc.idCurso

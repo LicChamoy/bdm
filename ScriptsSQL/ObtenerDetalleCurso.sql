@@ -23,7 +23,7 @@ BEGIN
         usuarios u ON ic.idUsuario = u.idUsuario
     WHERE 
         c.idCurso = p_idCurso
-        AND c.fechaCreacion BETWEEN p_fechaInicio AND p_fechaFin
+        AND c.fechaCreacion BETWEEN p_fechaInicio AND DATE_ADD(p_fechaFin, INTERVAL 1 DAY) - INTERVAL 1 SECOND
         AND (p_soloActivos = 0 OR c.estado = 'activo')
     ORDER BY 
         ic.fechaInscripcion DESC;
