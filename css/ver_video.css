@@ -64,6 +64,28 @@ form {
     margin-top: 20px;
 }
 
+/* Link button styling */
+a.btn {
+    display: inline-block;
+    background-color: #55efc4; /* Color verde claro */
+    color: #2d3436;
+    padding: 12px 24px;
+    margin-top: 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+a.btn:hover {
+    background-color: #00b894; /* Verde más oscuro */
+    transform: translateY(-3px);
+}
+
+a.btn:active {
+    transform: translateY(1px);
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     h1 {
@@ -76,5 +98,10 @@ form {
 
     video {
         width: 90%; /* Reduce tamaño en pantallas pequeñas */
+    }
+
+    button, a.btn {
+        font-size: 0.9rem; /* Ajusta el tamaño de los botones */
+        padding: 8px 16px;
     }
 }

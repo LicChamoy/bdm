@@ -87,11 +87,110 @@ $mysqli->close();
 ?>
 <!DOCTYPE html>
 <html lang="es">
-    <head>
+<head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Dashboard del Instructor</title>
-        <link rel="stylesheet" href="css/dashboard.css">
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #2c2f36; /* Fondo oscuro */
+                color: #fff; /* Texto blanco */
+            }
+            header {
+                background-color: #1e252b; /* Fondo más oscuro para el encabezado */
+                color: #fff;
+                padding: 20px;
+                text-align: center;
+            }
+            h1 {
+                margin: 0;
+                font-size: 2.5em;
+            }
+            h2 {
+                margin-top: 10px;
+                font-size: 1.5em;
+            }
+            .dashboard-container {
+                margin: 20px;
+                background-color: #3a434f; /* Fondo oscuro para el contenedor */
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            }
+            form {
+                margin-bottom: 20px;
+                background-color: #4e565e; /* Fondo oscuro para el formulario */
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            }
+            form label {
+                display: block;
+                margin-bottom: 8px;
+                font-weight: bold;
+                color: #dcdcdc; /* Color más claro para el texto */
+            }
+            form input, form select {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 15px;
+                border-radius: 5px;
+                border: 1px solid #555; /* Borde más claro */
+                background-color: #353d45; /* Fondo oscuro para inputs */
+                color: #fff; /* Texto blanco */
+            }
+            form input[type="submit"] {
+                background-color: #4CAF50;
+                color: white;
+                cursor: pointer;
+            }
+            form input[type="submit"]:hover {
+                background-color: #45a049;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+                background-color: #2a323a; /* Fondo oscuro para las tablas */
+            }
+            table th, table td {
+                padding: 12px;
+                text-align: left;
+                border: 1px solid #444; /* Borde más oscuro */
+            }
+            table th {
+                background-color: #3a434f;
+                font-weight: bold;
+                color: #fff;
+            }
+            table td {
+                background-color: #444d56;
+                color: #fff;
+            }
+            section {
+                margin-bottom: 30px;
+            }
+            section h2 {
+                margin-bottom: 10px;
+            }
+            .back-button {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                text-align: center;
+                cursor: pointer;
+                margin-top: 20px;
+            }
+            .back-button:hover {
+                background-color: #45a049;
+            }
+        </style>
     </head>
     <body>
         <header>

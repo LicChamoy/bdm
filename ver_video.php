@@ -57,31 +57,30 @@ $mysqli->close();
 
 <!DOCTYPE html>
 <html lang="es">
-    <head>
+<head>
     <link rel="stylesheet" href="css/ver_video.css">
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Ver Video - <?php echo $titulo; ?></title>
-    </head>
-    <body>
-        <h1><?php echo $titulo; ?></h1>
-        <p><?php echo $descripcion; ?></p>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Video - <?php echo $titulo; ?></title>
+</head>
+<body>
+    <h1><?php echo $titulo; ?></h1>
+    <p><?php echo $descripcion; ?></p>
 
-        <?php if (!empty($urlVideo)) : ?>
-            <video controls width="800">
-                <source src="<?php echo $urlVideo; ?>" type="video/mp4">
-                Tu navegador no soporta el elemento de video.
-            </video>
-        <?php else : ?>
-            <p>El video no está disponible para este nivel.</p>
-        <?php endif; ?>
+    <?php if (!empty($urlVideo)) : ?>
+        <video controls width="800">
+            <source src="<?php echo $urlVideo; ?>" type="video/mp4">
+            Tu navegador no soporta el elemento de video.
+        </video>
+    <?php else : ?>
+        <p>El video no está disponible para este nivel.</p>
+    <?php endif; ?>
 
-
-        <form action="metodos/RegistrarNivelCompletado.php" method="POST">
-            <input type="hidden" name="idNivel" value="<?php echo $idNivel; ?>">
-            <input type="hidden" name="idCurso" value="<?php echo $idCurso; ?>">
-            <button type="submit">Marcar este nivel como Completado</button>
-        </form>
-        
-    </body>
+    <form action="metodos/RegistrarNivelCompletado.php" method="POST">
+        <input type="hidden" name="idNivel" value="<?php echo $idNivel; ?>">
+        <input type="hidden" name="idCurso" value="<?php echo $idCurso; ?>">
+        <button type="submit">Marcar este nivel como Completado</button>
+    </form>
+    <a href="metodos/dashboard-docente.php" class="btn">Dashboard</a>
+</body>
 </html>

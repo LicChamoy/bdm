@@ -224,6 +224,7 @@ $mysqli->close();
                 <a href="../reporteInstructor.php" class="btn">Registro de ventas</a>
             <?php }?>
             <a href="../perfil.php" class="btn">Perfil</a>
+            <a href="logout.php" class="btn" style="background-color: #dc3545;">Cerrar Sesión</a>
         </div>
 
         <div class="filtros">

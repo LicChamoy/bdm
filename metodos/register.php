@@ -25,15 +25,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt = $conexion->prepare("CALL RegisterUserOrManageUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("ssssssssss", $accion, $nombre, $apellidos, $genero, $fechaNacimiento, $email, $contrasena, $avatar, $rol, $resultado);
 
+    // Limpiar cualquier salida previa
+    ob_clean();
+
     if ($stmt->execute()) {
         $result = $stmt->get_result();
         
         if ($result) {
             $row = $result->fetch_assoc();
             $resultado = $row['resultado'] ?? '';
-
-        header("Location: ../login.html"); // Redirigir a la página de login
         }
+
+        // Mover la redirección fuera de la condición
+        header("Location: ../login.html");
+        exit(); // Importante añadir exit() para detener la ejecución
+    } else {
+        // Manejar errores de ejecución
+        echo "Error al ejecutar el registro: " . $stmt->error;
     }
 
     $stmt->close();

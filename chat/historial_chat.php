@@ -44,6 +44,94 @@ $mensajes = obtenerMensajesChat($chat_id);
         <link rel="stylesheet" href="historial_chat.css">
     </head>
     <body>
+        <style>
+            body {
+                background-color: #121212;
+                color: #e0e0e0;
+                font-family: Arial, sans-serif;
+            }
+
+            h1 {
+                text-align: center;
+                color: #fff;
+                margin-bottom: 20px;
+            }
+
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #1c1c1c;
+                border-radius: 10px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            }
+
+            .mensajes {
+                list-style-type: none;
+                padding: 0;
+            }
+
+            .mensaje {
+                border-bottom: 1px solid #444;
+                padding: 10px 0;
+            }
+
+            .mensaje p {
+                margin: 5px 0;
+                font-size: 14px;
+                color: #b5b5b5;
+            }
+
+            .mensaje strong {
+                color: #76c7c0;
+            }
+
+            .timestamp {
+                font-size: 12px;
+                color: #888;
+            }
+
+            textarea {
+                width: 100%;
+                padding: 10px;
+                margin-top: 10px;
+                background-color: #333;
+                color: #fff;
+                border: 1px solid #444;
+                border-radius: 5px;
+                resize: none;
+            }
+
+            button {
+                background-color: #76c7c0;
+                color: #fff;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                margin-top: 10px;
+                cursor: pointer;
+            }
+
+            button:hover {
+                background-color: #66b1b0;
+            }
+
+            .back-button {
+                display: inline-block;
+                padding: 10px 20px;
+                margin-top: 20px;
+                background-color: #76c7c0;
+                color: #fff;
+                text-decoration: none;
+                border-radius: 5px;
+                font-weight: bold;
+            }
+
+            .back-button:hover {
+                background-color: #66b1b0;
+            }
+        </style>
+
         <div class="container">
             <h1>Historial de Chat</h1>
             <div class="mensajes">
@@ -59,7 +147,7 @@ $mensajes = obtenerMensajesChat($chat_id);
                     <textarea name="texto" rows="3" placeholder="Escribe tu mensaje aquí" required></textarea>
                     <button type="submit">Enviar Mensaje</button>
                 </form>
-                <a href="mensajes_entrantes.php">Volver a mis mensajes</a>
+                <a href="mensajes_entrantes.php" class="back-button">Volver a mis mensajes</a>
             </div>
         </div>
     </body>

@@ -59,31 +59,67 @@ $chats = obtenerChats($usuario_id);
     </head>
     <body>
         <style>
+            body {
+                background-color: #121212;
+                color: #e0e0e0;
+                font-family: Arial, sans-serif;
+            }
+
+            h1 {
+                text-align: center;
+                color: #fff;
+                margin-bottom: 20px;
+            }
+
             .container {
                 max-width: 800px;
                 margin: 0 auto;
                 padding: 20px;
+                background-color: #1c1c1c;
+                border-radius: 10px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
             }
 
             .chat {
-                border-bottom: 1px solid #ccc;
-                padding: 10px;
+                border-bottom: 1px solid #444;
+                padding: 10px 0;
             }
 
             .chat a {
                 text-decoration: none;
-                color: #333;
+                color: #76c7c0;
                 font-weight: bold;
+                font-size: 16px;
+            }
+
+            .chat a:hover {
+                color: #b5e1e1;
             }
 
             .chat p {
                 margin: 5px 0;
                 font-size: 14px;
+                color: #b5b5b5;
             }
 
             .chats {
                 list-style-type: none;
                 padding: 0;
+            }
+
+            .back-button {
+                display: inline-block;
+                padding: 10px 20px;
+                margin-top: 20px;
+                background-color: #76c7c0;
+                color: #fff;
+                text-decoration: none;
+                border-radius: 5px;
+                font-weight: bold;
+            }
+
+            .back-button:hover {
+                background-color: #66b1b0;
             }
         </style>
 
@@ -92,9 +128,9 @@ $chats = obtenerChats($usuario_id);
             <div class="chats">
                 <?php foreach ($chats as $chat): ?>
                     <div class="chat">
-                    <p><a href="historial_chat.php?chat_id=<?php echo $chat['idChat']; ?>">
-                        <?php echo $chat['nombre'] . " " . $chat['apellidos']; ?></a></p>
-                    <p>
+                        <p><a href="historial_chat.php?chat_id=<?php echo $chat['idChat']; ?>">
+                            <?php echo $chat['nombre'] . " " . $chat['apellidos']; ?></a></p>
+                        <p>
                             <?php 
                                 $ultimo_mensaje = obtenerUltimoMensaje($usuario_id, $chat['otro_usuario_id']);
                                 echo htmlspecialchars($ultimo_mensaje);
@@ -103,7 +139,7 @@ $chats = obtenerChats($usuario_id);
                     </div>
                 <?php endforeach; ?>
             </div>
-            <a href="../metodos/dashboard-docente.php">Volver al dashboard</a>
+            <a href="../metodos/dashboard-docente.php" class="back-button">Volver al dashboard</a>
         </div>
     </body>
 </html>
