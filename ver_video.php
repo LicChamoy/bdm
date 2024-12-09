@@ -53,7 +53,6 @@ if (strpos($urlVideo, 'http') !== 0) {
 }
 
 // Cerrar la conexión
-$stmtNivel->close();
 $mysqli->close();
 ?>
 
