@@ -7,7 +7,46 @@ CALL ActualizarProgreso(5, 11); -- 1 es el ID del usuario, 10 es el ID del curso
 
 select * from niveles;
 
+truncate table interaccionesCurso;
+
 select * from interaccionesCurso;
+
+SELECT * FROM usuarios WHERE idUsuario = 9 AND rol = 'docente' AND estado = 'activo';
+SELECT * FROM cursos WHERE idInstructor = 9;
+
+SELECT * 
+FROM interaccionesCurso ic
+JOIN cursos c ON ic.idCurso = c.idCurso
+WHERE c.idInstructor = 9;
+
+SELECT * 
+FROM cursos 
+WHERE idInstructor = 9 AND fechaCreacion BETWEEN '2000-01-01' AND date_add('2024-12-09', interval 1 day) - interval 1 second;
+
+SELECT * 
+FROM interaccionesCurso ic
+JOIN cursos c ON ic.idCurso = c.idCurso
+WHERE c.idInstructor = 9 AND ic.fechaInscripcion BETWEEN '2000-01-01' AND '2024-12-09';
+
+SELECT * 
+FROM cursos 
+WHERE idInstructor = 9 AND estado = 'activo';
+
+SELECT * 
+FROM cursoCategoria cc
+JOIN cursos c ON cc.idCurso = c.idCurso
+WHERE c.idInstructor = 9;
+
+SELECT * 
+FROM cursos 
+WHERE idCurso = 16 AND fechaCreacion BETWEEN '2000-01-01' AND '2024-12-09';
+
+
+CALL ObtenerNivelesCurso(14);
+
+CALL ObtenerResumenCursos(9, '2000-01-01', '2024-12-09', 0, 1);
+CALL ObtenerIngresosPorFormaPago(9, '2000-01-01', '2024-12-09', 0, 1);
+CALL ObtenerDetalleCurso(16, '2000-01-01', '2024-12-09', 1);
 
 UPDATE usuarios
 set estado = 'baja'
