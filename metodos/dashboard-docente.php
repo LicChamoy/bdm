@@ -9,76 +9,58 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Obtener el ID del instructor desde la sesión
-$instructorId = $_SESSION['user_id']; // Asumiendo que el ID del usuario se guarda en esta variable
+$instructorId = $_SESSION['user_id'];
 
 // Conexión a la base de datos
 $conexion = new ConexionBD();
 $mysqli = $conexion->obtenerConexion();
 
-// Modificar la consulta para obtener categorías consolidadas
-$queryCategorias = "
-    SELECT DISTINCT categoria 
-    FROM (
-        SELECT c.categoria 
-        FROM VistaCursosDisponibles c
-        GROUP BY c.idCurso, c.categoria
-    ) AS CategoriasUnicas
-    ORDER BY categoria";
-$categorias = $mysqli->query($queryCategorias);
-
-// Inicializar la cláusula WHERE
-$where = "";
-
-if ($_SESSION['user_rol'] == 'docente') {
-    // Si es docente, filtrar por instructor
-    $where .= " WHERE c.idInstructor = '$instructorId'";
-} elseif ($_SESSION['user_rol'] == 'alumno') {
-    // Si es alumno, no filtrar por instructor
-    $where .= " WHERE 1=1";
+// Obtener categorías
+$stmtCategorias = $mysqli->prepare("CALL ObtenerCategoria()");
+if ($stmtCategorias === false) {
+    die("Error en la preparación de la consulta: " . $mysqli->error);
 }
 
-// Filtrar por categoría
-if (isset($_GET['categoria']) && !empty($_GET['categoria'])) {
-    $categoria = $mysqli->real_escape_string($_GET['categoria']);
-    $where .= " AND c.categoria = '$categoria'";
+$stmtCategorias->execute();
+$resultCategorias = $stmtCategorias->get_result();
+
+// Procesar las categorías
+$categorias = [];
+while ($row = $resultCategorias->fetch_assoc()) {
+    // Asegurarse de que la clave 'categoria' esté definida
+    if (isset($row['categoria'])) {
+        $categorias[] = $row['categoria'];
+    }
 }
 
-// Filtrar por búsqueda
-if (isset($_GET['buscar']) && !empty($_GET['buscar'])) {
-    $buscar = $mysqli->real_escape_string($_GET['buscar']);
-    $where .= " AND (c.titulo LIKE '%$buscar%' OR c.descripcion LIKE '%$buscar%')";
+// Cerrar la declaración de categorías
+$stmtCategorias->close();
+
+// Ahora puedes llamar al procedimiento para obtener los cursos
+$categoria = isset($_GET['categoria']) ? $_GET['categoria'] : null;
+$buscar = isset($_GET['buscar']) ? $_GET['buscar'] : null;
+
+$stmtCursos = $mysqli->prepare("CALL ObtenerCursos(?, ?, ?, ?)");
+if ($stmtCursos === false) {
+    die("Error en la preparación de la consulta: " . $mysqli->error);
 }
 
-// Modificar consulta para obtener cursos con categorías consolidadas
-$query = "
-SELECT 
-    c.idCurso,
-    c.titulo,
-    c.descripcion,
-    c.imagen,
-    c.costoTotal,
-    c.fechaCreacion,
-    c.promedio_calificaciones,
-    c.total_niveles,
-    c.instructor AS instructor,
-    GROUP_CONCAT(DISTINCT c.categoria SEPARATOR ', ') AS categorias
-FROM 
-    VistaCursosDisponibles c
-$where
-GROUP BY 
-    c.idCurso, c.titulo, c.descripcion, c.imagen, 
-    c.costoTotal, c.fechaCreacion, c.promedio_calificaciones, 
-    c.total_niveles, c.instructor
-ORDER BY 
-    c.fechaCreacion DESC";
+$stmtCursos->bind_param("isss", $instructorId, $_SESSION['user_rol'], $categoria, $buscar);
+$stmtCursos->execute();
 
-$cursos = $mysqli->query($query);
-if (!$cursos) {
-    die("Error en la consulta: " . $mysqli->error);
+// Procesar los resultados de cursos
+$resultCursos = $stmtCursos->get_result();
+$cursos = [];
+while ($row = $resultCursos->fetch_assoc()) {
+    $cursos[] = $row;
 }
 
+// Cerrar la declaración de cursos
+$stmtCursos->close();
+
+// Cerrar la conexión al final
+$mysqli->close();
 ?>
-
 
 <!DOCTYPE html>
 <html lang="es">
@@ -235,7 +217,7 @@ if (!$cursos) {
             <?php } else if($_SESSION['user_rol']=='docente'){ ?>
                 <a href="registrar_curso.php" class="btn">Registrar Nuevo Curso</a>
             <?php }?>
-                <a href="../chat/mensajes_entrantes.php" class="btn">Bandeja de Mensajes</a>
+            <a href="../chat/mensajes_entrantes.php" class="btn">Bandeja de Mensajes</a>
             <?php if($_SESSION['user_rol']=='alumno'){ ?>
                 <a href="../kardex.php" class="btn">Kardex</a>
             <?php } else if($_SESSION['user_rol']=='docente'){ ?>
@@ -251,12 +233,12 @@ if (!$cursos) {
                 
                 <select name="categoria">
                     <option value="">Todas las categorías</option>
-                    <?php while($cat = $categorias->fetch_assoc()): ?>
-                        <option value="<?php echo htmlspecialchars($cat['categoria']); ?>"
-                                <?php echo (isset($_GET['categoria']) && $_GET['categoria'] == $cat['categoria']) ? 'selected' : ''; ?>>
-                            <?php echo htmlspecialchars($cat['categoria']); ?>
+                    <?php foreach($categorias as $cat): ?>
+                        <option value="<?php echo htmlspecialchars($cat); ?>"
+                                <?php echo (isset($_GET['categoria']) && $_GET['categoria'] == $cat) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($cat); ?>
                         </option>
-                    <?php endwhile; ?>
+                    <?php endforeach; ?>
                 </select>
                 
                 <button type="submit" class="btn">Filtrar</button>
@@ -264,7 +246,7 @@ if (!$cursos) {
         </div>
 
         <div class="cursos-grid">
-            <?php while($curso = $cursos->fetch_assoc()): ?>
+            <?php foreach($cursos as $curso): ?>
                 <div class="curso-card">
                 <?php 
                 if ($curso['imagen']) {
@@ -301,10 +283,10 @@ if (!$cursos) {
                         <a href="../ver-curso.php?idCurso=<?php echo $curso['idCurso']; ?>" class="btn">Ver Detalles</a>
                     </div>
                 </div>
-            <?php endwhile; ?>
+            <?php endforeach; ?>
         </div>
 
-        <?php if ($cursos->num_rows == 0): ?>
+        <?php if (empty($cursos)): ?>
             <p class="no-cursos">No se encontraron cursos que coincidan con tu búsqueda.</p>
         <?php endif; ?>
     </div>

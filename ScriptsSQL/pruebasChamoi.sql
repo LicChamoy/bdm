@@ -7,7 +7,7 @@ CALL ActualizarProgreso(5, 11); -- 1 es el ID del usuario, 10 es el ID del curso
 
 select * from niveles;
 
-select * from usuarios;
+select * from interaccionesCurso;
 
 UPDATE usuarios
 set estado = 'baja'
