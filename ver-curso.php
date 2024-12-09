@@ -57,6 +57,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comprar'])) {
     $idNivel = isset($_POST['nivel']) ? intval($_POST['nivel']) : null;
     $formaPago = $_POST['formaPago'];
 
+
+    if ($idNivel == 0){
+        $idNivel =null;
+    }
+
+    // Obtener costo e instructor
+    $stmtCosto = $mysqli->prepare("CALL ObtenerCostoEInstructor(?, ?)");
+    $stmtCosto->bind_param("ii", $idCurso, $idNivel);
+    $stmtCosto->execute();
+
+    // Obtener los resultados directamente
+    $result = $stmtCosto->get_result();
+    if ($row = $result->fetch_assoc()) {
+        $monto = $row['monto'];
+        $idInstructor = $row['idInstructor'];
+    } else {
+        // Manejar el caso donde no hay resultado
+        die("No se encontraron datos para el curso y nivel especificados.");
+    }
+
+    $stmtCosto->close();
+    $mysqli->next_result();
+
+    var_dump($idCurso, $idNivel, $monto, $idInstructor);
+
     $stmtCompra = $mysqli->prepare("CALL RealizarCompraCurso(?, ?, ?, ?)");
     $stmtCompra->bind_param("iiis", $userId, $idCurso, $idNivel, $formaPago);
 

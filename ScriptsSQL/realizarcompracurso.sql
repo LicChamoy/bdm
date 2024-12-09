@@ -9,8 +9,8 @@ CREATE PROCEDURE RealizarCompraCurso(
 BEGIN
     DECLARE v_monto DECIMAL(10,2);
     DECLARE v_existe_inscripcion INT;
-        DECLARE v_mensaje VARCHAR(255);
-
+	DECLARE v_mensaje VARCHAR(255);
+	DECLARE v_idInstructor VARCHAR (255);
 
     SELECT COUNT(*) INTO v_existe_inscripcion
     FROM interaccionesCurso
@@ -22,7 +22,7 @@ BEGIN
 
         IF p_idNivel IS NULL THEN
 
-            SELECT costoTotal, id  INTO v_monto
+            SELECT costoTotal, idInstructor  INTO v_monto, v_idInstructor
             FROM cursos
             WHERE idCurso = p_idCurso;
         ELSE
@@ -42,7 +42,8 @@ BEGIN
             progresoDelCurso,
             estadoAlumno,
             montoPorVenta,
-            formaPago
+            formaPago,
+            idInstructor
         ) VALUES (
             p_idUsuario,
             p_idCurso,
@@ -50,11 +51,12 @@ BEGIN
             0,
             'en progreso',
             v_monto,
-            p_formaPago
+            p_formaPago,
+			v_idInstructor   
         );
 
 
-        SET v_mensaje = v_monto;
+        SET v_mensaje = 'Compra realizada con éxito';
     END IF;
 
     -- Devolver el mensaje como resultado
